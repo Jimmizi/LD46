@@ -15,7 +15,7 @@ public class OptionsMonobehaviour : MonoBehaviour
 
     public void Awake()
     {
-        Service.Options.Set(this);
+        Service.Options = this;
     }
 
     public float MusicVolume

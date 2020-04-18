@@ -9,15 +9,13 @@ public class TitleScreen : MonoBehaviour
     public float BackgroundFadeSpeed;
     public float TitleFadeSpeed;
 
-
     public CanvasGroup PlayButtonGroup;
     public CanvasGroup BackgroundGroup;
     public CanvasGroup TitleTextGroup;
+
+    public EventHandler OnPlayPressed;
     
-
     private bool stageLaunchedCoroutine = false;
-
-    private float titlePlayTimer;
 
     private enum Stage
     {
@@ -36,6 +34,7 @@ public class TitleScreen : MonoBehaviour
     {
         if (stage == Stage.Idle)
         {
+            OnPlayPressed?.Invoke(this, new EventArgs());
             stage++;
         }
     }
@@ -46,22 +45,18 @@ public class TitleScreen : MonoBehaviour
 
         while (group.alpha > 0)
         {
-            group.alpha -= fadeSpeed * Time.deltaTime;
+            group.alpha -= (1f / fadeSpeed) * Time.deltaTime;
             yield return null;
         }
 
-        Debug.Log($"TitleScreen:PlayCoroutine - Done with fade out for {group.name}.");
+        group.alpha = 0;
+
+        Debug.Log($"TitleScreen:fadeOutCanvasGroupEnumerator - Done with fade out for {group.name}.");
         if (moveStage)
         {
             stageLaunchedCoroutine = false;
             stage++;
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -70,6 +65,10 @@ public class TitleScreen : MonoBehaviour
         switch (stage)
         {
             case Stage.Idle:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Play();
+                }
                 break;
             case Stage.FadingPlayButton:
                 if (!stageLaunchedCoroutine)
@@ -84,17 +83,9 @@ public class TitleScreen : MonoBehaviour
                     StartCoroutine(fadeOutCanvasGroupEnumerator(TitleTextGroup, TitleFadeSpeed));
                 }
                 break;
-            //case Stage.FadingTitle:
-            //    if (!stageLaunchedCoroutine)
-            //    {
-            //        StartCoroutine(fadeOutCanvasGroupEnumerator(TitleTextGroup, TitleFadeSpeed));
-            //    }
-            //    break;
             case Stage.Destroy:
                 Destroy(this);
                 break;
         }
     }
-
-
 }
