@@ -28,6 +28,13 @@ public class PrefabRegistry : MonoBehaviour
     [SerializeField]
     public GameObject PlayerActor;
 
+
+    [SerializeField]
+    public GameObject EnemyActor;
+
+
+    //Checkpoint prefabs
+
     [SerializeField]
     public GameObject PlayerActorResting;
 

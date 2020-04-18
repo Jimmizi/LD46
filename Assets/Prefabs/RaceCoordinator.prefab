@@ -229,9 +229,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d781de66fdd75f8438e82a2a4f2c6dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fader: {fileID: 4365331995901533505}
+  DebugIgnoreRaceTimer: 1
+  DebugSpawnEnemy: 0
   PlayerGameObject: {fileID: 0}
   PlayerGridActor: {fileID: 0}
+  PlayerCheckpointGameObject: {fileID: 0}
+  CheckpointScoreUi: {fileID: 0}
   RaceLengthTimer: 5
   RaceTime: 0
   RaceInProgress: 0

@@ -17,10 +17,6 @@ public class GridActor : MonoBehaviour
     [SerializeField]
     public float MoveSpeed;
     
-
-
-    //
-
     private Vector2Int targetGridPosition = new Vector2Int(-1, -1);
 
     private struct MovementData
@@ -37,6 +33,12 @@ public class GridActor : MonoBehaviour
     private MovementData CurrentMove = new MovementData();
 
     public bool LockTargetPosition;
+
+    //If this actor reaches their target position, they will destroy themselves
+    public bool SelfDestroyOnTargetReached;
+
+    //If this actor reaches their target position, they will destroy themselves, BUT only if this target position is not on the board
+    public bool SelfDestroyOnTargetReached_OnlyIfNotOnBoard;
 
     /// <summary>
     /// Target position in grid tiles
@@ -81,6 +83,11 @@ public class GridActor : MonoBehaviour
     /// </summary>
     public void MoveInDirection(int x, int y)
     {
+        if (LockTargetPosition)
+        {
+            return;
+        }
+
         Vector2Int target = targetGridPosition + new Vector2Int(x, y);
 
         if (target.x < 0 || target.y < 0
@@ -98,21 +105,17 @@ public class GridActor : MonoBehaviour
         //If it has been assigned to don't override
         if (TargetPosition == new Vector2Int(-1, -1))
         {
-            // Not a very precise way of grabbing the nearest grid position but good enough for now
-            int posX = Mathf.FloorToInt(transform.position.x / Service.Grid.GetTileScale);
-            int posY = Mathf.FloorToInt(transform.position.y / Service.Grid.GetTileScale);
-
-            TargetPosition = new Vector2Int(posX, posY);
+            TargetPosition = Service.Grid.GetWorldTilePosition(transform.position);
         }
     }
     
-    void Start()
+    protected void Start()
     {
         AssignToNearestGridPoint();
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         ProcessAngling();
         transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime);
@@ -136,5 +139,18 @@ public class GridActor : MonoBehaviour
         var heading = transform.eulerAngles;
         heading.z = (StrafeAngleAmount * turnAmount) * -CurrentMove.TurnDirection;
         transform.eulerAngles = heading;
+
+        //Arbitrary threshold
+        if (mod <= 0.02f)
+        {
+            if (SelfDestroyOnTargetReached)
+            {
+                if (!SelfDestroyOnTargetReached_OnlyIfNotOnBoard
+                    || !Service.Grid.IsTileOnGrid(targetGridPosition))
+                {
+                    Destroy(this.gameObject);
+                }
+            }
+        }
     }
 }

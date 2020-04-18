@@ -117,12 +117,12 @@ public class GameplayManager : MonoBehaviour
 
         float posY = 8.8f;
 
-        Handles.Label(new Vector3(-1.5f, posY, 0), $"Race Count: {RaceCount}");
+        //Handles.Label(new Vector3(-1.5f, posY, 0), $"Race Count: {RaceCount}");
         posY -= 0.25f;
 
         if (CurrentRace != null)
         {
-            Handles.Label(new Vector3(-1.5f, posY, 0), $"Time: {CurrentRace.RaceTime} / {CurrentRace.RaceLengthTimer}");
+            //Handles.Label(new Vector3(-1.5f, posY, 0), $"Time: {CurrentRace.RaceTime} / {CurrentRace.RaceLengthTimer}");
         }
 #endif
     }

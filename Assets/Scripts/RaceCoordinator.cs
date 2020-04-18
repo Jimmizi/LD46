@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public class RaceFinishEventArgs : EventArgs
 {
@@ -36,13 +37,22 @@ public class RaceCoordinator : MonoBehaviour
         Invalid
     }
 
+    private enum SpawnLocation
+    {
+        Back,
+        Front,
+        Sides
+    }
+
+    public bool DebugIgnoreRaceTimer = false;
+    public bool DebugSpawnEnemy = false;
+
+
     public EventHandler OnRaceFinished;
 
     [HideInInspector]
     public GameObject PlayerGameObject = null;
     
-    [HideInInspector]
-    public GridActor PlayerGridActor = null;
 
     [HideInInspector]
     public GameObject PlayerCheckpointGameObject = null;
@@ -53,8 +63,11 @@ public class RaceCoordinator : MonoBehaviour
     /// Length of this part of the race, in seconds
     /// </summary>
     [HideInInspector]
-    public float RaceLengthTimer = 5;
+    public float RaceLengthTimer = 10;
 
+    /// <summary>
+    /// Current time of the race
+    /// </summary>
     [HideInInspector]
     public float RaceTime;
 
@@ -93,7 +106,7 @@ public class RaceCoordinator : MonoBehaviour
                 Destroy(PlayerGameObject.gameObject);
 
                 PlayerGameObject = null;
-                PlayerGridActor = null;
+                Service.Grid.PlayerActor = null;
 
                 OnRaceFinished?.Invoke(this, new RaceFinishEventArgs(true));
                 stage++;
@@ -111,19 +124,33 @@ public class RaceCoordinator : MonoBehaviour
             PlayerGameObject = (GameObject)Instantiate(Service.Prefab.PlayerActor);
             PlayerGameObject.transform.position = Service.Grid.GetPlayerSpawnPosition();
 
-            PlayerGridActor = PlayerGameObject.GetComponent<GridActor>();
+            Service.Grid.PlayerActor = PlayerGameObject.GetComponent<GridActor>();
 
-            PlayerGridActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows / 2);
+            Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows / 2);
 
-            Assert.IsNotNull(PlayerGridActor);
+            Assert.IsNotNull(Service.Grid.PlayerActor);
 
             //Move onto the racing stage
-            stage++;
+            stage = RaceState.Racing;
         }
     }
 
     void UpdateRace()
     {
+#if UNITY_EDITOR
+
+        if (DebugSpawnEnemy)
+        {
+            DebugSpawnEnemy = false;
+            SpawnNewEnemy(SpawnLocation.Back);
+        }
+
+        if (DebugIgnoreRaceTimer)
+        {
+            return;
+        }
+#endif
+
         //While racing, add onto the race time and wait for it to expire
         RaceTime += Time.deltaTime;
 
@@ -147,6 +174,16 @@ public class RaceCoordinator : MonoBehaviour
                 stage = RaceState.Checkpoint;
             }
 
+            foreach (var actor in Service.Grid.Actors)
+            {
+                if (actor is EnemyController enemy)
+                {
+                    Destroy(enemy.gameObject);
+                }
+            }
+
+            Service.Grid.Actors.Clear();
+
             // ReSharper disable once DelegateSubtraction
             // Move onto the fade into checkpoint stage
             Service.Game.OnFadeCoroutineComplete -= OnFadedOutFromRace;
@@ -162,8 +199,8 @@ public class RaceCoordinator : MonoBehaviour
         }
 
         // Race to outro, move the player off screen
-        PlayerGridActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows + 4);
-        PlayerGridActor.LockTargetPosition = true;
+        Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows + 4);
+        Service.Grid.PlayerActor.LockTargetPosition = true;
 
         stage = RaceState.OutroToCheckpoint_Wait;
 
@@ -194,4 +231,63 @@ public class RaceCoordinator : MonoBehaviour
         }
     }
 
+
+    #region Spawning functions
+
+    void SpawnNewEnemy(SpawnLocation loc)
+    {
+        var gridPosition = new Vector2Int();
+        var targetGridPosition = new Vector2Int();
+
+        int locSide = 0;
+
+        //TODO Make sure spawn or target locations are occupied
+        // Backup for when this fails
+
+        //Get a spawn location first
+        switch (loc)
+        {
+            case SpawnLocation.Back:
+            case SpawnLocation.Front:
+                gridPosition.x = Service.Grid.GetRandomHorizontalTile();
+                gridPosition.y = loc == SpawnLocation.Back ? -3 : Service.Grid.Rows + 2;
+                break;
+            case SpawnLocation.Sides:
+                locSide = Random.Range(0, 2);
+                gridPosition.x = locSide == 0 ? -3 : Service.Grid.Columns + 2;
+                gridPosition.y = Service.Grid.GetRandomVerticalTile();
+                break;
+        }
+
+        //Find a target position to bring them onto the board
+        switch (loc)
+        {
+            case SpawnLocation.Back:
+            case SpawnLocation.Front:
+                targetGridPosition.x = gridPosition.x;
+                targetGridPosition.y = loc == SpawnLocation.Back
+                                        ? Random.Range(0, 3)
+                                        : Random.Range(Service.Grid.Rows - 4, Service.Grid.Rows - 1);
+                break;
+            case SpawnLocation.Sides:
+                targetGridPosition.x = locSide == 0
+                                        ? Random.Range(0, 3)
+                                        : Random.Range(Service.Grid.Columns - 4, Service.Grid.Columns - 1);
+                targetGridPosition.y = gridPosition.y;
+
+                break;
+        }
+        
+        var enemy = (GameObject) Instantiate(Service.Prefab.EnemyActor);
+        var enemyController = enemy.GetComponent<EnemyController>();
+
+        //Assign spawn location and target position
+        enemy.transform.position = Service.Grid.GetTileWorldPosition(gridPosition);
+        enemyController.TargetPosition = targetGridPosition;
+
+        Service.Grid.Actors.Add(enemyController);
+    }
+
+
+    #endregion
 }
