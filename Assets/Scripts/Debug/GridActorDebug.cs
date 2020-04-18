@@ -23,20 +23,20 @@ public class GridActorDebug : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                gridActor.AddDirection(0, 1);
+                gridActor.MoveInDirection(0, 1);
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                gridActor.AddDirection(0, -1);
+                gridActor.MoveInDirection(0, -1);
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                gridActor.AddDirection(-1, 0);
+                gridActor.MoveInDirection(-1, 0);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                gridActor.AddDirection(1, 0);
+                gridActor.MoveInDirection(1, 0);
             }
         }
     }
