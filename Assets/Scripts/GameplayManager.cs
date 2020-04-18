@@ -9,17 +9,21 @@ using UnityEngine;
 /// </summary>
 public class GameplayManager : MonoBehaviour
 {
+    public CanvasGroup Fader;
+    public float FadeSpeed = 1f;
+
     public EventHandler OnGameFinished;
 
 #if UNITY_EDITOR
     public bool DebugEndGame;
 #endif
 
+    [HideInInspector]
     public RaceCoordinator CurrentRace = null;
+
+    [HideInInspector]
     public int RaceCount { get; private set; } = 0;
-
-    private bool raceInProgress = true;
-
+    
     void Awake()
     {
         Service.Game = this;
@@ -28,24 +32,18 @@ public class GameplayManager : MonoBehaviour
     void OnDestroy()
     {
         Service.Game = null;
-        CurrentRace = null;
+        if (CurrentRace)
+        {
+            Destroy(CurrentRace.gameObject);
+        }
     }
 
     void Update()
     {
-        if (!raceInProgress)
-        {
-            return;
-        }
-
         // When we do not have a race, lets make one
         if (CurrentRace == null)
         {
             MakeNewRace();
-        }
-        else
-        {
-            CurrentRace.Update();
         }
 
 #if UNITY_EDITOR
@@ -53,31 +51,18 @@ public class GameplayManager : MonoBehaviour
         {
             DebugEndGame = false;
             OnGameFinished?.Invoke(this, new EventArgs());
-            raceInProgress = false;
+            CurrentRace.RaceInProgress = false;
         }
 #endif
     }
 
-    /// <summary> 
-    /// Create a player off the bottom of the screen ready to move into the frame
-    /// </summary>
-    /// <returns>the new player</returns>
-    public GameObject CreatePlayerObjectForRaceStart()
-    {
-        var player = (GameObject)Instantiate(Service.Prefab.PlayerActor);
-        player.transform.position = Service.Grid.GetPlayerSpawnPosition();
-
-        return player;
-    }
-    public void DestroyPlayerObject(GameObject player)
-    {
-        Destroy(player);
-    }
-
     void MakeNewRace()
     {
-        CurrentRace = new RaceCoordinator();
-        
+        var raceGo = (GameObject) Instantiate(Service.Prefab.RaceCoordinatorPrefab);
+        CurrentRace = raceGo.GetComponent<RaceCoordinator>();
+
+        CurrentRace.RaceLengthTimer = 2.5f;
+
         //If we don't win on finish, end the game. otherwise we'll come back around and create a new race
         CurrentRace.OnRaceFinished += (sender, args) =>
         {
@@ -86,15 +71,45 @@ public class GameplayManager : MonoBehaviour
                 if (!data.Win)
                 {
                     OnGameFinished?.Invoke(this, data);
-                    raceInProgress = false;
+                    CurrentRace.RaceInProgress = false;
                 }
             }
 
-            CurrentRace = null;
+            Destroy(CurrentRace.gameObject);
         };
 
         RaceCount++;
     }
+
+    public EventHandler OnFadeCoroutineComplete;
+
+    public void FadeInIfBackedOut()
+    {
+        if (Fader.alpha >= 1f)
+        {
+            StartFader(false);
+        }
+    }
+
+    public void StartFader(bool fadeOut)
+    {
+        IEnumerator fadeCanvasGroupEnumerator(CanvasGroup group)
+        {
+            while (fadeOut ? group.alpha < 1 : group.alpha > 0)
+            {
+                group.alpha += (fadeOut ? FadeSpeed : -FadeSpeed) * Time.deltaTime;
+                yield return null;
+            }
+
+            group.alpha = fadeOut ? 1 : 0;
+
+            OnFadeCoroutineComplete?.Invoke(this, new EventArgs());
+        }
+
+        StartCoroutine(fadeCanvasGroupEnumerator(Fader));
+    }
+
+    
 
     void OnDrawGizmos()
     {

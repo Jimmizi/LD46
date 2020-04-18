@@ -588,6 +588,10 @@ MonoBehaviour:
     type: 3}
   PlayerActor: {fileID: 5507299787412554233, guid: 02f82e27f2d236141a2ecba97fffea06,
     type: 3}
+  PlayerActorResting: {fileID: 5507299787412554233, guid: 938bda6ad49d2b94899eee55bf101589,
+    type: 3}
+  CheckpointUi: {fileID: 8093543776681254183, guid: 252d9a3bbecc0df4dbc1cc7a360fd2e0,
+    type: 3}
 --- !u!4 &1948740312
 Transform:
   m_ObjectHideFlags: 0

@@ -28,6 +28,12 @@ public class PrefabRegistry : MonoBehaviour
     [SerializeField]
     public GameObject PlayerActor;
 
+    [SerializeField]
+    public GameObject PlayerActorResting;
+
+    [SerializeField]
+    public GameObject CheckpointUi;
+
     void Awake()
     {
         Service.Prefab = this;
