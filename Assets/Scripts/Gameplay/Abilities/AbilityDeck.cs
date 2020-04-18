@@ -32,6 +32,6 @@ public class AbilityDeck
         return null;
     }
 
-    private List<AbilityBase> abilities;
-    private float combinedWeightTotal;
+    private List<AbilityBase> abilities = new List<AbilityBase>();
+    private float combinedWeightTotal = 0.0f;
 }
