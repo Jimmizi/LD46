@@ -12,8 +12,13 @@ public class AbilitySlot
         Clearing
     }
 
+    /// <summary> The owner game object </summary>
     public GameObject owner { get; set; }
+
+    /// <summary> Current state of the slot </summary>
     public State state { get; set; }
+
+    /// <summary> The currently assigned ability </summary>
     public AbilityBase ability
     {
         get
@@ -29,6 +34,7 @@ public class AbilitySlot
     }
     private AbilityBase _ability;
 
+    /// <summary> Activates the current ability </summary>
     public void Activate()
     {
         if (ability == null)
@@ -41,27 +47,28 @@ public class AbilitySlot
         else
         {
             state = State.Active;
-            ability.Activate(this);
+            if(!ability.Activate(this)) { ability = null; }
         }
     }
 
+    /// <summary> Sets the target of the ability if it requires a target. </summary>
     public void SetTarget(Vector2 Target)
     {
         if (ability == null)
             return;
-
+        
         switch (ability.targeting)
         {
             case AbilityTargeting.Area:
             case AbilityTargeting.Cone:
             case AbilityTargeting.Line:
                 state = State.Active;
-                ability.Activate(this, Target);
+                if (!ability.Activate(this, Target)) { ability = null; }
                 break;
-
         }
     }
 
+    /// <summary> Sets the target of the ability if it requires a target. </summary>
     public void SetTarget(GameObject Target)
     {
         if (ability == null)
@@ -71,11 +78,12 @@ public class AbilitySlot
         {
             case AbilityTargeting.Unit:
                 state = State.Active;
-                ability.Activate(this, Target);
+                if (!ability.Activate(this, Target)) { ability = null; }
                 break;
         }
     }
 
+    /// <summary> Updates the ability slot </summary>
     public bool Update(float DeltaTime)
     {
         if (ability == null)
@@ -88,7 +96,7 @@ public class AbilitySlot
         }
 
         if (!abilityActive)
-        {
+        {            
             ability = null;
         }
 

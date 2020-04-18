@@ -25,7 +25,7 @@ public class AbilityDeck
             runningWeight += ability.drawWeight;
             if(runningWeight >= randomWeight)
             {
-                return ability;
+                return ability.Clone();
             }
         }
 

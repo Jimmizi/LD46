@@ -14,15 +14,19 @@ public class AbilitiesComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        foreach (AbilitySlot slot in abilitySlots)
+        {
+            slot.Update(Time.deltaTime);
+        }
     }
 
     void SetupSlots()
     {
-        foreach (AbilitySlot slot in abilitySlots)
+        for (int i = 0; i < NUM_SLOTS; i++)
         {
-            slot.owner = gameObject;
-        }
+            abilitySlots[i] = new AbilitySlot();
+            abilitySlots[i].owner = gameObject;
+        };
     }
 
     void SetupDeck()
