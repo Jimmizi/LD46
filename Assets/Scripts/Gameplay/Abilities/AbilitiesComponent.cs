@@ -58,11 +58,21 @@ public class AbilitiesComponent : MonoBehaviour
         return false;
     }
 
+    public Sprite GetAbilitySprite(int slotIndex)
+    {
+        return GetAbility(slotIndex)?.sprite;
+    }
+
+    public string GetAbilityName(int slotIndex)
+    {
+        return GetAbility(slotIndex)?.name;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        SetupDeck();
         SetupSlots();
-        SetupDeck();        
     }
 
     // Update is called once per frame
@@ -72,6 +82,26 @@ public class AbilitiesComponent : MonoBehaviour
         {
             slot.Update(Time.deltaTime);
         }
+
+        if (Input.GetButtonUp("Ability1"))
+        {
+            ActivateAbility(0);
+        }
+
+        if (Input.GetButtonUp("Ability2"))
+        {
+            ActivateAbility(1);
+        }
+
+        if (Input.GetButtonUp("Ability3"))
+        {
+            ActivateAbility(2);
+        }
+
+        if (Input.GetButtonUp("Ability4"))
+        {
+            ActivateAbility(3);
+        }
     }
 
     void SetupSlots()
@@ -80,7 +110,8 @@ public class AbilitiesComponent : MonoBehaviour
         {
             abilitySlots[i] = new AbilitySlot(gameObject, i);
             abilitySlots[i].OnCooldownEnded += slot => DrawAbility(slot);
-            DrawAbility(abilitySlots[i]);
+            abilitySlots[i].Clear(true);
+            //DrawAbility(abilitySlots[i]);
         };
     }
 
@@ -115,7 +146,7 @@ public class AbilitiesComponent : MonoBehaviour
         return GetSlot(slotIndex)?.ability;
     }
 
-    private const int NUM_SLOTS = 3;
+    private const int NUM_SLOTS = 4;
 
     AbilitySlot[] abilitySlots      = new AbilitySlot[NUM_SLOTS];
     AbilityDeck abilityDeck         = new AbilityDeck();

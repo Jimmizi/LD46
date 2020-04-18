@@ -6,7 +6,7 @@ public class AbilitySlot
 {
     public delegate void SlotEvent(AbilitySlot slot);
 
-    private static float COOLDOWN_TIME = 5.0f;
+    public static float COOLDOWN_TIME = 5.0f;
 
     public enum State
     {
@@ -80,6 +80,9 @@ public class AbilitySlot
         if (ability == null)
             return;
 
+        if (state != State.Default)
+            return;
+
         if (ability.targeting != AbilityTargeting.None)
         {
             state = State.Targeting;
@@ -95,7 +98,10 @@ public class AbilitySlot
     {
         if (ability == null)
             return;
-        
+
+        if (state != State.Targeting)
+            return;
+
         switch (ability.targeting)
         {
             case AbilityTargeting.Area:
@@ -110,6 +116,9 @@ public class AbilitySlot
     public void SetTarget(GameObject Target)
     {
         if (ability == null)
+            return;
+
+        if (state != State.Targeting)
             return;
 
         switch (ability.targeting)
@@ -141,19 +150,30 @@ public class AbilitySlot
         else 
         {
             // Yes ability
-            bool abilityActive = false;
             if (state == State.Active)
             {
-                abilityActive = ability.Update(this, DeltaTime);
+                if(!ability.Update(this, DeltaTime))
+                {
+                    Clear(true);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
 
-            if (!abilityActive)
-            {
-                ability = null;
-                cooldownTimer = COOLDOWN_TIME;
-            }
+            return false;
+        }
+    }
 
-            return abilityActive;
+    public void Clear(bool setOnCooldown)
+    {
+        ability = null;
+
+        if (setOnCooldown)
+        {
+            cooldownTimer = COOLDOWN_TIME;
         }
     }
 
@@ -162,8 +182,7 @@ public class AbilitySlot
         state = State.Active;
         if (!ability.Activate(this))
         {
-            ability = null;
-            cooldownTimer = COOLDOWN_TIME;
+            Clear(true);
         }
     }
 }

@@ -12,7 +12,8 @@ public class MoveAbility : AbilityBase
         this.category = AbilityType.Movement;
         this.sprite = Resources.Load<Sprite>(spritePath);
         this.targeting = targeting;
-        this.direction = new Vector2Int(x,y);        
+        this.direction = new Vector2Int(x,y);
+        this.drawWeight = 1.0f;
     }
 
     public MoveAbility(MoveAbility other)
