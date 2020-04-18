@@ -8,16 +8,20 @@ public class GridActor : MonoBehaviour
     /// <summary>
     /// When strafing left or right, how much will the actor angle/tilt in that direction
     /// </summary>
+    [SerializeField]
     public float StrafeAngleAmount;
+
+    [SerializeField]
     public AnimationCurve StrafeAngleCurve;
 
+    [SerializeField]
     public float MoveSpeed;
-    public AnimationCurve MoveSpeedCurve;
+    
 
 
     //
 
-    private Vector2Int targetGridPosition;
+    private Vector2Int targetGridPosition = new Vector2Int(-1, -1);
 
     private struct MovementData
     {
@@ -32,11 +36,21 @@ public class GridActor : MonoBehaviour
     }
     private MovementData CurrentMove = new MovementData();
 
+    public bool LockTargetPosition;
+
+    /// <summary>
+    /// Target position in grid tiles
+    /// </summary>
     public Vector2Int TargetPosition
     {
         get => targetGridPosition;
         set
         {
+            if (LockTargetPosition)
+            {
+                return;
+            }
+
             //We're turning left
             if (value.x < targetGridPosition.x)
             {
@@ -58,7 +72,7 @@ public class GridActor : MonoBehaviour
 
             CurrentMove.StartingDistance = Vector2.Distance(transform.position, CurrentMove.TargetWorldPosition);
 
-
+            
         }
     }
 
@@ -81,11 +95,15 @@ public class GridActor : MonoBehaviour
 
     private void AssignToNearestGridPoint()
     {
-        // Not a very precise way of grabbing the nearest grid position but good enough for now
-        int posX = Mathf.FloorToInt(transform.position.x / Service.Grid.GetTileScale);
-        int posY = Mathf.FloorToInt(transform.position.y / Service.Grid.GetTileScale);
+        //If it has been assigned to don't override
+        if (TargetPosition == new Vector2Int(-1, -1))
+        {
+            // Not a very precise way of grabbing the nearest grid position but good enough for now
+            int posX = Mathf.FloorToInt(transform.position.x / Service.Grid.GetTileScale);
+            int posY = Mathf.FloorToInt(transform.position.y / Service.Grid.GetTileScale);
 
-        TargetPosition = new Vector2Int(posX, posY);
+            TargetPosition = new Vector2Int(posX, posY);
+        }
     }
     
     void Start()

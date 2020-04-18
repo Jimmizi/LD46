@@ -11,21 +11,6 @@ public class FlowManager : MonoBehaviour
     public bool SkipTitleScreen;
 #endif
 
-    /// <summary>
-    /// Title screen UI prefab for start of the game, has a canvas on it to present a start button to the player
-    /// </summary>
-    public GameObject TitleScreenPrefab;
-
-    /// <summary>
-    /// The manager for running the game, spawning objects, defining win/lose conditions
-    /// </summary>
-    public GameObject GameplayManagerPrefab;
-
-    /// <summary>
-    /// End screen UI prefab for when the game is over, allowing the player to restart
-    /// </summary>
-    public GameObject EndScreenPrefab;
-
     public float InitialFadeInTime = 1;
 
     /// <summary>
@@ -55,13 +40,13 @@ public class FlowManager : MonoBehaviour
             return;
         }
 #endif
-        var title = (GameObject)Instantiate(TitleScreenPrefab);
+        var title = (GameObject)Instantiate(Service.Prefab.TitleScreen);
         var titleScreen = title.GetComponent<TitleScreen>();
 
         Assert.IsNotNull(titleScreen);
 
         // Set up the start of the game and alpha out the title screen fader
-        titleScreen.OnPlayPressed += (sender, args) => SetupGameStart();
+        titleScreen.OnTitleFadedOut += (sender, args) => SetupGameStart();
         StartCoroutine(FadeIntoGameAtStart());
     }
 
@@ -83,14 +68,14 @@ public class FlowManager : MonoBehaviour
     {
         endScreenRef = null;
 
-        var gameplay = (GameObject)Instantiate(GameplayManagerPrefab);
+        var gameplay = (GameObject)Instantiate(Service.Prefab.GameplayManager);
         var gameplayRef = gameplay.GetComponent<GameplayManager>();
 
         Assert.IsNotNull(gameplayRef);
 
         gameplayRef.OnGameFinished += (o, eventArgs) =>
         {
-            var end = (GameObject)Instantiate(EndScreenPrefab);
+            var end = (GameObject)Instantiate(Service.Prefab.EndScreen);
             var endScreen = end.GetComponent<EndScreen>();
 
             Assert.IsNotNull(endScreen);
@@ -101,9 +86,11 @@ public class FlowManager : MonoBehaviour
 
     private IEnumerator FadeIntoGameAtStart()
     {
+        yield return new WaitForSeconds(1f);
+
         while (gameStartFadeInGroup.alpha > 0)
         {
-            gameStartFadeInGroup.alpha -= (1f / InitialFadeInTime) * Time.deltaTime;
+            gameStartFadeInGroup.alpha -= InitialFadeInTime * Time.deltaTime;
             yield return null;
         }
     }

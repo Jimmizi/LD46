@@ -13,9 +13,10 @@ public class TitleScreen : MonoBehaviour
     public CanvasGroup BackgroundGroup;
     public CanvasGroup TitleTextGroup;
 
-    public EventHandler OnPlayPressed;
+    public EventHandler OnTitleFadedOut;
     
     private bool stageLaunchedCoroutine = false;
+    private bool launchedGame;
 
     private enum Stage
     {
@@ -34,18 +35,17 @@ public class TitleScreen : MonoBehaviour
     {
         if (stage == Stage.Idle)
         {
-            OnPlayPressed?.Invoke(this, new EventArgs());
             stage++;
         }
     }
 
-    private IEnumerator fadeOutCanvasGroupEnumerator(CanvasGroup group, float fadeSpeed, bool moveStage = true)
+    private IEnumerator fadeOutCanvasGroupEnumerator(CanvasGroup group, float fadeSpeed, bool moveStage = true, bool startGame = false)
     {
         stageLaunchedCoroutine = true;
 
         while (group.alpha > 0)
         {
-            group.alpha -= (1f / fadeSpeed) * Time.deltaTime;
+            group.alpha -= fadeSpeed * Time.deltaTime;
             yield return null;
         }
 
@@ -56,6 +56,15 @@ public class TitleScreen : MonoBehaviour
         {
             stageLaunchedCoroutine = false;
             stage++;
+        }
+
+        if (startGame)
+        {
+            if (!launchedGame)
+            {
+                launchedGame = true;
+                OnTitleFadedOut?.Invoke(this, new EventArgs());
+            }
         }
     }
 
@@ -79,11 +88,18 @@ public class TitleScreen : MonoBehaviour
             case Stage.FadingBackground:
                 if (!stageLaunchedCoroutine)
                 {
-                    StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, BackgroundFadeSpeed, false));
+                    StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, BackgroundFadeSpeed, false, true));
                     StartCoroutine(fadeOutCanvasGroupEnumerator(TitleTextGroup, TitleFadeSpeed));
                 }
                 break;
             case Stage.Destroy:
+
+                if (!launchedGame)
+                {
+                    launchedGame = true;
+                    OnTitleFadedOut?.Invoke(this, new EventArgs());
+                }
+
                 Destroy(this);
                 break;
         }

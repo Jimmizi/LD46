@@ -55,7 +55,7 @@ public class EndScreen : MonoBehaviour
     {
         while (group.alpha < 1)
         {
-            group.alpha += (1f / FadeInSpeed) * Time.deltaTime;
+            group.alpha += FadeInSpeed * Time.deltaTime;
             yield return null;
         }
 
@@ -68,7 +68,7 @@ public class EndScreen : MonoBehaviour
     {
         while (group.alpha > 0)
         {
-            group.alpha -= (1f / FadeOutSpeed) * Time.deltaTime;
+            group.alpha -= FadeOutSpeed * Time.deltaTime;
             yield return null;
         }
 

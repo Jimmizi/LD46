@@ -9,4 +9,5 @@ public static class Service
     public static EndScreen End = null;
     public static PlayableGrid Grid = null;
     public static GameplayManager Game = null;
+    public static PrefabRegistry Prefab = null;
 }

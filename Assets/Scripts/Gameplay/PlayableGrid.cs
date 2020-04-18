@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayableGrid : MonoBehaviour
 {
+#if UNITY_EDITOR
+    public bool DrawDebug;
+#endif
+
     /// <summary>
     /// width/x of the grid
     /// </summary>
@@ -23,7 +27,16 @@ public class PlayableGrid : MonoBehaviour
 
     public Vector2 Spacing = new Vector2(8f, 8f);
 
-    public
+    public Vector2 GetPlayerSpawnPosition()
+    {
+        return GetTileWorldPosition(Columns / 2, -4);
+    }
+
+    public Vector2 GetTileWorldPosition(int x, int y)
+    {
+        return new Vector2(Service.Grid.GetTileScale + Service.Grid.Spacing.x,
+            Service.Grid.GetTileScale + Service.Grid.Spacing.y) * new Vector2Int(x, y);
+    }
 
 
     void Awake()
@@ -43,8 +56,14 @@ public class PlayableGrid : MonoBehaviour
         
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
+        if (!DrawDebug)
+        {
+            return;
+        }
+
         for (int x = 0; x < Columns; x++)
         {
             float posX = (GetTileScale + Spacing.x) * x;
@@ -58,4 +77,5 @@ public class PlayableGrid : MonoBehaviour
             }
         }
     }
+#endif
 }
