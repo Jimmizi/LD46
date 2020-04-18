@@ -34,7 +34,6 @@ public class FlowManager : MonoBehaviour
     private CanvasGroup gameStartFadeInGroup;
 
     private EndScreen endScreenRef = null;
-    private GameplayManager gameplayRef = null;
 
     void Awake()
     {
@@ -72,8 +71,7 @@ public class FlowManager : MonoBehaviour
         if (endScreenRef && endScreenRef.ReadyToFadeBackIn)
         {
             //Destroy gameplay manager so SetupGameStart can make a new one
-            Destroy(gameplayRef.gameObject);
-            gameplayRef = null;
+            Destroy(Service.Game.gameObject);
 
             endScreenRef.FadeBackIn();
             SetupGameStart();
@@ -86,7 +84,7 @@ public class FlowManager : MonoBehaviour
         endScreenRef = null;
 
         var gameplay = (GameObject)Instantiate(GameplayManagerPrefab);
-        gameplayRef = gameplay.GetComponent<GameplayManager>();
+        var gameplayRef = gameplay.GetComponent<GameplayManager>();
 
         Assert.IsNotNull(gameplayRef);
 
