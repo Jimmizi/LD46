@@ -38,6 +38,7 @@ public class FlowManager : MonoBehaviour
 
     void Awake()
     {
+        
         gameStartFadeInGroup = GetComponentInChildren<CanvasGroup>();
         Assert.IsNotNull(gameStartFadeInGroup, "Flow manager did not find a canvas group component in a child. ERROR.");
     }
@@ -45,6 +46,8 @@ public class FlowManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameStartFadeInGroup.alpha = 1f;
+
 #if DEBUG && UNITY_EDITOR
         if (SkipTitleScreen)
         {
