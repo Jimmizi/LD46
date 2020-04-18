@@ -3,8 +3,7 @@ using System.Collections;
 
 public class OffScreenIndicator : MonoBehaviour {
     
-    public Texture2D Icon;
-    public float IconSize = 50.0f;
+    public Sprite Icon;
     public Camera MainCamera;
     public float ScreenMargin = 10.0f;
     
@@ -40,9 +39,11 @@ public class OffScreenIndicator : MonoBehaviour {
 
             float angle = Mathf.Atan2(pointDirection.x, pointDirection.y) * Mathf.Rad2Deg;
 
+            Rect spriteRect = Icon.rect;
+            Texture2D tex = Icon.texture;
             GUIUtility.RotateAroundPivot(angle, indicatorPosition);
-            Rect rect = new Rect(indicatorPosition.x, indicatorPosition.y, scaleFactor * IconSize, scaleFactor * IconSize);
-            GUI.Box(rect, Icon, UIStyles.OffScreenIndicatorStyle);
+            Rect rect = new Rect(indicatorPosition.x, indicatorPosition.y, scaleFactor * spriteRect.width, scaleFactor * spriteRect.height);
+            GUI.DrawTextureWithTexCoords(rect, tex, new Rect(spriteRect.x / tex.width, spriteRect.y / tex.height, spriteRect.width/ tex.width, spriteRect.height / tex.height));
             GUIUtility.RotateAroundPivot(0, indicatorPosition);
         }
     }
