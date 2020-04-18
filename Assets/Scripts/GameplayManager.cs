@@ -7,7 +7,7 @@ public class GameplayManager : MonoBehaviour
 {
     public EventHandler OnGameFinished;
 
-    public bool EndGame;
+    public bool DebugEndGame;
 
     // Start is called before the first frame update
     void Start()
@@ -18,9 +18,9 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EndGame)
+        if (DebugEndGame)
         {
-            EndGame = false;
+            DebugEndGame = false;
             OnGameFinished?.Invoke(this, new EventArgs());
         }
     }
