@@ -545,6 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SkipTitleScreen: 1
+  GameUICanvasGroup: {fileID: 2074240755}
   InitialFadeInTime: 1
 --- !u!4 &1805636659
 Transform:
@@ -814,3 +815,21 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   Spacing: {x: 0, y: 0}
+--- !u!1 &2074240750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5408554895640119374, guid: de10c2aead8ac75359032ee21c342349,
+    type: 3}
+  m_PrefabInstance: {fileID: 566004033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &2074240755
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074240750}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
