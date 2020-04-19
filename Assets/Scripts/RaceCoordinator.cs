@@ -46,6 +46,7 @@ public class RaceCoordinator : MonoBehaviour
 
     public bool DebugIgnoreRaceTimer = false;
     public bool DebugStopObstacleSpawning;
+    public bool DebugStopEnemySpawning;
     public bool DebugSpawnEnemy = false;
     public bool DebugSpawnObstacle;
 
@@ -237,6 +238,7 @@ public class RaceCoordinator : MonoBehaviour
         //While racing, add onto the race time and wait for it to expire
         RaceTime += Time.deltaTime;
         ObstacleSpawnTimer += Time.deltaTime;
+        EnemySpawnTimer += Time.deltaTime;
 
 #if UNITY_EDITOR
         if (DebugStopObstacleSpawning)
@@ -247,12 +249,23 @@ public class RaceCoordinator : MonoBehaviour
         {
             RaceTime = 0;
         }
+
+        if (DebugStopEnemySpawning)
+        {
+            EnemySpawnTimer = 0;
+        }
 #endif
 
         if (ObstacleSpawnTimer >= TimeUntilNextObstacle)
         {
             ObstacleSpawnTimer = 0;
             SpawnNewObstacle();
+        }
+
+        if (EnemySpawnTimer >= TimeUntilNextEnemy)
+        {
+            EnemySpawnTimer = 0;
+            SpawnNewEnemy(NextEnemySpawnLocation);
         }
 
         if (RaceTime >= RaceLengthTimer)

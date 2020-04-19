@@ -7,6 +7,8 @@ public class AbilitySlot
     public delegate void SlotEvent(AbilitySlot slot);
 
     public static float COOLDOWN_TIME = 5.0f;
+    public static float SHUFFLE_COOLDOWN_TIME = 1f;
+    public static float HOLD_TO_SHUFFLE_TIME = 1.5f;
 
     public enum State
     {
@@ -15,6 +17,8 @@ public class AbilitySlot
         Active,
         Clearing
     }
+
+    public bool WasJustShuffled;
 
     /// <summary> The owner game object </summary>
     public int slotIndex { get; set; }
@@ -141,6 +145,7 @@ public class AbilitySlot
                 if (cooldownTimer <= 0.0f)
                 {
                     cooldownTimer = 0.0f;
+                    WasJustShuffled = false;
                     OnCooldownEnded(this);
                 }
             }
@@ -167,10 +172,17 @@ public class AbilitySlot
         }
     }
 
+    public void ClearForShuffle()
+    {
+        ability = null;
+        cooldownTimer = SHUFFLE_COOLDOWN_TIME;
+        WasJustShuffled = true;
+    }
+
     public void Clear(bool setOnCooldown)
     {
         ability = null;
-
+        WasJustShuffled = false;
         if (setOnCooldown)
         {
             cooldownTimer = COOLDOWN_TIME;
@@ -180,6 +192,7 @@ public class AbilitySlot
     private void DoActivate()
     {
         state = State.Active;
+        WasJustShuffled = false;
         if (!ability.Activate(this))
         {
             Clear(true);
