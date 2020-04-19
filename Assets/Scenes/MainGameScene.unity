@@ -1089,8 +1089,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DrawDebug: 1
-  Columns: 9
+  Columns: 11
   Rows: 9
+  DrawTerrainCollisions: 1
+  DrawInfluenceMap: 0
   PixelArtScale: 4
   EditorTileSizePixels: 0.32
   Actors: []

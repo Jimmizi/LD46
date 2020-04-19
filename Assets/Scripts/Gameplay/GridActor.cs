@@ -132,6 +132,11 @@ public class GridActor : MonoBehaviour
             return;
         }
 
+        if (Service.Grid.IsWorldPositionOnTerrain(this.transform.position))
+        {
+            GetComponent<HealthComponent>().Offset(-100);
+        }
+
         ProcessAngling();
 
         if (!UseLinearMovementSpeed)

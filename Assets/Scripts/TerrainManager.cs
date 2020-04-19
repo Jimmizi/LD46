@@ -35,6 +35,14 @@ public class TerrainManager : MonoBehaviour {
         if (Service.Game?.CurrentRace == null 
             || !Service.Game.CurrentRace.RaceInProgress)
         {
+            for (int y = 0; y < Service.Grid.Rows; y++)
+            {
+                for (int x = 0; x < Service.Grid.Columns; x++)
+                {
+                    Service.Grid.TerrainCollisions[x, y] = false;
+                }
+            }
+
             return;
         }
 
@@ -62,8 +70,8 @@ public class TerrainManager : MonoBehaviour {
                         if (ix > 0 && ix < Generator.TerrainWidth &&
                             iy > 0 && iy < Generator.TerrainLength)
                         {
-
-                            Service.Grid.TerrainCollisions[x, y] = Generator.TerrainMap[Generator.TerrainLength - iy, ix] > 0;
+                            var val = Generator.TerrainMap[Generator.TerrainLength - iy, ix];
+                            Service.Grid.TerrainCollisions[x, y] = val > 0;
                         }
                         else
                         {

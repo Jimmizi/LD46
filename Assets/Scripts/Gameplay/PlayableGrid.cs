@@ -23,6 +23,9 @@ public class PlayableGrid : MonoBehaviour
     /// </summary>
     public int Rows = 6;
 
+    public bool DrawTerrainCollisions;
+    public bool DrawInfluenceMap;
+
     public int PixelArtScale = 4;
     public float EditorTileSizePixels = 0.32f;
 
@@ -59,7 +62,26 @@ public class PlayableGrid : MonoBehaviour
     /// <summary>
     /// Boolean map of collisions with terrain (written by TerrainGenerator)
     /// </summary>
-    public bool[,] TerrainCollisions;  
+    public bool[,] TerrainCollisions;
+
+    private bool setupTerrainCollision = false;
+
+    public bool IsWorldPositionOnTerrain(Vector2 worldPos)
+    {
+        if (!setupTerrainCollision)
+        {
+            return false;
+        }
+
+        var tilePos = GetWorldTilePosition(worldPos);
+
+        if (!IsTileOnGrid(tilePos, 0))
+        {
+            return false;
+        }
+
+        return TerrainCollisions[tilePos.x, tilePos.y];
+    }
 
     public Vector2 GetPlayerSpawnPosition()
     {
@@ -401,6 +423,7 @@ public class PlayableGrid : MonoBehaviour
     void Start()
     {
         presenceInfluenceMap = new float[Columns, Rows];
+        setupTerrainCollision = true;
         TerrainCollisions = new bool[Columns, Rows];
     }
 
@@ -576,7 +599,7 @@ public class PlayableGrid : MonoBehaviour
 
                 
 
-                if (presenceInfluenceMap != null)
+                if (DrawInfluenceMap && presenceInfluenceMap != null)
                 {
                     var col = influenceMapGradient.Evaluate(presenceInfluenceMap[x, y]);
                     col.a = 0.25f;
@@ -588,10 +611,17 @@ public class PlayableGrid : MonoBehaviour
                     Handles.Label(new Vector3(posX - (GetTileScale/2) + 0.05f, posY + (GetTileScale/2) - 0.05f), $"{floatString}");
                 }
 
-                if (TerrainCollisions != null) {
-                    if (TerrainCollisions[x, y]) {
+                if (DrawTerrainCollisions && TerrainCollisions != null) 
+                {
+                    if (TerrainCollisions[x, y]) 
+                    {
+                        Gizmos.color = new Color(1, 0, 0, 0.3f);
                         Gizmos.DrawCube(new Vector3(posX, posY), new Vector3(GetTileScale * 0.5f, GetTileScale * 0.5f, GetTileScale));
-
+                    }
+                    else
+                    {
+                        Gizmos.color = new Color(0, 1, 0, 0.3f);
+                        Gizmos.DrawCube(new Vector3(posX, posY), new Vector3(GetTileScale * 0.5f, GetTileScale * 0.5f, GetTileScale));
                     }
                 }
 
