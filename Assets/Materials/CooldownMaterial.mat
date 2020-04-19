@@ -65,7 +65,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _ColorMask: 15
+    - _ColorMask: 20.61
     - _Cooldown: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -89,5 +89,5 @@ Material:
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 0.43137255}
+    - _Color: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0.78431374}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
