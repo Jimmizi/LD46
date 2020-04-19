@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AbilitiesComponent : MonoBehaviour
 {
+    public AbilitySpritesDB sprites;
+
     /// <summary> Activates the ability at the given slot </summary>
     /// <returns> The required targeting of the ability </returns>
     public AbilityTargeting ActivateAbility(int slotIndex)
@@ -77,16 +79,16 @@ public class AbilitiesComponent : MonoBehaviour
         return GetAbility(slotIndex)?.name;
     }
 
-    /// <returns> The the ability cooldown progress (from 0 just started to 1 not on cooldown)  </returns>
+    /// <returns> The the ability cooldown progress (from 0 no cooldown; to 1 cooldown started)  </returns>
     public float GetCooldownProgress(int slotIndex)
     {
         var slot = GetSlot(slotIndex);
         if (slot != null)
         {
-            return 1.0f - slot.cooldownTimer / AbilitySlot.COOLDOWN_TIME;
+            return slot.cooldownTimer / AbilitySlot.COOLDOWN_TIME;
         }
 
-        return 1.0f;
+        return 0.0f;
     }
 
     // Start is called before the first frame update
@@ -139,12 +141,12 @@ public class AbilitiesComponent : MonoBehaviour
     void SetupDeck()
     {
         // Add abilities
-        // abilityDeck.Add( new Ability...() );        
+        // abilityDeck.Add( new Ability...() );                
 
-        abilityDeck.Add(new MoveAbility("Move Left", "AbilityMoveLeft.png", AbilityTargeting.None, -1, 0));
-        abilityDeck.Add(new MoveAbility("Move Right", "AbilityMoveRight.png", AbilityTargeting.None, 1, 0));
-        abilityDeck.Add(new MoveAbility("Move Forward", "AbilityMoveForward.png", AbilityTargeting.None, 0, -1));
-        abilityDeck.Add(new MoveAbility("Move Back", "AbilityMoveBack.png", AbilityTargeting.None, 0, 1));
+        abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0));
+        abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0));
+        abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
+        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
     }
 
     bool IsValidSlotIndex(int slotIndex)
@@ -154,7 +156,7 @@ public class AbilitiesComponent : MonoBehaviour
 
     AbilitySlot GetSlot(int slotIndex)
     {
-        if (!IsValidSlotIndex(slotIndex))
+        if (IsValidSlotIndex(slotIndex))
         {
             return abilitySlots[slotIndex];
         }

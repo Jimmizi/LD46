@@ -127,6 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5444829157431752465}
+  - component: {fileID: 7868459481656046369}
   m_Layer: 5
   m_Name: AbilityControl
   m_TagString: Untagged
@@ -155,6 +156,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7868459481656046369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767686411686725322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9b615c64a129645ab864b1ee425ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotIndex: 0
+  abilityImage: {fileID: 7633582188598574842}
+  cooldownImage: {fileID: 5849219225974250123}
 --- !u!1 &5849219225974250121
 GameObject:
   m_ObjectHideFlags: 0
