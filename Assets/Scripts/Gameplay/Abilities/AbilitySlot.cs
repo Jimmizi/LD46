@@ -68,6 +68,28 @@ public class AbilitySlot
     }
     private AbilityBase _ability;
 
+    public TargetObject targetObject
+    {
+        get
+        {
+            return _targetObject;
+        }
+
+        set
+        {
+            if(_targetObject)
+            {
+                _targetObject.OnTargetReady -= TargetReady;
+            }
+            _targetObject = value;
+            if (_targetObject)
+            {
+                _targetObject.OnTargetReady += TargetReady;
+            }
+        }
+    }
+    private TargetObject _targetObject;
+
     public AbilitySlot(GameObject owner, int index)
     {
         this.owner = owner;
@@ -175,6 +197,11 @@ public class AbilitySlot
         {
             cooldownTimer = COOLDOWN_TIME;
         }
+
+        if (targetObject)
+        {
+            GameObject.Destroy(targetObject);
+        }
     }
 
     private void DoActivate()
@@ -183,6 +210,22 @@ public class AbilitySlot
         if (!ability.Activate(this))
         {
             Clear(true);
+        }
+    }
+
+    private void TargetReady(TargetObject targetObject)
+    {
+        switch(targeting)
+        {
+            case AbilityTargeting.Area:
+            case AbilityTargeting.Cone:
+            case AbilityTargeting.Line:
+                SetTarget(targetObject.GetVector());
+                break;
+
+            case AbilityTargeting.Unit:
+                SetTarget(targetObject.GetUnit());
+                break;
         }
     }
 }
