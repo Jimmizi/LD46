@@ -590,6 +590,8 @@ MonoBehaviour:
     type: 3}
   EnemyActor: {fileID: 5507299787412554233, guid: a8ce5999896710c4ca5de835fe13ab99,
     type: 3}
+  ObstacleActor: {fileID: 5507299787412554233, guid: e62db4081a074fb4abdd47e60dfb74c1,
+    type: 3}
   PlayerActorResting: {fileID: 5507299787412554233, guid: 938bda6ad49d2b94899eee55bf101589,
     type: 3}
   CheckpointUi: {fileID: 8093543776681254183, guid: 252d9a3bbecc0df4dbc1cc7a360fd2e0,

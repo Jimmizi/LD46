@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class GridActor : MonoBehaviour
 {
+    public EventHandler OnActorDestroy;
+
     /// <summary>
     /// When strafing left or right, how much will the actor angle/tilt in that direction
     /// </summary>
@@ -33,6 +36,8 @@ public class GridActor : MonoBehaviour
     private MovementData CurrentMove = new MovementData();
 
     public bool LockTargetPosition;
+
+    public bool UseLinearMovementSpeed;
 
     //If this actor reaches their target position, they will destroy themselves
     public bool SelfDestroyOnTargetReached;
@@ -114,11 +119,30 @@ public class GridActor : MonoBehaviour
         AssignToNearestGridPoint();
     }
 
+    void OnDestroy()
+    {
+        OnActorDestroy?.Invoke(this, new EventArgs());
+    }
+
     // Update is called once per frame
     protected void Update()
     {
         ProcessAngling();
-        transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime);
+
+        if (!UseLinearMovementSpeed)
+        {
+            transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            var heading = CurrentMove.TargetWorldPosition - new Vector2(transform.position.x, transform.position.y);
+            var dist = heading.magnitude;
+            var dir = heading / dist;
+
+            var dir3 = new Vector3(dir.x, dir.y, 0);
+
+            transform.position += dir3 * (MoveSpeed * Time.deltaTime);
+        }
     }
 
     void OnDrawGizmos()

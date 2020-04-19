@@ -37,7 +37,7 @@ public class RaceCoordinator : MonoBehaviour
         Invalid
     }
 
-    private enum SpawnLocation
+    public enum SpawnLocation
     {
         Back,
         Front,
@@ -45,15 +45,23 @@ public class RaceCoordinator : MonoBehaviour
     }
 
     public bool DebugIgnoreRaceTimer = false;
+    public bool DebugStopObstacleSpawning;
     public bool DebugSpawnEnemy = false;
+    public bool DebugSpawnObstacle;
 
+    public float ObstacleSpawnTimer = 0;
+    public float TimeUntilNextObstacle = 5;
+
+    public int MaxNumberOfObstacles = 4;
+    public int CurrentNumberOfObstacles;
+
+
+    public SpawnLocation NextEnemySpawnLocation;
 
     public EventHandler OnRaceFinished;
 
     [HideInInspector]
     public GameObject PlayerGameObject = null;
-    
-
     [HideInInspector]
     public GameObject PlayerCheckpointGameObject = null;
     [HideInInspector]
@@ -142,17 +150,36 @@ public class RaceCoordinator : MonoBehaviour
         if (DebugSpawnEnemy)
         {
             DebugSpawnEnemy = false;
-            SpawnNewEnemy(SpawnLocation.Back);
+            SpawnNewEnemy(NextEnemySpawnLocation);
         }
 
-        if (DebugIgnoreRaceTimer)
+        if (DebugSpawnObstacle)
         {
-            return;
+            DebugSpawnObstacle = false;
+            SpawnNewObstacle();
         }
 #endif
 
         //While racing, add onto the race time and wait for it to expire
         RaceTime += Time.deltaTime;
+        ObstacleSpawnTimer += Time.deltaTime;
+
+#if UNITY_EDITOR
+        if (DebugStopObstacleSpawning)
+        {
+            ObstacleSpawnTimer = 0;
+        }
+        if (DebugIgnoreRaceTimer)
+        {
+            RaceTime = 0;
+        }
+#endif
+
+        if (ObstacleSpawnTimer >= TimeUntilNextObstacle)
+        {
+            ObstacleSpawnTimer = 0;
+            SpawnNewObstacle();
+        }
 
         if (RaceTime >= RaceLengthTimer)
         {
@@ -234,6 +261,38 @@ public class RaceCoordinator : MonoBehaviour
 
     #region Spawning functions
 
+    void SpawnNewObstacle()
+    {
+        if (CurrentNumberOfObstacles >= MaxNumberOfObstacles)
+        {
+            return;
+        }
+
+        var gridPosition = new Vector2Int();
+
+        gridPosition.x = Service.Grid.GetRandomHorizontalTile();
+        gridPosition.y = Service.Grid.Rows + Random.Range(2, 10);
+
+        var obstacle = (GameObject)Instantiate(Service.Prefab.ObstacleActor);
+        obstacle.transform.position = Service.Grid.GetTileWorldPosition(gridPosition);
+
+        var grid = obstacle.GetComponent<GridActor>();
+
+        Assert.IsNotNull(grid);
+
+        grid.TargetPosition = new Vector2Int(gridPosition.x, -5);
+        grid.UseLinearMovementSpeed = true;
+        grid.LockTargetPosition = true;
+        grid.SelfDestroyOnTargetReached = true;
+
+        CurrentNumberOfObstacles++;
+        grid.OnActorDestroy += (sender, args) =>
+        {
+            CurrentNumberOfObstacles--;
+        };
+
+    }
+
     void SpawnNewEnemy(SpawnLocation loc)
     {
         var gridPosition = new Vector2Int();
@@ -241,22 +300,29 @@ public class RaceCoordinator : MonoBehaviour
 
         int locSide = 0;
 
-        //TODO Make sure spawn or target locations are occupied
-        // Backup for when this fails
-
         //Get a spawn location first
         switch (loc)
         {
             case SpawnLocation.Back:
+                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, 0),
+                                        new Vector2Int(Service.Grid.Columns - 1, 1), new Vector2Int(), true);
+                break;
             case SpawnLocation.Front:
-                gridPosition.x = Service.Grid.GetRandomHorizontalTile();
-                gridPosition.y = loc == SpawnLocation.Back ? -3 : Service.Grid.Rows + 2;
+                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, Service.Grid.Rows - 2),
+                                        new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows-1), new Vector2Int(), false, true);
                 break;
             case SpawnLocation.Sides:
+
                 locSide = Random.Range(0, 2);
-                gridPosition.x = locSide == 0 ? -3 : Service.Grid.Columns + 2;
-                gridPosition.y = Service.Grid.GetRandomVerticalTile();
+                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(locSide == 0 ? 0 : Service.Grid.Columns - 2, 0),
+                                        new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows - 1), new Vector2Int(), 
+                                        false, false, locSide == 0 ? -4 : Service.Grid.Rows + 4);
                 break;
+        }
+
+        if (targetGridPosition == new Vector2Int(-1, -1))
+        {
+            return;
         }
 
         //Find a target position to bring them onto the board
@@ -264,16 +330,13 @@ public class RaceCoordinator : MonoBehaviour
         {
             case SpawnLocation.Back:
             case SpawnLocation.Front:
-                targetGridPosition.x = gridPosition.x;
-                targetGridPosition.y = loc == SpawnLocation.Back
-                                        ? Random.Range(0, 3)
-                                        : Random.Range(Service.Grid.Rows - 4, Service.Grid.Rows - 1);
+                gridPosition.x = targetGridPosition.x;
+                gridPosition.y = loc == SpawnLocation.Back ? -4 : Service.Grid.Rows + 4;
                 break;
             case SpawnLocation.Sides:
-                targetGridPosition.x = locSide == 0
-                                        ? Random.Range(0, 3)
-                                        : Random.Range(Service.Grid.Columns - 4, Service.Grid.Columns - 1);
-                targetGridPosition.y = gridPosition.y;
+
+                gridPosition.x = locSide == 0 ? -4 : Service.Grid.Columns + 4;
+                gridPosition.y = targetGridPosition.y;
 
                 break;
         }
@@ -286,6 +349,8 @@ public class RaceCoordinator : MonoBehaviour
         enemyController.TargetPosition = targetGridPosition;
 
         Service.Grid.Actors.Add(enemyController);
+
+
     }
 
 

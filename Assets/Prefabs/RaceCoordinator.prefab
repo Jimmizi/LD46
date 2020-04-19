@@ -231,10 +231,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DebugIgnoreRaceTimer: 1
   DebugSpawnEnemy: 0
+  DebugSpawnObstacle: 0
+  ObstacleSpawnTimer: 0
+  TimeUntilNextObstacle: 5
+  MaxNumberOfObstacles: 4
+  CurrentNumberOfObstacles: 0
   PlayerGameObject: {fileID: 0}
-  PlayerGridActor: {fileID: 0}
   PlayerCheckpointGameObject: {fileID: 0}
   CheckpointScoreUi: {fileID: 0}
-  RaceLengthTimer: 5
+  RaceLengthTimer: 10
   RaceTime: 0
   RaceInProgress: 0
