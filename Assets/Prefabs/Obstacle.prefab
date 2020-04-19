@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 5320324980530727061}
   - component: {fileID: 7403131623891099623}
   - component: {fileID: -1535242827573690651}
+  - component: {fileID: 3951358775328360672}
   m_Layer: 0
   m_Name: Obstacle
-  m_TagString: Instadeath
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 1.92, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -145,13 +146,13 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.32, y: 0.32}
-    newSize: {x: 0.32, y: 0.32}
+    newSize: {x: 1.92, y: 1.92}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
 --- !u!114 &7403131623891099623
 MonoBehaviour:
@@ -189,3 +190,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3951358775328360672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ca317e675b11844a1d7b9aaeeb805b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Obstacles:
+  - sprite: {fileID: 21300000, guid: 2de6acbd286bbf84abe35d05438e2a73, type: 3}
+    damageOnCollision: 25
+  - sprite: {fileID: 21300000, guid: 5225efe8ef60095499fb5d05c70addae, type: 3}
+    damageOnCollision: 40
+  - sprite: {fileID: 21300000, guid: 09714bb6011a7f84d84479605fe86804, type: 3}
+    damageOnCollision: 30

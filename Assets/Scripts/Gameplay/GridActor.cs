@@ -83,6 +83,8 @@ public class GridActor : MonoBehaviour
         }
     }
 
+    private bool doingObstacleShake;
+
     /// <summary>
     /// Move in this direction and add it to the target position
     /// </summary>
@@ -165,9 +167,58 @@ public class GridActor : MonoBehaviour
         Gizmos.DrawLine(transform.position, CurrentMove.TargetWorldPosition);
     }
 
+    public void SetJustHitObstacle()
+    {
+        if (!doingObstacleShake)
+        {
+            StartCoroutine(DoObstacleShake());
+        }
+    }
+
+    IEnumerator DoObstacleShake()
+    {
+        doingObstacleShake = true;
+        int angleChangesDone = 0;
+        float time = 0;
+
+        const float angleInterval = 0.075f;
+
+        int dir = -1;
+
+        while (angleChangesDone < 8)
+        {
+            time += Time.deltaTime;
+
+            var mod = time / angleInterval;
+
+            // Negative Z is right, Positive Z is left
+            var heading = transform.eulerAngles;
+            heading.z = 5 * dir;
+            transform.eulerAngles = heading;
+
+            if (time > angleInterval)
+            {
+                dir = -dir;
+                angleChangesDone++;
+                time = 0;
+            }
+            yield return null;
+        }
+
+        var heading1 = transform.eulerAngles;
+        heading1.z = 0;
+        transform.eulerAngles = heading1;
+        doingObstacleShake = false;
+
+    }
 
     private void ProcessAngling()
     {
+        if (doingObstacleShake)
+        {
+            return;
+        }
+
         var dist = Vector2.Distance(transform.position, CurrentMove.TargetWorldPosition);
         var mod = dist / CurrentMove.StartingDistance;
 

@@ -114,9 +114,13 @@ public class HealthComponent : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Instadeath")
+        if (other.tag == "Obstacle")
         {
-            Offset(-maxHealth);
+            var obstacleComp = other.GetComponent<ObstaclePicker>();
+            if (obstacleComp)
+            {
+                Offset(-obstacleComp.GetCollisionDamage);
+            }
         }
     }
 
