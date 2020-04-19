@@ -7,53 +7,73 @@ public class TerrainGenerator : MonoBehaviour {
     
     public Tilemap TerrainTilemap;
     public TileBase[] Tiles;
+    public TileBase[] GroundLevelTiles;
+    public bool PrintDebug;
+    
+    public int TerrainWidth = 8;
+    public int TerrainLength = 12;
+    public int[,] TerrainMap => terrainMap;
+
+    private int[,] terrainMap;
+    
+    private TileBase getTile(int level, int tileIndex) {
+        if (level == 0 || (level == 1 && tileIndex < 16)) {
+            return GroundLevelTiles[tileIndex];
+        }
+
+        return Tiles[tileIndex];
+    }
 
     void Start() {
 
-        int width = 4;
-        int height = 4;
+        int width = TerrainWidth;
+        int height = TerrainLength;
         
-        int[,] generated = new int[4, 4];
+        terrainMap = new int[height, width];
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                generated[y, x] = Random.Range(0, 3);
+                if (x > 4 && x < 8) {
+                    terrainMap[y, x] = 0;
+                } else {
+                    terrainMap[y, x] = Random.Range(0, 3);
+                }
             }
         }
         
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (generated[y, x] == 2) {
-                    if (y > 0 && generated[y - 1, x] != 2) {
-                        generated[y - 1, x] = 1;
+                if (terrainMap[y, x] == 2) {
+                    if (y > 0 && terrainMap[y - 1, x] != 2) {
+                        terrainMap[y - 1, x] = 1;
                     }
 
-                    if (y < (height - 1) && generated[y + 1, x] != 2) {
-                        generated[y + 1, x] = 1;
+                    if (y < (height - 1) && terrainMap[y + 1, x] != 2) {
+                        terrainMap[y + 1, x] = 1;
                     }
 
-                    if (x > 0 && generated[y, x - 1] != 2) {
-                        generated[y, x - 1] = 1;
+                    if (x > 0 && terrainMap[y, x - 1] != 2) {
+                        terrainMap[y, x - 1] = 1;
                     }
 
-                    if (x < (width - 1) && generated[y, x + 1] != 2) {
-                        generated[y, x + 1] = 1;
+                    if (x < (width - 1) && terrainMap[y, x + 1] != 2) {
+                        terrainMap[y, x + 1] = 1;
                     }
 
-                    if (x > 0 && y > 0 && generated[y - 1, x - 1] != 2) {
-                        generated[y - 1, x - 1] = 1;
+                    if (x > 0 && y > 0 && terrainMap[y - 1, x - 1] != 2) {
+                        terrainMap[y - 1, x - 1] = 1;
                     }
 
-                    if (x > 0 && y < (height - 1) && generated[y + 1, x - 1] != 2) {
-                        generated[y + 1, x - 1] = 1;
+                    if (x > 0 && y < (height - 1) && terrainMap[y + 1, x - 1] != 2) {
+                        terrainMap[y + 1, x - 1] = 1;
                     }
                     
-                    if (x < (width - 1) && y > 0 && generated[y - 1, x + 1] != 2) {
-                        generated[y - 1, x + 1] = 1;
+                    if (x < (width - 1) && y > 0 && terrainMap[y - 1, x + 1] != 2) {
+                        terrainMap[y - 1, x + 1] = 1;
                     }
 
-                    if (x < (width - 1) && y < (height - 1) && generated[y + 1, x + 1] != 2) {
-                        generated[y + 1, x + 1] = 1;
+                    if (x < (width - 1) && y < (height - 1) && terrainMap[y + 1, x + 1] != 2) {
+                        terrainMap[y + 1, x + 1] = 1;
                     }
                 }
             }
@@ -62,39 +82,42 @@ public class TerrainGenerator : MonoBehaviour {
         for (int y = 0; y < height; y++) {
             string line = "";
             for (int x = 0; x < width; x++) {
-                line += generated[y, x].ToString() + ", ";
+                line += terrainMap[y, x].ToString() + ", ";
             }
-            Debug.LogFormat("{0}\n", line);
+
+            if (PrintDebug) {
+                Debug.LogFormat("{0}\n", line);
+            }
         }
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int value = generated[y, x];
+                int value = terrainMap[y, x];
 
                 uint v0 = (y > 0 && x > 0)
-                    ? ((generated[y - 1, x - 1] > value) ? 2u :
-                        ((generated[y - 1, x - 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y - 1, x - 1] > value) ? 2u :
+                        ((terrainMap[y - 1, x - 1] < value) ? 0u : 1u)) : 1u;
                 uint v1 = (y > 0)
-                    ? ((generated[y - 1, x] > value) ? 2u :
-                        ((generated[y - 1, x] < value) ? 0u : 1u)) : 1u;
-                uint v2 = (y > 0 && x < (height - 1))
-                    ? ((generated[y - 1, x + 1] > value) ? 2u :
-                        ((generated[y - 1, x + 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y - 1, x] > value) ? 2u :
+                        ((terrainMap[y - 1, x] < value) ? 0u : 1u)) : 1u;
+                uint v2 = (y > 0 && x < (width - 1))
+                    ? ((terrainMap[y - 1, x + 1] > value) ? 2u :
+                        ((terrainMap[y - 1, x + 1] < value) ? 0u : 1u)) : 1u;
                 uint v3 = (x > 0)
-                    ? ((generated[y, x - 1] > value) ? 2u :
-                        ((generated[y, x - 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y, x - 1] > value) ? 2u :
+                        ((terrainMap[y, x - 1] < value) ? 0u : 1u)) : 1u;
                 uint v4 = (x < (width - 1))
-                    ? ((generated[y, x + 1] > value) ? 2u :
-                        ((generated[y, x + 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y, x + 1] > value) ? 2u :
+                        ((terrainMap[y, x + 1] < value) ? 0u : 1u)) : 1u;
                 uint v5 = (y < (height - 1) && x > 0)
-                    ? ((generated[y + 1, x - 1] > value) ? 2u :
-                        ((generated[y + 1, x - 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y + 1, x - 1] > value) ? 2u :
+                        ((terrainMap[y + 1, x - 1] < value) ? 0u : 1u)) : 1u;
                 uint v6 = (y < (height - 1))
-                    ? ((generated[y + 1, x] > value) ? 2u :
-                        ((generated[y + 1, x] < value) ? 0u : 1u)) : 1u;
-                uint v7 = (y < (height - 1) && x < (height - 1))
-                    ? ((generated[y + 1, x + 1] > value) ? 2u :
-                        ((generated[y + 1, x + 1] < value) ? 0u : 1u)) : 1u;
+                    ? ((terrainMap[y + 1, x] > value) ? 2u :
+                        ((terrainMap[y + 1, x] < value) ? 0u : 1u)) : 1u;
+                uint v7 = (y < (height - 1) && x < (width - 1))
+                    ? ((terrainMap[y + 1, x + 1] > value) ? 2u :
+                        ((terrainMap[y + 1, x + 1] < value) ? 0u : 1u)) : 1u;
 
                 uint encoding =
                     ((v3 & 0x3u) << 4) |
@@ -103,8 +126,11 @@ public class TerrainGenerator : MonoBehaviour {
                 
                 if (TerrainDictionary.Configurations.ContainsKey(encoding)) {
                     int tilex = TerrainDictionary.Configurations[encoding];
-                    TerrainTilemap.SetTile(new Vector3Int(2 * x, -2 * y, 0), Tiles[tilex]);
-                    Debug.LogFormat("[{5}, {6}] 0: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    TileBase tile = getTile(value, tilex);
+                    TerrainTilemap.SetTile(new Vector3Int(2 * x, 2 * height + (-2 * y), 0), tile);
+                    if (PrintDebug) {
+                        Debug.LogFormat("[{5}, {6}] 0: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    }
                 }
                 
                 encoding =
@@ -121,8 +147,11 @@ public class TerrainGenerator : MonoBehaviour {
                         tilex = (tilex - 8 + 2) % 8 + 8;
                     }
 
-                    TerrainTilemap.SetTile(new Vector3Int(2 * x + 1, -2 * y, 0), Tiles[tilex]);
-                    Debug.LogFormat("[{5}, {6}] 1: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    TileBase tile = getTile(value, tilex);
+                    TerrainTilemap.SetTile(new Vector3Int(2 * x + 1, 2 * height + (-2 * y), 0), tile);
+                    if (PrintDebug) {
+                        Debug.LogFormat("[{5}, {6}] 1: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    }
                 }
                 
                 encoding =
@@ -139,8 +168,11 @@ public class TerrainGenerator : MonoBehaviour {
                         tilex = (tilex - 8 + 6) % 8 + 8;
                     }
 
-                    TerrainTilemap.SetTile(new Vector3Int(2 * x, -2 * y - 1, 0), Tiles[tilex]);
-                    Debug.LogFormat("[{5}, {6}] 2: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    TileBase tile = getTile(value, tilex);
+                    TerrainTilemap.SetTile(new Vector3Int(2 * x, 2 * height + (-2 * y - 1), 0), tile);
+                    if (PrintDebug) {
+                        Debug.LogFormat("[{5}, {6}] 2: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    }
                 }
                 
                 encoding =
@@ -157,11 +189,16 @@ public class TerrainGenerator : MonoBehaviour {
                         tilex = (tilex - 8 + 4) % 8 + 8;
                     }
 
-                    TerrainTilemap.SetTile(new Vector3Int(2 * x + 1, -2 * y - 1, 0), Tiles[tilex]);
-                    Debug.LogFormat("[{5}, {6}] 3: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    TileBase tile = getTile(value, tilex);
+                    TerrainTilemap.SetTile(new Vector3Int(2 * x + 1, 2 * height + (-2 * y - 1), 0), tile);
+                    if (PrintDebug) {
+                        Debug.LogFormat("[{5}, {6}] 3: {0}, {1}, {2} => {3} [{4}]\n", v0, v1, v3, encoding, tilex, y, x);
+                    }
                 }
-                
-                Debug.Log("======================");
+
+                if (PrintDebug) {
+                    Debug.Log("======================");
+                }
             }
         }
         

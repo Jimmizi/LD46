@@ -62,3 +62,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 380b501e5ac5b947595defd58a5ff2f6, type: 2}
   - {fileID: 11400000, guid: c559219af9b21ead598f3d062116eb6d, type: 2}
   - {fileID: 11400000, guid: 704e614bc4a205271acc1804935b955c, type: 2}
+  GroundLevelTiles:
+  - {fileID: 11400000, guid: be4a1bd9c22687425856205496da3bef, type: 2}
+  - {fileID: 11400000, guid: d259e54439f8edd928d357f2a8040aff, type: 2}
+  - {fileID: 11400000, guid: 370f9ec1d3da576239258b4b7c549085, type: 2}
+  - {fileID: 11400000, guid: fbafafa8c97d5c95abe29ff7ce8deb4c, type: 2}
+  - {fileID: 11400000, guid: 1e7cad93b454f11a0a99367b15aa50ae, type: 2}
+  - {fileID: 11400000, guid: 6e16b73f669937aca8e79d00cd6c7ffb, type: 2}
+  - {fileID: 11400000, guid: 6d47eb65894f35630bf6d050933ee4db, type: 2}
+  - {fileID: 11400000, guid: 1c1ad0ad33442a7099588dbc447b3a37, type: 2}
+  - {fileID: 11400000, guid: 66d72bd0b5a7ad09e9be607df3a96e82, type: 2}
+  - {fileID: 11400000, guid: d04cdd5b332f303eeb3c1672edd1ae5a, type: 2}
+  - {fileID: 11400000, guid: b6def9d1c331e557f92cd1317a2e4814, type: 2}
+  - {fileID: 11400000, guid: 408a8c0cdc08626c8aab882414c09caa, type: 2}
+  - {fileID: 11400000, guid: 666aa2dec1ea13e46865350b0f3d24e2, type: 2}
+  - {fileID: 11400000, guid: 464eedb1575bdc336bfe22cbdcbec697, type: 2}
+  - {fileID: 11400000, guid: 2157ffbbaddc6a6078612ac754bbc672, type: 2}
+  - {fileID: 11400000, guid: d959ae7aeed8ebcf7927ff7f2f665a3d, type: 2}
+  - {fileID: 11400000, guid: 38a256ac02cabe460a7470ca5796b5e8, type: 2}
+  PrintDebug: 1

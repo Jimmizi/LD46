@@ -53,6 +53,11 @@ public class PlayableGrid : MonoBehaviour
     public Gradient influenceMapGradient;
 
     public Vector2 Spacing = new Vector2(8f, 8f);
+    
+    /// <summary>
+    /// Boolean map of collisions with terrain (written by TerrainGenerator)
+    /// </summary>
+    public bool[,] TerrainCollisions;  
 
     public Vector2 GetPlayerSpawnPosition()
     {
@@ -231,6 +236,7 @@ public class PlayableGrid : MonoBehaviour
     void Start()
     {
         presenceInfluenceMap = new float[Columns, Rows];
+        TerrainCollisions = new bool[Columns, Rows];
     }
 
     private bool IsRaycastSuccessfulBetweenPoints(Vector2 source, Vector2 target)
@@ -410,6 +416,13 @@ public class PlayableGrid : MonoBehaviour
 
                     string floatString = presenceInfluenceMap[x, y].ToString("0.00");
                     Handles.Label(new Vector3(posX - (GetTileScale/2) + 0.05f, posY + (GetTileScale/2) - 0.05f), $"{floatString}");
+                }
+
+                if (TerrainCollisions != null) {
+                    if (TerrainCollisions[x, y]) {
+                        Gizmos.DrawCube(new Vector3(posX, posY), new Vector3(GetTileScale * 0.5f, GetTileScale * 0.5f, GetTileScale));
+
+                    }
                 }
 
             }
