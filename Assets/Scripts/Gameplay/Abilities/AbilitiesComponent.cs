@@ -70,7 +70,8 @@ public class AbilitiesComponent : MonoBehaviour
     /// <returns> The the ability sprite </returns>
     public Sprite GetAbilitySprite(int slotIndex)
     {
-        return GetAbility(slotIndex)?.sprite;
+        AbilityBase ability = GetAbility(slotIndex);
+        return ability != null ? ability.sprite : sprites.Empty;
     }
 
     /// <returns> The the ability name </returns>

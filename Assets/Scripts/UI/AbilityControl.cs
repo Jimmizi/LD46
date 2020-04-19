@@ -41,7 +41,7 @@ public class AbilityControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        cooldownImage.material = Instantiate(cooldownImage.material);
     }
 
     // Update is called once per frame
@@ -58,7 +58,8 @@ public class AbilityControl : MonoBehaviour
         if(cooldownImage && cooldownImage.material)
         {
             float cooldown = abilitiesComponent.GetCooldownProgress(slotIndex);
-            cooldownImage.material.SetFloat("Cooldown", cooldown);
+            cooldownImage.material.SetFloat("_Cooldown", 1-cooldown);
+            cooldownImage.SetMaterialDirty();
         }
     }
 }
