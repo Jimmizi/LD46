@@ -7,22 +7,39 @@ public class AbilitiesComponent : MonoBehaviour
     public AbilitySpritesDB sprites;
     public AbilityResources resources;
 
+    public TargetObject DirectionTargetPrefab;
+    public TargetObject PositionTargetPrefab;
+    public TargetObject ObjectTargetPrefab;
+
     /// <summary> Activates the ability at the given slot </summary>
     /// <returns> The required targeting of the ability </returns>
-    public AbilityTargeting ActivateAbility(int slotIndex)
+    public void ActivateAbility(int slotIndex)
     {
         abilityHeldTimer[slotIndex] = 0;
 
         if (!IsValidSlotIndex(slotIndex))
         {
-            return AbilityTargeting.None;
+            return;
         }
 
         AbilitySlot slot = abilitySlots[slotIndex];
         slot.Activate();
-        currentTargetingSlot = slot.isTargeting ? slot : null;
 
-        return slot.targeting;
+        switch(slot.targeting)
+        {
+            case AbilityTargeting.Line:
+            case AbilityTargeting.Cone:
+                slot.targetObject = CreateDirectionTarget();
+                break;
+
+            case AbilityTargeting.Area:
+                slot.targetObject = CreatePositionTarget();
+                break;
+
+            case AbilityTargeting.Unit:
+                slot.targetObject = CreateObjectTarget();
+                break;
+        }
     }
 
     public void ShuffleAbility(int slotIndex)
@@ -38,30 +55,6 @@ public class AbilitiesComponent : MonoBehaviour
         slot.ClearForShuffle();
     }
     
-    /// <returns> The required targeting of the currently active ability </returns>
-    public AbilityTargeting GetCurrentTargeting()
-    {
-        return (currentTargetingSlot != null) ? currentTargetingSlot.targeting : AbilityTargeting.None;
-    }
-
-    /// <summary> Sets the target for the current active ability (as direction or area) </summary>
-    public void SetTarget(Vector2Int target)
-    {
-        if(currentTargetingSlot != null)
-        {
-            currentTargetingSlot.SetTarget(target);
-        }
-    }
-
-    /// <summary> Sets the target for the current active ability (as object) </summary>
-    public void SetTarget(GameObject target)
-    {
-        if (currentTargetingSlot != null)
-        {
-            currentTargetingSlot.SetTarget(target);
-        }
-    }
-
     /// <summary> Draws a random ability from the deck into the given slot </summary>
     public bool DrawAbility(int slotIndex)
     {
@@ -220,12 +213,25 @@ public class AbilitiesComponent : MonoBehaviour
         return GetSlot(slotIndex)?.ability;
     }
 
-    public const int NUM_SLOTS = 4;
+    TargetObject CreateDirectionTarget()
+    {
+        return DirectionTargetPrefab?.CreateFor(gameObject);
+    }
+
+    TargetObject CreatePositionTarget()
+    {
+        return PositionTargetPrefab?.CreateFor(gameObject);
+    }
+
+    TargetObject CreateObjectTarget()
+    {
+        return ObjectTargetPrefab?.CreateFor(gameObject);
+    }
+
+    private const int NUM_SLOTS = 4;
 
     AbilitySlot[] abilitySlots      = new AbilitySlot[NUM_SLOTS];
     float[] abilityHeldTimer        = new float[NUM_SLOTS];
     bool[] abilityNeedsKeyLift      = new bool[NUM_SLOTS];
     AbilityDeck abilityDeck         = new AbilityDeck();
-
-    AbilitySlot currentTargetingSlot = null;
 }

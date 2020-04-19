@@ -72,6 +72,29 @@ public class AbilitySlot
     }
     private AbilityBase _ability;
 
+    public TargetObject targetObject
+    {
+        get
+        {
+            return _targetObject;
+        }
+
+        set
+        {
+            if(_targetObject)
+            {
+                _targetObject.OnTargetReady -= TargetReady;
+                GameObject.Destroy(_targetObject.gameObject);
+            }
+            _targetObject = value;
+            if (_targetObject)
+            {
+                _targetObject.OnTargetReady += TargetReady;
+            }
+        }
+    }
+    private TargetObject _targetObject;
+
     public AbilitySlot(GameObject owner, int index)
     {
         this.owner = owner;
@@ -177,12 +200,15 @@ public class AbilitySlot
         ability = null;
         cooldownTimer = SHUFFLE_COOLDOWN_TIME;
         WasJustShuffled = true;
+        targetObject = null;
     }
 
     public void Clear(bool setOnCooldown)
     {
         ability = null;
         WasJustShuffled = false;
+        targetObject = null;
+        
         if (setOnCooldown)
         {
             cooldownTimer = COOLDOWN_TIME;
@@ -196,6 +222,22 @@ public class AbilitySlot
         if (!ability.Activate(this))
         {
             Clear(true);
+        }
+    }
+
+    private void TargetReady(TargetObject targetObject)
+    {
+        switch(targeting)
+        {
+            case AbilityTargeting.Area:
+            case AbilityTargeting.Cone:
+            case AbilityTargeting.Line:
+                SetTarget(targetObject.GetVector());
+                break;
+
+            case AbilityTargeting.Unit:
+                SetTarget(targetObject.GetUnit());
+                break;
         }
     }
 }
