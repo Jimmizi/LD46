@@ -5,6 +5,7 @@ Shader "UI/CooldownShader"
     Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        _MaskTex ("Alpha Mask", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
 
         _StencilComp ("Stencil Comparison", Float) = 8
@@ -78,7 +79,7 @@ Shader "UI/CooldownShader"
             };
 
             sampler2D _MainTex;
-            sampler2D _MainTex2;
+            sampler2D _MaskTex;
             fixed4 _Color;
             fixed4 _TextureSampleAdd;
             float4 _ClipRect;
@@ -114,8 +115,9 @@ Shader "UI/CooldownShader"
 
                 float2 cart_v = normalize(IN.texcoord.xy - 0.5);
                 float angle = (atan2(cart_v.y, cart_v.x) / PI) * 0.5 + 0.5;
+                float mask_a = tex2D(_MaskTex, IN.texcoord).a;
                 
-                return float4(_Color.rgb, _Color.a * (angle > _Cooldown));
+                return float4(_Color.rgb, _Color.a * (angle > _Cooldown) * mask_a);
             }
         ENDCG
         }
