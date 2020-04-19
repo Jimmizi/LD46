@@ -6,11 +6,11 @@ public class MoveAbility : AbilityBase
 {
     public Vector2Int direction;
 
-    public MoveAbility(string name, string spritePath, AbilityTargeting targeting, int x, int y)
+    public MoveAbility(string name, Sprite sprite, AbilityTargeting targeting, int x, int y)
     {
         this.name = name;
         this.category = AbilityType.Movement;
-        this.sprite = Resources.Load<Sprite>(spritePath);
+        this.sprite = sprite;
         this.targeting = targeting;
         this.direction = new Vector2Int(x,y);
         this.drawWeight = 1.0f;
