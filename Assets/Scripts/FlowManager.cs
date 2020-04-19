@@ -98,14 +98,17 @@ public class FlowManager : MonoBehaviour
     void Start()
     {
         Service.Flow = this;
-        gameStartFadeInGroup.alpha = 1f;
+        //gameStartFadeInGroup.alpha = 1f;
         GameUICanvasGroup.alpha = 0f;
+
+        Service.Storm.SetFull(true);
 
 #if DEBUG && UNITY_EDITOR
         if (SkipTitleScreen)
         {
             GameUICanvasGroup.alpha = 1f;
-            gameStartFadeInGroup.alpha = 0f;
+            //gameStartFadeInGroup.alpha = 0f;
+            Service.Storm.SetVignette(true);
             SetupGameStart();
             return;
         }
@@ -117,7 +120,9 @@ public class FlowManager : MonoBehaviour
 
         // Set up the start of the game and alpha out the title screen fader
         titleScreen.OnTitleFadedOut += (sender, args) => SetupGameStart();
-        StartCoroutine(FadeIntoGameAtStart());
+
+        
+        //StartCoroutine(FadeIntoGameAtStart());
     }
 
     // Update is called once per frame
@@ -141,6 +146,9 @@ public class FlowManager : MonoBehaviour
     private void SetupGameStart()
     {
         endScreenRef = null;
+
+        Service.Storm.SetNextSpeed(1.5f);
+        Service.Storm.SetVignette();
 
         var gameplay = (GameObject)Instantiate(Service.Prefab.GameplayManager);
         var gameplayRef = gameplay.GetComponent<GameplayManager>();

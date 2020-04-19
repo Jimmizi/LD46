@@ -196,9 +196,32 @@ public class RaceCoordinator : MonoBehaviour
         }
     }
 
+    private IEnumerator fadeInGameUI()
+    {
+        while (Service.Flow.GameUICanvasGroup.alpha < 1)
+        {
+            Service.Flow.GameUICanvasGroup.alpha += 2 * Time.deltaTime;
+            yield return null;
+        }
+
+        Service.Flow.GameUICanvasGroup.alpha = 1;
+    }
+
+    private IEnumerator fadeOutGameUI()
+    {
+        while (Service.Flow.GameUICanvasGroup.alpha > 0)
+        {
+            Service.Flow.GameUICanvasGroup.alpha -= 2 * Time.deltaTime;
+            yield return null;
+        }
+
+        Service.Flow.GameUICanvasGroup.alpha = 0;
+    }
+
     void UpdateRaceIntro()
     {
-        Service.Flow.GameUICanvasGroup.alpha = 1;
+        //Service.Flow.GameUICanvasGroup.alpha = 1;
+        StartCoroutine(fadeInGameUI());
 
         GenerateTimerForNextEnemy(true);
         GenerateTimerForNextObstacle(true);
@@ -323,7 +346,7 @@ public class RaceCoordinator : MonoBehaviour
                 }
             }
 
-            Service.Flow.GameUICanvasGroup.alpha = 0;
+            StartCoroutine(fadeOutGameUI());
 
             // Kill everything
             Shutdown();

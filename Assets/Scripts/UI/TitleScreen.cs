@@ -5,13 +5,7 @@ using UnityEngine;
 
 public class TitleScreen : MonoBehaviour
 {
-    public float PlayButtonFadeSpeed;
-    public float BackgroundFadeSpeed;
-    public float TitleFadeSpeed;
-
-    public CanvasGroup PlayButtonGroup;
-    public CanvasGroup BackgroundGroup;
-    public CanvasGroup TitleTextGroup;
+    public CanvasGroup CanvasFade;
 
     public EventHandler OnTitleFadedOut;
     
@@ -22,8 +16,7 @@ public class TitleScreen : MonoBehaviour
     {
         Idle = 0,
 
-        FadingPlayButton,
-        FadingBackground,
+        Fading,
        // FadingTitle, happens with fading background
 
         Destroy
@@ -58,14 +51,8 @@ public class TitleScreen : MonoBehaviour
             stage++;
         }
 
-        if (startGame)
-        {
-            if (!launchedGame)
-            {
-                launchedGame = true;
-                OnTitleFadedOut?.Invoke(this, new EventArgs());
-            }
-        }
+        launchedGame = true;
+        OnTitleFadedOut?.Invoke(this, new EventArgs());
     }
 
     // Update is called once per frame
@@ -79,21 +66,20 @@ public class TitleScreen : MonoBehaviour
                     Play();
                 }
                 break;
-            case Stage.FadingPlayButton:
+            case Stage.Fading:
                 if (!stageLaunchedCoroutine)
                 {
-                    StartCoroutine(fadeOutCanvasGroupEnumerator(PlayButtonGroup, PlayButtonFadeSpeed));
+                    StartCoroutine(fadeOutCanvasGroupEnumerator(CanvasFade, 2));
                 }
                 break;
-            case Stage.FadingBackground:
-                if (!stageLaunchedCoroutine)
-                {
-                    StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, BackgroundFadeSpeed, false, true));
-                    StartCoroutine(fadeOutCanvasGroupEnumerator(TitleTextGroup, TitleFadeSpeed));
-                }
-                break;
+            //case Stage.FadingBackground:
+            //    if (!stageLaunchedCoroutine)
+            //    {
+            //        //StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, BackgroundFadeSpeed, false, true));
+            //        //StartCoroutine(fadeOutCanvasGroupEnumerator(TitleTextGroup, TitleFadeSpeed));
+            //    }
+            //    break;
             case Stage.Destroy:
-
                 if (!launchedGame)
                 {
                     launchedGame = true;

@@ -82,7 +82,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3221885349463679835}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 3221885350225827828}
   - component: {fileID: 3221885350225827831}
   - component: {fileID: 3221885350225827826}
+  - component: {fileID: 807529625616447053}
   m_Layer: 0
   m_Name: TitleIntroCanvas
   m_TagString: Untagged
@@ -290,12 +291,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dede9ece94cfa34a92e80f2e7c402fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayButtonFadeSpeed: 1
-  BackgroundFadeSpeed: 0.5
-  TitleFadeSpeed: 0.25
-  PlayButtonGroup: {fileID: 9206911704915187638}
-  BackgroundGroup: {fileID: 3221885349463679831}
-  TitleTextGroup: {fileID: 3221885349859083930}
+  CanvasFade: {fileID: 807529625616447053}
+--- !u!225 &807529625616447053
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3221885350225827832}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7276876017543177612
 GameObject:
   m_ObjectHideFlags: 0

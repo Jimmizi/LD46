@@ -11,4 +11,5 @@ public static class Service
     public static PlayableGrid Grid = null;
     public static GameplayManager Game = null;
     public static PrefabRegistry Prefab = null;
+    public static StormController Storm = null;
 }

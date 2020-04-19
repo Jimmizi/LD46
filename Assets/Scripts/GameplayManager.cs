@@ -109,9 +109,14 @@ public class GameplayManager : MonoBehaviour
 
     public void FadeInIfBackedOut()
     {
-        if (Fader.alpha >= 1f)
+        //if (Fader.alpha >= 1f)
+        //{
+        //    StartFader(false);
+        //}
+
+        if (Service.Storm.IsFullStorm())
         {
-            StartFader(false);
+            Service.Storm.SetVignette();
         }
     }
 
@@ -119,13 +124,28 @@ public class GameplayManager : MonoBehaviour
     {
         IEnumerator fadeCanvasGroupEnumerator(CanvasGroup group)
         {
-            while (fadeOut ? group.alpha < 1 : group.alpha > 0)
+            //while (fadeOut ? group.alpha < 1 : group.alpha > 0)
+            //{
+            //    group.alpha += (fadeOut ? FadeSpeed : -FadeSpeed) * Time.deltaTime;
+            //    yield return null;
+            //}
+
+            //group.alpha = fadeOut ? 1 : 0;
+
+            if (fadeOut)
             {
-                group.alpha += (fadeOut ? FadeSpeed : -FadeSpeed) * Time.deltaTime;
-                yield return null;
+                Service.Storm.SetFull();
+            }
+            else
+            {
+                Service.Storm.SetVignette();
             }
 
-            group.alpha = fadeOut ? 1 : 0;
+            while (fadeOut && !Service.Storm.IsFullStorm()
+                   || !fadeOut && !Service.Storm.IsVignetteStorm())
+            {
+                yield return null;
+            }
 
             OnFadeCoroutineComplete?.Invoke(this, new EventArgs());
         }

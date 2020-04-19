@@ -419,7 +419,7 @@ PrefabInstance:
     - target: {fileID: 7206540362363216491, guid: 70f37ae6d559608a8b801e82d70a85cf,
         type: 3}
       propertyPath: RoadWidth
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70f37ae6d559608a8b801e82d70a85cf, type: 3}

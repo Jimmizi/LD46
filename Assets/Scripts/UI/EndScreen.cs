@@ -12,7 +12,7 @@ public class EndScreen : MonoBehaviour
     public CanvasGroup EndTextGroup;
 
     private bool launchedFader = false;
-    private bool fadedInBackground = false;
+    private bool fadedOut = false;
 
     public void Awake()
     {
@@ -24,7 +24,11 @@ public class EndScreen : MonoBehaviour
         if (!launchedFader)
         {
             launchedFader = true;
-            StartCoroutine(fadeInBackground(BackgroundGroup));
+
+            Service.Storm.SetFull();
+
+            //StartCoroutine(fadeInBackground(BackgroundGroup));
+            StartCoroutine(fadeOutCanvasGroupEnumerator(Service.Flow.GameUICanvasGroup));
             StartCoroutine(fadeOutCanvasGroupEnumerator(PlayButtonGroup));
             StartCoroutine(fadeOutCanvasGroupEnumerator(EndTextGroup));
         }
@@ -41,13 +45,15 @@ public class EndScreen : MonoBehaviour
         }
     }
 
-    public bool ReadyToFadeBackIn => launchedFader && fadedInBackground;
+    public bool ReadyToFadeBackIn => launchedFader && fadedOut;
 
     public void FadeBackIn()
     {
-        if (launchedFader && fadedInBackground)
+        if (launchedFader && fadedOut && Service.Storm.IsFullStorm())
         {
-            StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, true));
+            Service.End = null;
+            Destroy(this);
+            //StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, true));
         }
     }
 
@@ -61,7 +67,7 @@ public class EndScreen : MonoBehaviour
 
         Debug.Log($"EndScreen:fadeInBackground - Done with fade out for {group.name}.");
         group.alpha = 1;
-        fadedInBackground = true;
+        
     }
 
     private IEnumerator fadeOutCanvasGroupEnumerator(CanvasGroup group, bool destroyOnDone = false)
@@ -80,5 +86,7 @@ public class EndScreen : MonoBehaviour
             Service.End = null;
             Destroy(this);
         }
+
+        fadedOut = true;
     }
 }
