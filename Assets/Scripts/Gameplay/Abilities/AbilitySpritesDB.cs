@@ -11,4 +11,5 @@ public class AbilitySpritesDB : ScriptableObject
     public Sprite MoveForward;
     public Sprite MoveBack;
     public Sprite Heal;
+    public Sprite SpreadShot;
 }
