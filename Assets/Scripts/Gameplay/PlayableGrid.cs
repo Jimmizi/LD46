@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR;
 using Random = UnityEngine.Random;
 
 public class PlayableGrid : MonoBehaviour
@@ -222,6 +224,169 @@ public class PlayableGrid : MonoBehaviour
 
         return bestDistance;
     }
+    
+    public List<Vector2Int> GetPath(Vector2Int origin, Vector2Int destination, bool preferLeastCrowdedPath = false)
+    {
+        List<Vector2Int> finalpath = new List<Vector2Int>();
+        Vector2Int nextLowestScoreTile = new Vector2Int();
+
+        // Tile and Tile Parent
+        List<Vector2Int> openList = new List<Vector2Int>();
+
+        // Tile and Tile Parent
+        List<Vector2Int> closedList = new List<Vector2Int>();
+
+        Dictionary<Vector2Int, float> movementCost = new Dictionary<Vector2Int, float>();
+        Dictionary<Vector2Int, float> scores = new Dictionary<Vector2Int, float>();
+        Dictionary<Vector2Int, Vector2Int> parents = new Dictionary<Vector2Int, Vector2Int>();
+
+        closedList.Add(origin);
+        parents.Add(origin, origin);
+        movementCost.Add(origin, 0);
+
+        Vector2Int GetOpenTileWithLowestScore()
+        {
+            float lowestScore = 99999f;
+            Vector2Int tile = new Vector2Int(-1, -1);
+
+            foreach (var t in openList)
+            {
+                if (scores.ContainsKey(t) && scores[t] < lowestScore)
+                {
+                    lowestScore = scores[t];
+                    tile = t;
+                }
+            }
+
+            return tile;
+        }
+        void CalculateScore(Vector2Int point)
+        {
+            int GetManhattanDistance(Vector2Int a, Vector2Int b)
+            {
+                var posDiff = a - b;
+                posDiff.x = Math.Abs(posDiff.x);
+                posDiff.y = Math.Abs(posDiff.y);
+
+                return posDiff.x + posDiff.y;
+            }
+
+            var distToDestination = GetManhattanDistance(point, destination);
+            scores.Add(point, distToDestination + movementCost[point]);
+        }
+        void AddNeighorsToOpenList(Vector2Int point)
+        {
+            void AddPoint(Vector2Int p)
+            {
+                //If it's in neither list, add p to the open and calculate its score
+                if (openList.Contains(p))
+                {
+                    return;
+                }
+
+                if (closedList.Contains(p))
+                {
+                    return;
+                }
+                
+                //TODO Add collision check
+
+                if (IsAnyActorOnTile(p.x, p.y))
+                {
+                    return;
+                }
+
+                // Add and assign the point as the parent
+                openList.Add(p);
+                parents.Add(p, point);
+
+                // Movement cost is my parents + 1
+                movementCost.Add(p, movementCost[point] + 1);
+
+                CalculateScore(p);
+            }
+
+            if (point.x > 0)
+            {
+                //Add to the left
+                AddPoint(new Vector2Int(point.x - 1, point.y));
+            }
+
+            if (point.x < Columns - 1)
+            {
+                //Add to the right
+                AddPoint(new Vector2Int(point.x + 1, point.y));
+            }
+
+            if (point.y > 0)
+            {
+                //Add below
+                AddPoint(new Vector2Int(point.x, point.y - 1));
+            }
+
+            if (point.y < Rows - 1)
+            {
+                //Add above
+                AddPoint(new Vector2Int(point.x, point.y + 1));
+            }
+        }
+
+        AddNeighorsToOpenList(origin);
+
+        while (nextLowestScoreTile != destination && nextLowestScoreTile != new Vector2Int(-1, -1))
+        {
+            nextLowestScoreTile = GetOpenTileWithLowestScore();
+
+            if (nextLowestScoreTile == destination || nextLowestScoreTile == new Vector2Int(-1, -1))
+            {
+                continue;
+            }
+
+            //Add the tile to the closed list, then remove from the open
+            closedList.Add(nextLowestScoreTile);
+            openList.Remove(nextLowestScoreTile);
+
+            //Add neighbours to the open list for next loop
+            AddNeighorsToOpenList(nextLowestScoreTile);
+        }
+
+        if (nextLowestScoreTile == destination)
+        {
+            finalpath.Add(nextLowestScoreTile);
+            Vector2Int nextParent = parents[nextLowestScoreTile];
+
+            while (nextParent != origin)
+            {
+                finalpath.Add(nextParent);
+                nextParent = parents[nextParent];
+            }
+
+            finalpath.Add(origin);
+            finalpath.Reverse();
+        }
+        
+        return finalpath;
+    }
+
+    public bool IsAnyActorOnTile(int x, int y)
+    {
+        // Use target position as that's where the actor should always be
+
+        foreach (var a in Actors)
+        {
+            if (a.TargetPosition == new Vector2Int(x, y))
+            {
+                return true;
+            }
+        }
+
+        if (PlayerActor && PlayerActor.TargetPosition == new Vector2Int(x, y))
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     void Awake()
     {
@@ -368,6 +533,11 @@ public class PlayableGrid : MonoBehaviour
 
         void AddActorToInfluenceMap(GridActor a)
         {
+            if (a == null)
+            {
+                return;
+            }
+
             var tile = GetWorldTilePosition(a.transform.position);
 
             if (IsTileOnGrid(tile, 0))

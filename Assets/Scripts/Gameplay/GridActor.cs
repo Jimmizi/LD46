@@ -127,6 +127,11 @@ public class GridActor : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        if (Service.Game && !Service.Game.IsRaceInProgress())
+        {
+            return;
+        }
+
         ProcessAngling();
 
         if (!UseLinearMovementSpeed)

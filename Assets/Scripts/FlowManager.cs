@@ -11,6 +11,8 @@ public class FlowManager : MonoBehaviour
     public bool SkipTitleScreen;
 #endif
 
+    public CanvasGroup GameUICanvasGroup;
+
     public float InitialFadeInTime = 1;
 
     /// <summary>
@@ -22,7 +24,7 @@ public class FlowManager : MonoBehaviour
 
     void Awake()
     {
-        
+        Service.Flow = this;
         gameStartFadeInGroup = GetComponentInChildren<CanvasGroup>();
         Assert.IsNotNull(gameStartFadeInGroup, "Flow manager did not find a canvas group component in a child. ERROR.");
     }
@@ -30,11 +32,14 @@ public class FlowManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Service.Flow = this;
         gameStartFadeInGroup.alpha = 1f;
+        GameUICanvasGroup.alpha = 0f;
 
 #if DEBUG && UNITY_EDITOR
         if (SkipTitleScreen)
         {
+            GameUICanvasGroup.alpha = 1f;
             gameStartFadeInGroup.alpha = 0f;
             SetupGameStart();
             return;
@@ -56,7 +61,11 @@ public class FlowManager : MonoBehaviour
         if (endScreenRef && endScreenRef.ReadyToFadeBackIn)
         {
             //Destroy gameplay manager so SetupGameStart can make a new one
+            
+            Service.Game.Shutdown();
             Destroy(Service.Game.gameObject);
+
+            Service.Game = null;
 
             endScreenRef.FadeBackIn();
             SetupGameStart();

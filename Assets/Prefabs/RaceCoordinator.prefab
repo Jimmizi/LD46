@@ -230,12 +230,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugIgnoreRaceTimer: 1
+  DebugStopObstacleSpawning: 1
   DebugSpawnEnemy: 0
   DebugSpawnObstacle: 0
   ObstacleSpawnTimer: 0
-  TimeUntilNextObstacle: 5
+  TimeUntilNextObstacle: 1
   MaxNumberOfObstacles: 4
   CurrentNumberOfObstacles: 0
+  ObstacleList: []
+  NextEnemySpawnLocation: 0
   PlayerGameObject: {fileID: 0}
   PlayerCheckpointGameObject: {fileID: 0}
   CheckpointScoreUi: {fileID: 0}
