@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 public class TerrainGenerator : MonoBehaviour {
     
@@ -12,6 +14,12 @@ public class TerrainGenerator : MonoBehaviour {
     
     public int TerrainWidth = 8;
     public int TerrainLength = 12;
+    
+    /// <summary>
+    /// Road with in number of tiles.
+    /// </summary>
+    public int RoadWidth = 4;
+    
     public int[,] TerrainMap => terrainMap;
 
     private int[,] terrainMap;
@@ -28,12 +36,17 @@ public class TerrainGenerator : MonoBehaviour {
 
         int width = TerrainWidth;
         int height = TerrainLength;
+        int road_width_clamped = (RoadWidth <= 0) ? 1 : RoadWidth;
+        int side_offset = width - road_width_clamped * 2;
+        if (side_offset <= 0) {
+            side_offset = 1;
+        }
         
         terrainMap = new int[height, width];
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (x > 4 && x < 8) {
+                if (x > side_offset && x < (width - side_offset)) {
                     terrainMap[y, x] = 0;
                 } else {
                     terrainMap[y, x] = Random.Range(0, 3);
