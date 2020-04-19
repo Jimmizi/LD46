@@ -112,12 +112,16 @@ public class AbilitySlot
         }
         else
         {
-            DoActivate();            
+            state = State.Active;
+            if (!ability.Activate(this))
+            {
+                Clear(true);
+            }
         }
     }
 
     /// <summary> Sets the target of the ability if it requires a target. </summary>
-    public void SetTarget(Vector2Int Target)
+    public void SetTarget(Vector2 Target)
     {
         if (ability == null)
             return;
@@ -130,7 +134,11 @@ public class AbilitySlot
             case AbilityTargeting.Area:
             case AbilityTargeting.Cone:
             case AbilityTargeting.Line:
-                DoActivate();
+                state = State.Active;
+                if (!ability.Activate(this,Target))
+                {
+                    Clear(true);
+                }
                 break;
         }
     }
@@ -147,7 +155,11 @@ public class AbilitySlot
         switch (ability.targeting)
         {
             case AbilityTargeting.Unit:
-                DoActivate();
+                state = State.Active;
+                if (!ability.Activate(this, Target))
+                {
+                    Clear(true);
+                }
                 break;
         }
     }
@@ -198,15 +210,6 @@ public class AbilitySlot
         if (setOnCooldown)
         {
             cooldownTimer = COOLDOWN_TIME;
-        }
-    }
-
-    private void DoActivate()
-    {
-        state = State.Active;
-        if (!ability.Activate(this))
-        {
-            Clear(true);
         }
     }
 

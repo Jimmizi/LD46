@@ -32,7 +32,7 @@ public class MoveAbility : AbilityBase
         return false;
     }
 
-    public override bool Activate(AbilitySlot userSlot, Vector2Int target)
+    public override bool Activate(AbilitySlot userSlot, Vector2 target)
     {
         Move(userSlot.owner, direction);
         return false;
@@ -44,9 +44,9 @@ public class MoveAbility : AbilityBase
         return false;
     }
 
-    public void Move(GameObject target, Vector2Int direction)
+    public void Move(GameObject target, Vector2 direction)
     {
         var gridActor = target.GetComponentInChildren<GridActor>();
-        gridActor?.MoveInDirection(direction.x, direction.y);
+        gridActor?.MoveInDirection((int)direction.x, (int)direction.y);
     }
 }

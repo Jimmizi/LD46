@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SpreadshotAbility : AbilityBase
 {
-    public static float SPAWN_DELAY = 50;
+    public static float SPAWN_DELAY = 3;
 
     BulletComponent bulletPrefab;
-    float spawnTimer = 50;
-    Vector2Int direction;
+    float spawnTimer = SPAWN_DELAY;
+    Vector2 direction;
 
     public SpreadshotAbility(string name, Sprite sprite, BulletComponent bulletPrefab)
     {
@@ -30,7 +30,7 @@ public class SpreadshotAbility : AbilityBase
         return new SpreadshotAbility(this);
     }
 
-    public override bool Activate(AbilitySlot userSlot, Vector2Int direction)
+    public override bool Activate(AbilitySlot userSlot, Vector2 direction)
     {
         this.spawnTimer = SPAWN_DELAY;
         this.direction = direction;        
@@ -48,6 +48,7 @@ public class SpreadshotAbility : AbilityBase
         Vector3 spawnLocation = userSlot.owner.transform.position;
 
         var bullet = GameObject.Instantiate<BulletComponent>(bulletPrefab, spawnLocation, Quaternion.identity);
+        bullet.SetUser(userSlot.owner);
         bullet.SetDirection(direction);
 
         return false;

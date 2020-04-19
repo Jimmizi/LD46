@@ -33,7 +33,7 @@ public abstract class AbilityBase
 
     /// <summary> Override for positional / directional abilities </summary>
     /// <returns> 'true' if the ability is still active or 'false' otherwise. </returns>
-    public virtual bool Activate(AbilitySlot userSlot, Vector2Int target) { return false; }
+    public virtual bool Activate(AbilitySlot userSlot, Vector2 target) { return false; }
 
     /// <summary> Override for unit targeting abilities </summary>
     /// <returns> 'true' if the ability is still active or 'false' otherwise. </returns>

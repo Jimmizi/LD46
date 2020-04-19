@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class BulletComponent : MonoBehaviour
 {
-    public float speed = 2.0f;
+    public float speed = 10.0f;
     public Vector2 direction;
+    public GameObject user;
 
 
-    public void SetDirection(Vector2Int direction)
+    public void SetDirection(Vector2 direction)
     {
         this.direction = direction;
         this.direction.Normalize();
     }
 
+    public void SetUser(GameObject user)
+    {
+        this.user = user;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var hitHealth = collision.gameObject.GetComponent<HealthComponent>();
-
-        if (hitHealth)
+        if (collision.gameObject != user)
         {
-            hitHealth.Offset(-35);
+            var hitHealth = collision.gameObject.GetComponent<HealthComponent>();
+
+            if (hitHealth)
+            {
+                hitHealth.Offset(-35);
+            }
         }
     }    
 
@@ -29,8 +38,8 @@ public class BulletComponent : MonoBehaviour
     {
         Vector3 pos = transform.position;
 
-        pos.x += direction.x * speed;
-        pos.y += direction.y * speed;
+        pos.x += direction.x * speed * Time.deltaTime;
+        pos.y += direction.y * speed * Time.deltaTime;
 
         transform.position = pos;
     }

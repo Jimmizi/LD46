@@ -31,8 +31,8 @@ public class DirectionTarget : TargetObject
         lineRenderer.SetPosition(1, targetUser.transform.position + direction * renderDistance);
     }
 
-    public override Vector2Int GetVector()
+    public override Vector2 GetVector()
     {
-        return new Vector2Int((int)direction.x, (int)direction.y);
+        return new Vector2(direction.x, direction.y);
     }
 }
