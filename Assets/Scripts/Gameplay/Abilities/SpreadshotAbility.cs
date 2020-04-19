@@ -25,6 +25,11 @@ public class SpreadshotAbility : AbilityBase
         bulletPrefab = other.bulletPrefab;
     }
 
+    public override bool IsIdentical(AbilityBase other)
+    {
+        return other is SpreadshotAbility;
+    }
+
     public override AbilityBase Clone()
     {
         return new SpreadshotAbility(this);

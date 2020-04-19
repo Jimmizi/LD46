@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AbilityDeck
@@ -14,22 +15,129 @@ public class AbilityDeck
         }
     }
 
-    /// <summary> Returns a random ability </summary>
-    public AbilityBase Draw()
+    private float GetAbilityWeightedScore(AbilityBase ability, int actorX, int actorY)
     {
-        float randomWeight = Random.value * combinedWeightTotal;
-        float runningWeight = 0.0f;
+        float score = ability.drawWeight;
+
+        // Movement card scoring depending on actor location
+        if (ability.category == AbilityType.Movement
+            && ability is MoveAbility move)
+        {
+            if (move.direction.x != 0)
+            {
+                //actor on right side of board
+                if (actorX > (Service.Grid.Columns / 2) + 1)
+                {
+                    if (move.direction.x > 0) 
+                    {
+                        // We don't want to go right when on the right side
+                        score /= 3;
+                    }
+                    else
+                    {
+                        // We want to go left while on the right side
+                        score *= 1.5f;
+                    }
+                }
+                //left side of board
+                else if (actorX < (Service.Grid.Columns / 2) - 1)
+                {
+                    if (move.direction.x > 0)
+                    {
+                        // we want to go right while on the left
+                        score *= 1.5f; 
+                    }
+                    else
+                    {
+                        //we don't want to go left while on the left
+                        score /= 3;
+                    }
+                }
+            }
+            else if (move.direction.y != 0)
+            {
+                //actor on top side of board
+                if (actorY > (Service.Grid.Rows / 2) + 1)
+                {
+                    if (move.direction.y > 0)
+                    {
+                        // We don't want to go forward when on the top side
+                        score /= 3;
+                    }
+                    else
+                    {
+                        // We want to go backward while on the top side
+                        score *= 1.5f;
+                    }
+                }
+                //bottom side of board
+                else if (actorY < (Service.Grid.Rows / 2) - 1)
+                {
+                    if (move.direction.y > 0)
+                    {
+                        // we want to go forward while on the bottom
+                        score *= 1.5f;
+                    }
+                    else
+                    {
+                        //we don't want to go backward while on the bottom
+                        score /= 3;
+                    }
+                }
+            }
+        }
+
+        return score;
+    }
+
+    private void CalculatedCombinedWeight(int actorX, int actorY)
+    {
+        combinedWeightTotal = 0;
 
         foreach (AbilityBase ability in abilities)
         {
-            runningWeight += ability.drawWeight;
-            if(runningWeight >= randomWeight)
+            combinedWeightTotal += GetAbilityWeightedScore(ability, actorX, actorY);
+        }
+    }
+
+    /// <summary> Returns a random ability </summary>
+    public AbilityBase Draw(AbilitySlot[] currentAbilities, int actorX, int actorY)
+    {
+        CalculatedCombinedWeight(actorX, actorY);
+
+        float randomWeight = Random.value * combinedWeightTotal;
+        float runningWeight = 0.0f;
+
+        abilities.Shuffle();
+
+        foreach (AbilityBase ability in abilities)
+        {
+            runningWeight += GetAbilityWeightedScore(ability, actorX, actorY);
+
+            // Don't add too many of the same ability
+            int numSameAbility = 0;
+            foreach (var abil in currentAbilities)
+            {
+                if(ability.IsIdentical(abil.ability))
+                {
+                    numSameAbility++;
+                }
+            }
+
+            if (numSameAbility >= 2)
+            {
+                continue;
+            }
+
+            if (runningWeight >= randomWeight)
             {
                 return ability.Clone();
             }
         }
 
-        return null;
+        var firstSideTurn = abilities.First(x => x is MoveAbility mov && mov.direction.x != 0);
+
+        return firstSideTurn.Clone();
     }
 
     private List<AbilityBase> abilities = new List<AbilityBase>();

@@ -45,6 +45,7 @@ public class RaceCoordinator : MonoBehaviour
     }
 
     public bool DebugIgnoreRaceTimer = false;
+    public bool DebugForceCheckpoint = false;
     public bool DebugStopObstacleSpawning;
     public bool DebugStopEnemySpawning;
     public bool DebugSpawnEnemy = false;
@@ -65,6 +66,10 @@ public class RaceCoordinator : MonoBehaviour
 
     [HideInInspector]
     public GameObject PlayerGameObject = null;
+
+    [HideInInspector]
+    public GameObject TerrainGameObject = null;
+
     [HideInInspector]
     public GameObject PlayerCheckpointGameObject = null;
     [HideInInspector]
@@ -96,6 +101,11 @@ public class RaceCoordinator : MonoBehaviour
 
     public void Shutdown()
     {
+        if (TerrainGameObject)
+        {
+            Destroy(TerrainGameObject);
+        }
+
         if (PlayerGameObject)
         {
             Destroy(PlayerGameObject);
@@ -193,6 +203,11 @@ public class RaceCoordinator : MonoBehaviour
         GenerateTimerForNextEnemy(true);
         GenerateTimerForNextObstacle(true);
 
+        if (TerrainGameObject == null)
+        {
+            TerrainGameObject = (GameObject) Instantiate(Service.Prefab.TerrainCollectionPrefab);
+        }
+
         if (PlayerGameObject == null)
         {
             Service.Game.FadeInIfBackedOut();
@@ -253,6 +268,11 @@ public class RaceCoordinator : MonoBehaviour
         if (DebugStopEnemySpawning)
         {
             EnemySpawnTimer = 0;
+        }
+
+        if (DebugForceCheckpoint)
+        {
+            RaceTime = RaceLengthTimer;
         }
 #endif
 
@@ -325,6 +345,7 @@ public class RaceCoordinator : MonoBehaviour
         // Race to outro, move the player off screen
         Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.PlayerActor.TargetPosition.x, Service.Grid.Rows + 4);
         Service.Grid.PlayerActor.LockTargetPosition = true;
+        Service.Grid.PlayerActor.MoveSpeed /= 2;
 
         stage = RaceState.OutroToCheckpoint_Wait;
 
@@ -361,6 +382,14 @@ public class RaceCoordinator : MonoBehaviour
     void SpawnNewObstacle()
     {
         GenerateTimerForNextObstacle();
+
+        for (int i = ObstacleList.Count - 1; i >= 0; i--)
+        {
+            if (ObstacleList[i] == null)
+            {
+                ObstacleList.RemoveAt(i);
+            }
+        }
 
         if (ObstacleList.Count >= Service.Flow.MaxObstacles)
         {

@@ -24,6 +24,8 @@ public abstract class AbilityBase
         drawWeight = other.drawWeight;
     }
 
+    public abstract bool IsIdentical(AbilityBase other);
+
     /// <summary> Creates a clone of this object </summary>
     public abstract AbilityBase Clone();
 

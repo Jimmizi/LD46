@@ -6,6 +6,9 @@ public class MoveAbility : AbilityBase
 {
     public Vector2Int direction;
 
+    public const float VERTICAL_WEIGHT = 0.5f;
+    public const float HORIZONTAL_WEIGHT = 2f;
+
     public MoveAbility(string name, Sprite sprite, AbilityTargeting targeting, int x, int y)
     {
         this.name = name;
@@ -13,12 +16,31 @@ public class MoveAbility : AbilityBase
         this.sprite = sprite;
         this.targeting = targeting;
         this.direction = new Vector2Int(x,y);
+
+        if (x != 0)
+        {
+            this.drawWeight = VERTICAL_WEIGHT;
+        }
+        else if (y != 0)
+        {
+            this.drawWeight = HORIZONTAL_WEIGHT;
+        }
     }
 
     public MoveAbility(MoveAbility other)
         : base(other)
     {
         direction = other.direction;
+    }
+
+    public override bool IsIdentical(AbilityBase other)
+    {
+        if (!(other is MoveAbility move))
+        {
+            return false;
+        }
+
+        return direction == move.direction;
     }
 
     public override AbilityBase Clone()

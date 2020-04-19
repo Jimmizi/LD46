@@ -10,10 +10,6 @@ public class TerrainManager : MonoBehaviour {
     /// </summary>
     public float Speed = 10.0f;
     
-    /// <summary>
-    /// PlayableGrid reference used in conveying terrain collisions
-    /// </summary>
-    public PlayableGrid Grid;
 
     /// <summary>
     /// GameObject holding the generated Tilemap
@@ -28,13 +24,22 @@ public class TerrainManager : MonoBehaviour {
     private float advance = 0.0f;
     private int rowIndex;
     
-    private void Start() {
-        rowIndex = Grid.Rows / 4 + 1;
+    private void Start() 
+    {
+        rowIndex = Service.Grid.Rows / 4 + 1;
     }
     
 
-    void Update () {
-        if (Tilemap != null) {
+    void Update () 
+    {
+        if (Service.Game?.CurrentRace == null 
+            || !Service.Game.CurrentRace.RaceInProgress)
+        {
+            return;
+        }
+
+        if (Tilemap != null) 
+        {
             Tilemap.transform.Translate(Time.deltaTime * Speed * Vector3.down);
         }
 
@@ -44,18 +49,26 @@ public class TerrainManager : MonoBehaviour {
             advance = advance - 1.0f;
             rowIndex++;
 
-            for (int y = 0; y < Grid.Rows; y++) {
-                for (int x = 0; x < Grid.Columns; x++) {
-                    /* TerrainMap is half the size of the actual map */
-                    int ix = ((x - Grid.Columns / 2) + Generator.TerrainWidth) / 2; 
-                    int iy = (y + rowIndex) / 2;
+            if (Service.Grid)
+            {
+                for (int y = 0; y < Service.Grid.Rows; y++)
+                {
+                    for (int x = 0; x < Service.Grid.Columns; x++)
+                    {
+                        /* TerrainMap is half the size of the actual map */
+                        int ix = ((x - Service.Grid.Columns / 2) + Generator.TerrainWidth) / 2;
+                        int iy = (y + rowIndex) / 2;
 
-                    if (ix > 0 && ix < Generator.TerrainWidth &&
-                        iy > 0 && iy < Generator.TerrainLength) {
+                        if (ix > 0 && ix < Generator.TerrainWidth &&
+                            iy > 0 && iy < Generator.TerrainLength)
+                        {
 
-                        Grid.TerrainCollisions[x, y] = Generator.TerrainMap[Generator.TerrainLength - iy, ix] > 0;
-                    } else {
-                        Grid.TerrainCollisions[x, y] = false;
+                            Service.Grid.TerrainCollisions[x, y] = Generator.TerrainMap[Generator.TerrainLength - iy, ix] > 0;
+                        }
+                        else
+                        {
+                            Service.Grid.TerrainCollisions[x, y] = false;
+                        }
                     }
                 }
             }

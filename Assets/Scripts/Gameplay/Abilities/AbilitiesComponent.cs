@@ -68,7 +68,17 @@ public class AbilitiesComponent : MonoBehaviour
         {
             if (slot.ability == null)
             {
-                slot.ability = abilityDeck.Draw();
+                int x = Service.Grid.Columns / 2;
+                int y = Service.Grid.Rows / 2;
+
+                var actorComp = GetComponent<GridActor>();
+                if (actorComp)
+                {
+                    x = actorComp.TargetPosition.x;
+                    y = actorComp.TargetPosition.y;
+                }
+
+                slot.ability = abilityDeck.Draw(abilitySlots, x, y);
                 return true;
             }
         }
@@ -189,6 +199,7 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0));
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
         abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
+
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35));
         abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab));
     }

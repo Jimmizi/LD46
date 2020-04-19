@@ -6,9 +6,9 @@ public class AbilitySlot
 {
     public delegate void SlotEvent(AbilitySlot slot);
 
-    public static float COOLDOWN_TIME = 5.0f;
-    public static float SHUFFLE_COOLDOWN_TIME = 1f;
-    public static float HOLD_TO_SHUFFLE_TIME = 1.5f;
+    public static float COOLDOWN_TIME = 2.5f;
+    public static float SHUFFLE_COOLDOWN_TIME = 0.5f;
+    public static float HOLD_TO_SHUFFLE_TIME = 0.5f;
 
     public enum State
     {

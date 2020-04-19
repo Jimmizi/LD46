@@ -36,6 +36,10 @@ public class PrefabRegistry : MonoBehaviour
     public GameObject ObstacleActor;
 
 
+    [SerializeField]
+    public GameObject TerrainCollectionPrefab;
+
+
     //Checkpoint prefabs
 
     [SerializeField]

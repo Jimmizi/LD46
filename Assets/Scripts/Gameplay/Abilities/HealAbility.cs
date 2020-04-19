@@ -20,6 +20,11 @@ public class HealAbility : AbilityBase
         healAmount = other.healAmount;
     }
 
+    public override bool IsIdentical(AbilityBase other)
+    {
+        return other is HealAbility;
+    }
+
     public override AbilityBase Clone()
     {
         return new HealAbility(this);
