@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugIgnoreRaceTimer: 1
-  DebugStopObstacleSpawning: 0
+  DebugStopObstacleSpawning: 1
   DebugSpawnEnemy: 0
   DebugSpawnObstacle: 0
   ObstacleSpawnTimer: 0

@@ -25,7 +25,7 @@ public class HealthComponent : MonoBehaviour
 
     public GameObject SpawnOnDeath = null;
 
-    public void Offset(float offset)
+    public void Offset(float offset, bool backupCall = false)
     {
         float previousHealth = currentHealth;
 
@@ -46,7 +46,7 @@ public class HealthComponent : MonoBehaviour
             OnHealthChanged?.Invoke(this, currentHealth, previousHealth);
         }
 
-        if (currentHealth <= 0 && previousHealth > 0.0f)
+        if (currentHealth <= 0 && (previousHealth > 0.0f || backupCall))
         {
             OnHealthDepleted?.Invoke(this, currentHealth, previousHealth);
 
@@ -78,6 +78,13 @@ public class HealthComponent : MonoBehaviour
                 Offset(-HealthSubtractAmountPerInterval);
                 healthTimer = 0;
             }
+        }
+
+
+        // Backup
+        if (currentHealth <= 0)
+        {
+            Offset(0);
         }
     }
 

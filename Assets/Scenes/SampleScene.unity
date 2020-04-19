@@ -259,6 +259,151 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1059763485, guid: de10c2aead8ac75359032ee21c342349, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.33191422
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059763485, guid: de10c2aead8ac75359032ee21c342349, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9433096
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059763485, guid: de10c2aead8ac75359032ee21c342349, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -38.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059763485, guid: de10c2aead8ac75359032ee21c342349, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059763485, guid: de10c2aead8ac75359032ee21c342349, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: LowFuelGradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: LowFuelGradient.key1.g
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: LowFuelGradient.key1.b
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].time
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].value
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].inSlope
+      value: 1.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].outSlope
+      value: 1.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].inSlope
+      value: -0.020408213
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].outSlope
+      value: -0.020408213
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[2].time
+      value: 0.98999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[2].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[2].inSlope
+      value: -2.0408163
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: GradientBlendMode.m_Curve.Array.data[2].outSlope
+      value: -2.0408163
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: Under20Percent_GradientDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: Under10Percent_GradientDuration
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: Under5Percent_GradientDuration
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5408554895640119362, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -369,9 +514,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: DriverCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 5408554896800414017, guid: de10c2aead8ac75359032ee21c342349,
+    - target: {fileID: 5408554897077438302, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408554897077438302, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408554897077438302, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -815,21 +970,9 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   Spacing: {x: 0, y: 0}
---- !u!1 &2074240750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5408554895640119374, guid: de10c2aead8ac75359032ee21c342349,
+--- !u!225 &2074240755 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2074240755, guid: de10c2aead8ac75359032ee21c342349,
     type: 3}
   m_PrefabInstance: {fileID: 566004033}
   m_PrefabAsset: {fileID: 0}
---- !u!225 &2074240755
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074240750}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0

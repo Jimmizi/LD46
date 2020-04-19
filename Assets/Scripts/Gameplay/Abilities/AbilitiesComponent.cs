@@ -104,7 +104,7 @@ public class AbilitiesComponent : MonoBehaviour
     {
         foreach (AbilitySlot slot in abilitySlots)
         {
-            slot.Update(Time.deltaTime);
+            slot?.Update(Time.deltaTime);
         }
 
         if (Input.GetButtonUp("Ability1"))
