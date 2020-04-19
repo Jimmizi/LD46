@@ -80,6 +80,7 @@ public class AbilitySlot
             if(_targetObject)
             {
                 _targetObject.OnTargetReady -= TargetReady;
+                GameObject.Destroy(_targetObject.gameObject);
             }
             _targetObject = value;
             if (_targetObject)
@@ -192,15 +193,11 @@ public class AbilitySlot
     public void Clear(bool setOnCooldown)
     {
         ability = null;
+        targetObject = null;
 
         if (setOnCooldown)
         {
             cooldownTimer = COOLDOWN_TIME;
-        }
-
-        if (targetObject)
-        {
-            GameObject.Destroy(targetObject);
         }
     }
 

@@ -4959,6 +4959,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprites: {fileID: 11400000, guid: d5bd959b8aea9a34cbfa14d7d7d74123, type: 2}
   resources: {fileID: 11400000, guid: 5faa3e03f3a063b4d9b213b388d4d237, type: 2}
+  DirectionTargetPrefab: {fileID: 3517761867733946146, guid: 8feb66954eb08cf4eb184de9a981b073,
+    type: 3}
+  PositionTargetPrefab: {fileID: 0}
+  ObjectTargetPrefab: {fileID: 0}
 --- !u!114 &-2057204395311475894
 MonoBehaviour:
   m_ObjectHideFlags: 0
