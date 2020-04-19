@@ -13,6 +13,7 @@ public class AbilityControl : MonoBehaviour
     GameObject _playerGameObject;
     AbilitiesComponent _abilitiesComponent;
     AbilitySlot _abilitySlot;
+    UnityEngine.UI.Button _abilityButton;
 
     GameObject playerGameObject
     {
@@ -60,6 +61,14 @@ public class AbilityControl : MonoBehaviour
             float cooldown = abilitiesComponent.GetCooldownProgress(slotIndex);
             cooldownImage.material.SetFloat("_Cooldown", cooldown);
             cooldownImage.SetMaterialDirty();
+        }
+    }
+
+    public void ActivateAbility()
+    {
+        if(abilitiesComponent)
+        {
+            abilitiesComponent.ActivateAbility(slotIndex);
         }
     }
 }
