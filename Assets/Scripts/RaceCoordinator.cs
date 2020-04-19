@@ -49,11 +49,12 @@ public class RaceCoordinator : MonoBehaviour
     public bool DebugSpawnEnemy = false;
     public bool DebugSpawnObstacle;
 
-    public float ObstacleSpawnTimer = 0;
-    public float TimeUntilNextObstacle = 5;
+    private float ObstacleSpawnTimer = 0;
+    private float TimeUntilNextObstacle = 5;
 
-    public int MaxNumberOfObstacles = 4;
-    public int CurrentNumberOfObstacles;
+    private float EnemySpawnTimer;
+    private float TimeUntilNextEnemy = 5;
+   
 
     public List<GameObject> ObstacleList = new List<GameObject>();
 
@@ -71,8 +72,7 @@ public class RaceCoordinator : MonoBehaviour
     /// <summary>
     /// Length of this part of the race, in seconds
     /// </summary>
-    [HideInInspector]
-    public float RaceLengthTimer = 10;
+    private float RaceLengthTimer = 10;
 
     /// <summary>
     /// Current time of the race
@@ -88,6 +88,9 @@ public class RaceCoordinator : MonoBehaviour
     void Start()
     {
         RaceInProgress = true;
+        RaceLengthTimer = Service.Flow.BaseRaceTimer +
+                          Service.Flow.TimeIncreasePerCheckpoint.Generate(Service.Game.RaceCount - 1);
+        RaceLengthTimer = Mathf.Clamp(RaceLengthTimer, 0, Service.Flow.MaxRaceTime);
     }
 
     public void Shutdown()
@@ -160,9 +163,34 @@ public class RaceCoordinator : MonoBehaviour
         }
     }
 
+    void GenerateTimerForNextEnemy(bool firstRound = false)
+    {
+        TimeUntilNextEnemy = Service.Flow.TimeBetweenEnemySpawns.Generate(Service.Game.RaceCount - 1);
+        TimeUntilNextEnemy += Service.Flow.EnemySpawnTimeChangePerCheckpoint.Generate(Service.Game.RaceCount - 1);
+
+        if (firstRound)
+        {
+            TimeUntilNextEnemy += Service.Flow.FirstRoundEnemySpawnDelay;
+        }
+    }
+
+    void GenerateTimerForNextObstacle(bool firstRound = false)
+    {
+        TimeUntilNextObstacle = Service.Flow.TimeBetweenObstacleSpawns.Generate(Service.Game.RaceCount - 1);
+        TimeUntilNextObstacle += Service.Flow.ObstacleSpawnTimeChangePerCheckpoint.Generate(Service.Game.RaceCount - 1);
+
+        if (firstRound)
+        {
+            TimeUntilNextObstacle += Service.Flow.FirstRoundObstacleSpawnDelay;
+        }
+    }
+
     void UpdateRaceIntro()
     {
         Service.Flow.GameUICanvasGroup.alpha = 1;
+
+        GenerateTimerForNextEnemy(true);
+        GenerateTimerForNextObstacle(true);
 
         if (PlayerGameObject == null)
         {
@@ -319,7 +347,9 @@ public class RaceCoordinator : MonoBehaviour
 
     void SpawnNewObstacle()
     {
-        if (CurrentNumberOfObstacles >= MaxNumberOfObstacles)
+        GenerateTimerForNextObstacle();
+
+        if (ObstacleList.Count >= Service.Flow.MaxObstacles)
         {
             return;
         }
@@ -342,17 +372,17 @@ public class RaceCoordinator : MonoBehaviour
         grid.UseLinearMovementSpeed = true;
         grid.LockTargetPosition = true;
         grid.SelfDestroyOnTargetReached = true;
-
-        CurrentNumberOfObstacles++;
-        grid.OnActorDestroy += (sender, args) =>
-        {
-            CurrentNumberOfObstacles--;
-        };
-
     }
 
     void SpawnNewEnemy(SpawnLocation loc)
     {
+        GenerateTimerForNextEnemy();
+
+        if (Service.Grid.Actors.Count >= Service.Flow.MaxEnemies)
+        {
+            return;
+        }
+
         var gridPosition = new Vector2Int();
         var targetGridPosition = new Vector2Int();
 

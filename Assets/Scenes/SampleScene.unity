@@ -402,7 +402,7 @@ PrefabInstance:
     - target: {fileID: 2891926978697094130, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
       propertyPath: Under5Percent_GradientDuration
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5408554895640119362, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
@@ -701,6 +701,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SkipTitleScreen: 1
   GameUICanvasGroup: {fileID: 2074240755}
+  MaxRaceTime: 180
+  MaxEnemies: 4
+  MaxObstacles: 5
+  BaseRaceTimer: 30
+  TimeIncreasePerCheckpoint:
+    Base: 5
+    Min: 0
+    Max: 6
+    Lowest: 0
+    Highest: 10
+  FirstRoundEnemySpawnDelay: 5
+  FirstRoundObstacleSpawnDelay: 0
+  TimeBetweenEnemySpawns:
+    Base: 15
+    Min: 0
+    Max: 3
+    Lowest: 0
+    Highest: 20
+  EnemySpawnTimeChangePerCheckpoint:
+    Base: -1
+    Min: 0
+    Max: -5
+    Lowest: -10
+    Highest: 0
+  TimeBetweenObstacleSpawns:
+    Base: 5
+    Min: 0
+    Max: 2
+    Lowest: 0
+    Highest: 15
+  ObstacleSpawnTimeChangePerCheckpoint:
+    Base: 0
+    Min: -2
+    Max: 0
+    Lowest: -5
+    Highest: 0
   InitialFadeInTime: 1
 --- !u!4 &1805636659
 Transform:
