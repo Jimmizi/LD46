@@ -398,7 +398,28 @@ public class RaceCoordinator : MonoBehaviour
 
         var gridPosition = new Vector2Int();
 
-        gridPosition.x = Service.Grid.GetRandomHorizontalTile();
+        List<int> availableXPositions = new List<int>();
+
+        for (int x = 0; x < Service.Grid.Columns; x++)
+        {
+            if (Service.Grid.AreSpacesInDirectionFreeFromTerrain(new Vector2Int(x, Service.Grid.Rows - 1),
+                new Vector2Int(0, -1), Service.Grid.Rows))
+            {
+                availableXPositions.Add(x);
+            }
+        }
+
+        if (availableXPositions.Count > 0)
+        {
+            availableXPositions.Shuffle();
+
+            gridPosition.x = availableXPositions[0];
+        }
+        else
+        {
+            gridPosition.x = Service.Grid.GetRandomHorizontalTile();
+        }
+
         gridPosition.y = Service.Grid.Rows + Random.Range(2, 10);
 
         var obstacle = (GameObject)Instantiate(Service.Prefab.ObstacleActor);
@@ -434,18 +455,18 @@ public class RaceCoordinator : MonoBehaviour
         switch (loc)
         {
             case SpawnLocation.Back:
-                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, 0),
-                                        new Vector2Int(Service.Grid.Columns - 1, 1), new Vector2Int(), true);
+                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, 0), new Vector2Int(Service.Grid.Columns - 1, 1),
+                                            new Vector2Int(), new Vector2Int(0, 1), true);
                 break;
             case SpawnLocation.Front:
-                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, Service.Grid.Rows - 2),
-                                        new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows-1), new Vector2Int(), false, true);
+                targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(0, Service.Grid.Rows - 2), new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows-1),
+                                        new Vector2Int(), new Vector2Int(0, -1), false, true);
                 break;
             case SpawnLocation.Sides:
 
                 locSide = Random.Range(0, 2);
                 targetGridPosition = Service.Grid.GetLeastCrowdedTileInRange(new Vector2Int(locSide == 0 ? 0 : Service.Grid.Columns - 2, 0),
-                                        new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows - 1), new Vector2Int(), 
+                                        new Vector2Int(Service.Grid.Columns - 1, Service.Grid.Rows - 1), new Vector2Int(), new Vector2Int(locSide == 0 ? 1 : -1, 0),
                                         false, false, locSide == 0 ? -4 : Service.Grid.Rows + 4);
                 break;
         }

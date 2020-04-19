@@ -67,6 +67,8 @@ public class TerrainManager : MonoBehaviour {
                         int ix = ((x - Service.Grid.Columns / 2) + Generator.TerrainWidth) / 2;
                         int iy = (y + rowIndex) / 2;
 
+                        var data = Generator.TerrainMap[Generator.TerrainLength-1, ix];
+
                         if (ix > 0 && ix < Generator.TerrainWidth &&
                             iy > 0 && iy < Generator.TerrainLength)
                         {

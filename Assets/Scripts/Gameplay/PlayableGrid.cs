@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.XR;
 using Random = UnityEngine.Random;
 
@@ -185,7 +186,7 @@ public class PlayableGrid : MonoBehaviour
     /// <param name="origin">point to raycast from</param>
     /// <param name="originIsDownwards">if true, origin will be changed to be vertically below the grid, so that it checks for a clear entryway onto the grid</param>
     /// <returns>best tile in this range, with clear LOS from origin</returns>
-    public Vector2Int GetLeastCrowdedTileInRange(Vector2Int start, Vector2Int end, Vector2Int origin, bool originIsDownwards = false, bool originIsUpwards = false, int sidewaysOrigin = 0)
+    public Vector2Int GetLeastCrowdedTileInRange(Vector2Int start, Vector2Int end, Vector2Int origin, Vector2Int dir, bool originIsDownwards = false, bool originIsUpwards = false, int sidewaysOrigin = 0)
     {
         Vector2Int bestTileIndex = new Vector2Int(-1, -1);
         Vector2 originWorldPos = GetTileWorldPosition(origin);
@@ -195,6 +196,11 @@ public class PlayableGrid : MonoBehaviour
         {
             for (int y = start.y; y < end.y + 1; y++)
             {
+                if (!AreSpacesInDirectionFreeFromTerrain(new Vector2Int(x, y), dir, 5))
+                {
+                    continue;
+                }
+
                 var tilescore = presenceInfluenceMap[x, y];
 
                 if (x == 0 || x == Columns - 1 || y == 0 || y == Rows - 1)
@@ -425,6 +431,28 @@ public class PlayableGrid : MonoBehaviour
         presenceInfluenceMap = new float[Columns, Rows];
         setupTerrainCollision = true;
         TerrainCollisions = new bool[Columns, Rows];
+    }
+
+    public bool AreSpacesInDirectionFreeFromTerrain(Vector2Int tilePoint, Vector2Int dir, int distance)
+    {
+        Assert.IsFalse(dir.x != 0 && dir.y != 0);
+
+        for (int i = 1; i < distance+1; i++)
+        {
+            var tile = new Vector2Int(tilePoint.x + dir.x * i, tilePoint.y + dir.y * i);
+
+            if (tile.x < 0 || tile.x >= Columns || tile.y < 0 || tile.y >= Rows)
+            {
+                return true;
+            }
+
+            if (TerrainCollisions[tile.x, tile.y])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private bool IsRaycastSuccessfulBetweenPoints(Vector2 source, Vector2 target)

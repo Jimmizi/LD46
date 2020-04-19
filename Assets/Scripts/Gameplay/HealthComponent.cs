@@ -23,6 +23,8 @@ public class HealthComponent : MonoBehaviour
     public event HealthEvent OnHealthRestored;
     public event HealthEvent OnHealthChanged;
 
+    public bool MoveOffscreenOnDeath;
+
     public GameObject SpawnOnDeath = null;
 
     public void Offset(float offset, bool backupCall = false)
@@ -58,6 +60,28 @@ public class HealthComponent : MonoBehaviour
             if (SpawnOnDeath)
             {
                 Instantiate(SpawnOnDeath, transform);
+            }
+
+            if (MoveOffscreenOnDeath)
+            {
+                var grid = GetComponent<GridActor>();
+                var ptfx = GetComponentsInChildren<ParticleSystem>();
+
+                foreach (var ps in ptfx)
+                {
+                    var main = ps.main;
+                    main.simulationSpace = ParticleSystemSimulationSpace.Local;
+                }
+
+
+                if (grid)
+                {
+                    grid.TargetPosition = new Vector2Int(grid.TargetPosition.x, -4);
+                    grid.MoveSpeed = 4;
+                    grid.LockTargetPosition = true;
+                    grid.SelfDestroyOnTargetReached = true;
+                    grid.UseLinearMovementSpeed = true;
+                }
             }
         }
 
