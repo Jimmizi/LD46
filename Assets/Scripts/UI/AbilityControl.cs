@@ -58,7 +58,7 @@ public class AbilityControl : MonoBehaviour
         if(cooldownImage && cooldownImage.material)
         {
             float cooldown = abilitiesComponent.GetCooldownProgress(slotIndex);
-            cooldownImage.material.SetFloat("_Cooldown", 1-cooldown);
+            cooldownImage.material.SetFloat("_Cooldown", cooldown);
             cooldownImage.SetMaterialDirty();
         }
     }

@@ -80,16 +80,16 @@ public class AbilitiesComponent : MonoBehaviour
         return GetAbility(slotIndex)?.name;
     }
 
-    /// <returns> The the ability cooldown progress (from 0 no cooldown; to 1 cooldown started)  </returns>
+    /// <returns> The the ability cooldown progress (from 1 cooldown started; to 1 no cooldown)  </returns>
     public float GetCooldownProgress(int slotIndex)
     {
         var slot = GetSlot(slotIndex);
         if (slot != null)
         {
-            return slot.cooldownTimer / AbilitySlot.COOLDOWN_TIME;
+            return 1.0f - slot.cooldownTimer / AbilitySlot.COOLDOWN_TIME;
         }
 
-        return 0.0f;
+        return 1.0f;
     }
 
     // Start is called before the first frame update
