@@ -32,17 +32,17 @@ public class HealthComponent : MonoBehaviour
 
         if (currentHealth != previousHealth)
         {
-            OnHealthChanged(this, currentHealth, previousHealth);
+            if (OnHealthChanged != null) { OnHealthChanged(this, currentHealth, previousHealth); }
         }
 
         if (currentHealth == 0 && previousHealth > 0.0f)
         {
-            OnHealthDepleted(this, currentHealth, previousHealth);
+            if (OnHealthDepleted != null) { OnHealthDepleted(this, currentHealth, previousHealth); }
         }
 
         if (currentHealth == maxHealth && previousHealth < maxHealth)
         {
-            OnHealthRestored(this, currentHealth, previousHealth);
+            if (OnHealthRestored != null) { OnHealthRestored(this, currentHealth, previousHealth); }
         }
     }
 }

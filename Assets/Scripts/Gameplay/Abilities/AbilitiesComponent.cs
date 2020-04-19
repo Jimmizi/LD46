@@ -5,6 +5,7 @@ using UnityEngine;
 public class AbilitiesComponent : MonoBehaviour
 {
     public AbilitySpritesDB sprites;
+    public AbilityResources resources;
 
     /// <summary> Activates the ability at the given slot </summary>
     /// <returns> The required targeting of the ability </returns>
@@ -149,6 +150,7 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
         abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35));
+        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab));
     }
 
     bool IsValidSlotIndex(int slotIndex)
