@@ -14,7 +14,10 @@ public class OffScreenIndicator : MonoBehaviour {
     private Vector2 indicatorBounds;
     private bool visible = true;
     
-    void Start() {
+    void Start()
+    {
+
+        MainCamera = Camera.main;
         visible = GetComponent<SpriteRenderer>().isVisible;
 
         indicatorBounds.x = Screen.width - ScreenMargin;
@@ -50,6 +53,10 @@ public class OffScreenIndicator : MonoBehaviour {
 
     void OnBecameInvisible() {
         visible = false;
+
+        //When the obstacle is on screen, destroy the indicator component so it doesn't show up
+        //  when the obstacle moves offscreen again
+        Destroy(this);
     }
 
     void OnBecameVisible() {

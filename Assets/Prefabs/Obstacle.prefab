@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5507299787412554234}
   - component: {fileID: 5507299787412554235}
   - component: {fileID: 5507299787412554232}
-  - component: {fileID: 5507299787412554213}
   - component: {fileID: 5320324980530727061}
+  - component: {fileID: 7403131623891099623}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Untagged
@@ -126,19 +126,6 @@ MonoBehaviour:
   UseLinearMovementSpeed: 0
   SelfDestroyOnTargetReached: 0
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
---- !u!114 &5507299787412554213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5507299787412554233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3bfa3b53424ff408d4f1dcd894cb7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableArrowKeyMovement: 1
 --- !u!61 &5320324980530727061
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,3 +152,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &7403131623891099623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11bd0e6f87b56a52c9b436060acc799c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: -7975249404588759376, guid: 925ff912d9590483ba215347199681c8, type: 3}
+  MainCamera: {fileID: 0}
+  ScreenMargin: 10

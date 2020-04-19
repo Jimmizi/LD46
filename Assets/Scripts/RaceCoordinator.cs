@@ -125,6 +125,9 @@ public class RaceCoordinator : MonoBehaviour
 
     void UpdateRaceIntro()
     {
+        var path = Service.Grid.GetPath(new Vector2Int(0, 1),
+            new Vector2Int(3, 0));
+
         if (PlayerGameObject == null)
         {
             Service.Game.FadeInIfBackedOut();
