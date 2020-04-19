@@ -20,15 +20,15 @@ public class DirectionTarget : TargetObject
             direction = GetMouseLocation() - targetUser.transform.position;
             direction.Normalize();
 
-            if(Input.GetMouseButtonDown(0))
+            //if(Input.GetMouseButtonDown(0))
             {
                 isReady = true;
                 OnTargetReady?.Invoke(this);
             }
         }
 
-        lineRenderer.SetPosition(0, targetUser.transform.position);
-        lineRenderer.SetPosition(1, targetUser.transform.position + direction * renderDistance);
+       // lineRenderer.SetPosition(0, targetUser.transform.position);
+       // lineRenderer.SetPosition(1, targetUser.transform.position + direction * renderDistance);
     }
 
     public override Vector2 GetVector()
