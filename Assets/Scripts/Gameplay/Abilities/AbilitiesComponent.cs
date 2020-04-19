@@ -15,6 +15,8 @@ public class AbilitiesComponent : MonoBehaviour
     /// <returns> The required targeting of the ability </returns>
     public void ActivateAbility(int slotIndex)
     {
+        abilityHeldTimer[slotIndex] = 0;
+
         if (!IsValidSlotIndex(slotIndex))
         {
             return;
@@ -38,6 +40,19 @@ public class AbilitiesComponent : MonoBehaviour
                 slot.targetObject = CreateObjectTarget();
                 break;
         }
+    }
+
+    public void ShuffleAbility(int slotIndex)
+    {
+        abilityHeldTimer[slotIndex] = 0;
+
+        if (!IsValidSlotIndex(slotIndex))
+        {
+            return;
+        }
+
+        AbilitySlot slot = abilitySlots[slotIndex];
+        slot.ClearForShuffle();
     }
     
     /// <summary> Draws a random ability from the deck into the given slot </summary>
@@ -80,7 +95,7 @@ public class AbilitiesComponent : MonoBehaviour
         var slot = GetSlot(slotIndex);
         if (slot != null)
         {
-            return 1.0f - slot.cooldownTimer / AbilitySlot.COOLDOWN_TIME;
+            return 1.0f - slot.cooldownTimer / (slot.WasJustShuffled ? AbilitySlot.SHUFFLE_COOLDOWN_TIME : AbilitySlot.COOLDOWN_TIME);
         }
 
         return 1.0f;
@@ -93,32 +108,64 @@ public class AbilitiesComponent : MonoBehaviour
         SetupSlots();
     }
 
+    public static string GetInputKey(int slot)
+    {
+        return $"Ability{slot+1}";
+    }
+
+    public bool NeedsToLiftKey(int slot)
+    {
+        return abilityNeedsKeyLift[slot];
+    }
+
+    void ProcessInputSlotShuffle(int slot)
+    {
+        bool keyDown = Input.GetButton(GetInputKey(slot));
+
+        if (keyDown)
+        {
+            if (!abilityNeedsKeyLift[slot])
+            {
+                abilityHeldTimer[slot] += Time.deltaTime;
+                if (abilityHeldTimer[slot] >= AbilitySlot.HOLD_TO_SHUFFLE_TIME)
+                {
+                    ShuffleAbility(slot);
+                    abilityNeedsKeyLift[slot] = true;
+                }
+            }
+        }
+        else if(abilityNeedsKeyLift[slot])
+        {
+            abilityHeldTimer[slot] = 0;
+            abilityNeedsKeyLift[slot] = false;
+        }
+    }
+
+    void ProcessInputSlot(int slot)
+    {
+        if (!abilityNeedsKeyLift[slot] && Input.GetButtonUp(GetInputKey(slot)))
+        {
+            ActivateAbility(slot);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!CompareTag("Player"))
+        {
+            return;
+        }
+
         foreach (AbilitySlot slot in abilitySlots)
         {
             slot?.Update(Time.deltaTime);
         }
 
-        if (Input.GetButtonUp("Ability1"))
+        for (int i = 0; i < NUM_SLOTS; i++)
         {
-            ActivateAbility(0);
-        }
-
-        if (Input.GetButtonUp("Ability2"))
-        {
-            ActivateAbility(1);
-        }
-
-        if (Input.GetButtonUp("Ability3"))
-        {
-            ActivateAbility(2);
-        }
-
-        if (Input.GetButtonUp("Ability4"))
-        {
-            ActivateAbility(3);
+            ProcessInputSlot(i);
+            ProcessInputSlotShuffle(i);
         }
     }
 
@@ -184,5 +231,7 @@ public class AbilitiesComponent : MonoBehaviour
     private const int NUM_SLOTS = 4;
 
     AbilitySlot[] abilitySlots      = new AbilitySlot[NUM_SLOTS];
+    float[] abilityHeldTimer        = new float[NUM_SLOTS];
+    bool[] abilityNeedsKeyLift      = new bool[NUM_SLOTS];
     AbilityDeck abilityDeck         = new AbilityDeck();
 }
