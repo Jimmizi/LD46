@@ -4771,6 +4771,7 @@ GameObject:
   - component: {fileID: 5507299787412554213}
   - component: {fileID: 5320324980530727061}
   - component: {fileID: -6354305959426344195}
+  - component: {fileID: -2057204395311475894}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4901,6 +4902,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   MoveSpeed: 4
   LockTargetPosition: 0
+  UseLinearMovementSpeed: 0
   SelfDestroyOnTargetReached: 0
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
 --- !u!114 &5507299787412554213
@@ -4955,6 +4957,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: {fileID: 11400000, guid: d5bd959b8aea9a34cbfa14d7d7d74123, type: 2}
+--- !u!114 &-2057204395311475894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e43415d69aefb248bada4c94ee00eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100
 --- !u!1 &7420740137424924189
 GameObject:
   m_ObjectHideFlags: 0

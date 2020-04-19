@@ -148,6 +148,7 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0));
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
         abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
+        abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35));
     }
 
     bool IsValidSlotIndex(int slotIndex)
