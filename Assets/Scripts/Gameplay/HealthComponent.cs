@@ -6,6 +6,7 @@ public class HealthComponent : MonoBehaviour
 {
     public delegate void HealthEvent(HealthComponent healthComponent, float health, float previousHealth);
 
+    public List<ParticleSystem> ParticlesToStopOnDead = new List<ParticleSystem>();
 
     public float maxHealth = 100;
     public float currentHealth = 100;
@@ -32,17 +33,35 @@ public class HealthComponent : MonoBehaviour
 
         if (currentHealth != previousHealth)
         {
-            OnHealthChanged(this, currentHealth, previousHealth);
+            OnHealthChanged?.Invoke(this, currentHealth, previousHealth);
         }
 
-        if (currentHealth == 0 && previousHealth > 0.0f)
+        if (currentHealth <= 0 && previousHealth > 0.0f)
         {
-            OnHealthDepleted(this, currentHealth, previousHealth);
+            OnHealthDepleted?.Invoke(this, currentHealth, previousHealth);
+
+            foreach (var ptfx in ParticlesToStopOnDead)
+            {
+                ptfx.Pause(true);
+            }
         }
 
         if (currentHealth == maxHealth && previousHealth < maxHealth)
         {
-            OnHealthRestored(this, currentHealth, previousHealth);
+            OnHealthRestored?.Invoke(this, currentHealth, previousHealth);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Instadeath")
+        {
+            Offset(-maxHealth);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        
     }
 }

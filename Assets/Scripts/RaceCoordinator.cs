@@ -55,6 +55,7 @@ public class RaceCoordinator : MonoBehaviour
     public int MaxNumberOfObstacles = 4;
     public int CurrentNumberOfObstacles;
 
+    public List<GameObject> ObstacleList = new List<GameObject>();
 
     public SpawnLocation NextEnemySpawnLocation;
 
@@ -80,12 +81,51 @@ public class RaceCoordinator : MonoBehaviour
     public float RaceTime;
 
     [HideInInspector]
-    public bool RaceInProgress;
+    public bool RaceInProgress = true;
 
     private RaceState stage = RaceState.IntroToRace;
 
+    void Start()
+    {
+        RaceInProgress = true;
+    }
+
+    public void Shutdown()
+    {
+        if (PlayerGameObject)
+        {
+            Destroy(PlayerGameObject);
+        }
+
+        foreach (var ob in ObstacleList)
+        {
+            if (ob)
+            {
+                Destroy(ob);
+            }
+        }
+
+        ObstacleList.Clear();
+
+        foreach (var e in Service.Grid.Actors)
+        {
+            if (e)
+            {
+                Destroy(e.gameObject);
+            }
+        }
+
+        Service.Grid.Actors.Clear();
+        Service.Grid.PlayerActor = null;
+    }
+
     public void Update()
     {
+        if (!RaceInProgress)
+        {
+            return;
+        }
+
         switch (stage)
         {
             //Creates the player and brings them into the scene
@@ -111,11 +151,8 @@ public class RaceCoordinator : MonoBehaviour
             //Finish the race and let the gameplay manager relaunch
             case RaceState.End:
 
-                Destroy(PlayerGameObject.gameObject);
-
-                PlayerGameObject = null;
-                Service.Grid.PlayerActor = null;
-
+                Shutdown();
+                
                 OnRaceFinished?.Invoke(this, new RaceFinishEventArgs(true));
                 stage++;
 
@@ -125,8 +162,7 @@ public class RaceCoordinator : MonoBehaviour
 
     void UpdateRaceIntro()
     {
-        var path = Service.Grid.GetPath(new Vector2Int(0, 1),
-            new Vector2Int(3, 0));
+        Service.Flow.GameUICanvasGroup.alpha = 1;
 
         if (PlayerGameObject == null)
         {
@@ -135,9 +171,16 @@ public class RaceCoordinator : MonoBehaviour
             PlayerGameObject = (GameObject)Instantiate(Service.Prefab.PlayerActor);
             PlayerGameObject.transform.position = Service.Grid.GetPlayerSpawnPosition();
 
+            var healthComp = PlayerGameObject.GetComponent<HealthComponent>();
+
             Service.Grid.PlayerActor = PlayerGameObject.GetComponent<GridActor>();
 
             Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows / 2);
+
+            healthComp.OnHealthDepleted += (component, health, previousHealth) =>
+            {
+                Service.Game.EndGame();
+            };
 
             Assert.IsNotNull(Service.Grid.PlayerActor);
 
@@ -187,6 +230,13 @@ public class RaceCoordinator : MonoBehaviour
         if (RaceTime >= RaceLengthTimer)
         {
             stage = RaceState.OutroToCheckpoint;
+
+            // Destroy collider when about to zoom up into the screen otherwise the player can die
+            var col = PlayerGameObject.GetComponent<BoxCollider2D>();
+            if (col)
+            {
+                Destroy(col);
+            }
         }
     }
 
@@ -212,7 +262,10 @@ public class RaceCoordinator : MonoBehaviour
                 }
             }
 
-            Service.Grid.Actors.Clear();
+            Service.Flow.GameUICanvasGroup.alpha = 0;
+
+            // Kill everything
+            Shutdown();
 
             // ReSharper disable once DelegateSubtraction
             // Move onto the fade into checkpoint stage
@@ -229,7 +282,7 @@ public class RaceCoordinator : MonoBehaviour
         }
 
         // Race to outro, move the player off screen
-        Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows + 4);
+        Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.PlayerActor.TargetPosition.x, Service.Grid.Rows + 4);
         Service.Grid.PlayerActor.LockTargetPosition = true;
 
         stage = RaceState.OutroToCheckpoint_Wait;
@@ -278,6 +331,8 @@ public class RaceCoordinator : MonoBehaviour
 
         var obstacle = (GameObject)Instantiate(Service.Prefab.ObstacleActor);
         obstacle.transform.position = Service.Grid.GetTileWorldPosition(gridPosition);
+
+        ObstacleList.Add(obstacle);
 
         var grid = obstacle.GetComponent<GridActor>();
 
