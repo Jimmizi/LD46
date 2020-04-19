@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
@@ -11,11 +12,20 @@ public class HealthComponent : MonoBehaviour
     public float maxHealth = 100;
     public float currentHealth = 100;
 
+    [Range(0, 50)]
+    public float HealthSubtractAmountPerInterval = 1;
+
+    public float HealthSubtractInterval = 1;
+
+    private float healthTimer;
+
     public event HealthEvent OnHealthDepleted;
     public event HealthEvent OnHealthRestored;
     public event HealthEvent OnHealthChanged;
 
-    public void Offset(float offset)
+    public GameObject SpawnOnDeath = null;
+
+    public void Offset(float offset, bool backupCall = false)
     {
         float previousHealth = currentHealth;
 
@@ -36,7 +46,7 @@ public class HealthComponent : MonoBehaviour
             OnHealthChanged?.Invoke(this, currentHealth, previousHealth);
         }
 
-        if (currentHealth <= 0 && previousHealth > 0.0f)
+        if (currentHealth <= 0 && (previousHealth > 0.0f || backupCall))
         {
             OnHealthDepleted?.Invoke(this, currentHealth, previousHealth);
 
@@ -44,11 +54,37 @@ public class HealthComponent : MonoBehaviour
             {
                 ptfx.Pause(true);
             }
+
+            if (SpawnOnDeath)
+            {
+                Instantiate(SpawnOnDeath, transform);
+            }
         }
 
         if (currentHealth == maxHealth && previousHealth < maxHealth)
         {
             OnHealthRestored?.Invoke(this, currentHealth, previousHealth);
+        }
+    }
+
+    void Update()
+    {
+        if (HealthSubtractInterval > 0)
+        {
+            healthTimer += Time.deltaTime;
+
+            if (healthTimer >= HealthSubtractInterval)
+            {
+                Offset(-HealthSubtractAmountPerInterval);
+                healthTimer = 0;
+            }
+        }
+
+
+        // Backup
+        if (currentHealth <= 0)
+        {
+            Offset(0);
         }
     }
 

@@ -4976,6 +4976,9 @@ MonoBehaviour:
   - {fileID: 6025468586629844329}
   maxHealth: 100
   currentHealth: 100
+  HealthSubtractAmountPerInterval: 1
+  HealthSubtractInterval: 1
+  SpawnOnDeath: {fileID: 0}
 --- !u!50 &-6044040979625218901
 Rigidbody2D:
   serializedVersion: 4

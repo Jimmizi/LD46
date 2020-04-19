@@ -87,8 +87,6 @@ public class GameplayManager : MonoBehaviour
         var raceGo = (GameObject) Instantiate(Service.Prefab.RaceCoordinatorPrefab);
         CurrentRace = raceGo.GetComponent<RaceCoordinator>();
 
-        CurrentRace.RaceLengthTimer = 2.5f;
-
         //If we don't win on finish, end the game. otherwise we'll come back around and create a new race
         CurrentRace.OnRaceFinished += (sender, args) =>
         {
