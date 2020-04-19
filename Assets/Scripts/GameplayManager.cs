@@ -23,18 +23,27 @@ public class GameplayManager : MonoBehaviour
 
     [HideInInspector]
     public int RaceCount { get; private set; } = 0;
-    
+
     void Awake()
     {
+        Debug.Log("Gameplay awake.");
+        Service.Game = this;
+    }
+    void Start()
+    {
+        Debug.Log("Gameplay Start.");
         Service.Game = this;
     }
 
-    void OnDestroy()
+    public void Shutdown()
     {
-        Service.Game = null;
+        Debug.Log("Destroying gameplay.");
+
         if (CurrentRace)
         {
+            CurrentRace.Shutdown();
             Destroy(CurrentRace.gameObject);
+            CurrentRace = null;
         }
     }
 
@@ -50,18 +59,33 @@ public class GameplayManager : MonoBehaviour
         if (DebugEndGame)
         {
             DebugEndGame = false;
-            OnGameFinished?.Invoke(this, new EventArgs());
-            CurrentRace.RaceInProgress = false;
+            EndGame();
         }
 #endif
     }
 
+    public bool IsRaceInProgress()
+    {
+        if (CurrentRace == null)
+        {
+            return false;
+        }
+
+        return CurrentRace.RaceInProgress;
+    }
+
+    public void EndGame()
+    {
+        CurrentRace.RaceInProgress = false;
+        OnGameFinished?.Invoke(this, new EventArgs());
+    }
+
     void MakeNewRace()
     {
+        Debug.Log("Making new race.");
+
         var raceGo = (GameObject) Instantiate(Service.Prefab.RaceCoordinatorPrefab);
         CurrentRace = raceGo.GetComponent<RaceCoordinator>();
-
-        CurrentRace.RaceLengthTimer = 2.5f;
 
         //If we don't win on finish, end the game. otherwise we'll come back around and create a new race
         CurrentRace.OnRaceFinished += (sender, args) =>

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3191792569741960310}
   - component: {fileID: 6990142178788318870}
   - component: {fileID: 8235847284191970015}
+  - component: {fileID: 3924226823969195091}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -182,5 +183,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e43415d69aefb248bada4c94ee00eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParticlesToStopOnDead: []
   maxHealth: 100
   currentHealth: 100
+--- !u!114 &3924226823969195091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4280557ba207ff64ca97dd5e30e397c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites: {fileID: 11400000, guid: d5bd959b8aea9a34cbfa14d7d7d74123, type: 2}
+  resources: {fileID: 11400000, guid: 5faa3e03f3a063b4d9b213b388d4d237, type: 2}

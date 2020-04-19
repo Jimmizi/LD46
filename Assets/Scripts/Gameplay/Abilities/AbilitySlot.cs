@@ -71,7 +71,7 @@ public class AbilitySlot
     public AbilitySlot(GameObject owner, int index)
     {
         this.owner = owner;
-        this.slotIndex = index;
+        this.slotIndex = index;        
     }
 
     /// <summary> Activates the current ability </summary>
