@@ -37,7 +37,7 @@ public class TerrainGenerator : MonoBehaviour {
         int width = TerrainWidth;
         int height = TerrainLength;
         int road_width_clamped = (RoadWidth <= 0) ? 1 : RoadWidth;
-        int side_offset = width - road_width_clamped * 2;
+        int side_offset = (width - road_width_clamped) / 2;
         if (side_offset <= 0) {
             side_offset = 1;
         }
