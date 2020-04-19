@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1acdf6d9e28f8439b6948e2fc4db81, type: 3}
   m_Name: AbilitySpriteDB
   m_EditorClassIdentifier: 
-  Empty: {fileID: 21300000, guid: 949f56c1e026819a0a0378ae524889f4, type: 3}
+  Empty: {fileID: 21300000, guid: e475fb8c716f69847a9c19ccb2c691d9, type: 3}
   MoveLeft: {fileID: 21300000, guid: fc94d6397a9b7f24ebbd18531bc5c91b, type: 3}
   MoveRight: {fileID: 21300000, guid: 6dd5ef7b52dd58f4c9892e8e7bab429a, type: 3}
   MoveForward: {fileID: 21300000, guid: f45b34209b24703468ac03af7e987072, type: 3}
