@@ -13,7 +13,6 @@ public class MoveAbility : AbilityBase
         this.sprite = sprite;
         this.targeting = targeting;
         this.direction = new Vector2Int(x,y);
-        this.drawWeight = 1.0f;
     }
 
     public MoveAbility(MoveAbility other)

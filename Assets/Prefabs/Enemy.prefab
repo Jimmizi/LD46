@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5507299787412554235}
   - component: {fileID: 3191792569741960310}
   - component: {fileID: 6990142178788318870}
+  - component: {fileID: 8235847284191970015}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -140,6 +141,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   MoveSpeed: 4
   LockTargetPosition: 0
+  UseLinearMovementSpeed: 0
   SelfDestroyOnTargetReached: 0
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
 --- !u!61 &6990142178788318870
@@ -168,3 +170,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.72, y: 1.08}
   m_EdgeRadius: 0
+--- !u!114 &8235847284191970015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e43415d69aefb248bada4c94ee00eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100

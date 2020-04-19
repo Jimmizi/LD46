@@ -5,11 +5,11 @@ using UnityEngine;
 
 public abstract class AbilityBase
 {
-    public virtual string name { get; set; }
-    public virtual AbilityType category { get; set; }
-    public virtual AbilityTargeting targeting { get; set; }
-    public virtual Sprite sprite { get; set; }
-    public virtual float drawWeight { get; set; }
+    public string name = "Unknown";
+    public AbilityType category;
+    public AbilityTargeting targeting;
+    public Sprite sprite;
+    public float drawWeight = 1.0f;
 
     /// <summary> Base construct </summary>
     public AbilityBase() { }
