@@ -8,6 +8,12 @@ TextureImporter:
   - first:
       213: 7867767248705219505
     second: LandMine_1
+  - first:
+      213: 2365667041893583796
+    second: LandMine_0
+  - first:
+      213: 181855233452945779
+    second: LandMine_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -110,8 +116,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 15
-        height: 15
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a727163e4dc8cdc0800000000000000
-      internalID: -3618416564793563230
+      spriteID: 4bb8ae804a984d020800000000000000
+      internalID: 2365667041893583796
       vertices: []
       indices: 
       edges: []
@@ -129,10 +135,10 @@ TextureImporter:
       name: LandMine_1
       rect:
         serializedVersion: 2
-        x: 15
+        x: 60
         y: 0
-        width: 15
-        height: 15
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +146,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1bbe682a0acef2d60800000000000000
-      internalID: 7867767248705219505
+      spriteID: 371328e0f54168200800000000000000
+      internalID: 181855233452945779
       vertices: []
       indices: 
       edges: []

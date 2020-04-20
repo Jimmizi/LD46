@@ -85,7 +85,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Turn: 0.013
+    - _Turn: 0.5
     - _UVSec: 0
     - _UseUIAlphaClip: 1
     - _ZWrite: 1

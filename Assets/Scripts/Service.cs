@@ -5,6 +5,7 @@ using UnityEngine;
 
 public static class Service
 {
+    public static DriversUIManager DriveUI = null;
     public static MusicManager Music = null;
     public static SpeedGaugeController Speed = null;
     public static CheckpointCounter Counter = null;

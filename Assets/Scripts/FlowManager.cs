@@ -110,7 +110,7 @@ public class FlowManager : MonoBehaviour
 #if DEBUG && UNITY_EDITOR
         if (SkipTitleScreen)
         {
-            GameUICanvasGroup.alpha = 1f;
+           // GameUICanvasGroup.alpha = 1f;
             //gameStartFadeInGroup.alpha = 0f;
             Service.Storm.SetVignette(true);
             SetupGameStart();
@@ -141,7 +141,11 @@ public class FlowManager : MonoBehaviour
 
             Service.Game = null;
 
-            endScreenRef.FadeBackIn();
+            ScoreController.currentScore = 0;
+
+            //StartCoroutine(FadeGameUIIn());
+
+            endScreenRef.DestroyThis();
             SetupGameStart();
         }
     }
@@ -154,6 +158,8 @@ public class FlowManager : MonoBehaviour
         Service.Storm.SetNextSpeed(1.5f);
         Service.Storm.SetVignette();
 
+       // StartCoroutine(FadeGameUIIn());
+
         var gameplay = (GameObject)Instantiate(Service.Prefab.GameplayManager);
         var gameplayRef = gameplay.GetComponent<GameplayManager>();
 
@@ -164,10 +170,34 @@ public class FlowManager : MonoBehaviour
             var end = (GameObject)Instantiate(Service.Prefab.EndScreen);
             var endScreen = end.GetComponent<EndScreen>();
 
+            StartCoroutine(FadeGameUIOut());
+
             Assert.IsNotNull(endScreen);
 
             endScreenRef = endScreen;
         };
+    }
+
+    IEnumerator FadeGameUIIn()
+    {
+        while (GameUICanvasGroup.alpha < 1)
+        {
+            GameUICanvasGroup.alpha += 2.5f * Time.deltaTime;
+            yield return null;
+        }
+
+        GameUICanvasGroup.alpha = 1;
+    }
+
+    IEnumerator FadeGameUIOut()
+    {
+        while (GameUICanvasGroup.alpha > 0)
+        {
+            GameUICanvasGroup.alpha -= 2.5f * Time.deltaTime;
+            yield return null;
+        }
+
+        GameUICanvasGroup.alpha = 0;
     }
 
     private IEnumerator FadeIntoGameAtStart()

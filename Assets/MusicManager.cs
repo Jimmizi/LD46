@@ -13,9 +13,18 @@ public class MusicManager : MonoBehaviour
     private FMOD.Studio.EventInstance menuMusicInstance;
     private FMOD.Studio.EventInstance gameLoopInstance;
 
+    private bool playingMenuMusic;
+    private bool playingGameMusic;
 
     public void PlayMenuMusic()
     {
+        if (playingMenuMusic)
+        {
+            return;
+        }
+
+        playingMenuMusic = true;
+
         menuMusicInstance = FMODUnity.RuntimeManager.CreateInstance(MenuMusicEvent);
         menuMusicInstance.start();
         menuMusicInstance.setTimelinePosition(22000);
@@ -24,10 +33,18 @@ public class MusicManager : MonoBehaviour
     public void StopMenuMusic()
     {
         menuMusicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        playingMenuMusic = false;
     }
 
     public void PlayGameLoopMusic()
     {
+        if (playingGameMusic)
+        {
+            return;
+        }
+
+        playingGameMusic = true;
+
         gameLoopInstance = FMODUnity.RuntimeManager.CreateInstance(GameMusicEvent);
         gameLoopInstance.start();
         
@@ -36,6 +53,7 @@ public class MusicManager : MonoBehaviour
     public void StopGameLoopMusic()
     {
         gameLoopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        playingGameMusic = false;
     }
 
     void OnApplicationQuit()

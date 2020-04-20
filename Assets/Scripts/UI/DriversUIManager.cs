@@ -24,8 +24,14 @@ public class DriversUIManager : MonoBehaviour {
     public bool LowFuelLightOn => lowFuelLightOn;
     public bool EngineFaultLightOn => engineFaultLightOn;
 
-    void Start() {
-        
+    void Start()
+    {
+        Service.DriveUI = this;
+    }
+
+    void Awake()
+    {
+        Service.DriveUI = this;
     }
 
     void Update() {
