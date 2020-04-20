@@ -106,6 +106,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d2fafb91845cc20df963ce02ee28d8cf, type: 2}
   PrintDebug: 1
   DiagonalTileProbability: 0.2
+  PropTileProbability: 0.6
+  TwoTilePropTileProbability: 0.1
   TerrainWidth: 8
   TerrainLength: 12
   RoadWidth: 4
