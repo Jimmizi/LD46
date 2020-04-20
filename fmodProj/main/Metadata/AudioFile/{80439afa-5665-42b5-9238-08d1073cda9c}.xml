@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.00.00">
-	<object class="AudioFile" id="{08aae55b-f81b-467e-b512-f4c84755d12d}">
+	<object class="AudioFile" id="{80439afa-5665-42b5-9238-08d1073cda9c}">
 		<property name="assetPath">
-			<value>skid4.wav</value>
+			<value>gunshot2.wav</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>48</value>
+			<value>96</value>
 		</property>
 		<property name="channelCount">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<property name="length">
-			<value>0.57691666666666663</value>
+			<value>0.38979166666666665</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{4f6e909b-de64-4def-8421-38c5bc317805}</destination>

@@ -5,7 +5,7 @@
 			<value>skid</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{7e3abef7-90ef-46e2-9529-44c537d44727}</destination>
@@ -92,11 +92,13 @@
 		<property name="length">
 			<value>0.66393749999999996</value>
 		</property>
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{62c8563c-8e44-469f-8259-70c3c3e7bfe3}</destination>
 			<destination>{42833bad-42a4-4b95-9623-278081add577}</destination>
 			<destination>{5e6408a2-3f83-492d-9c27-da6f576df693}</destination>
-			<destination>{b5a49325-dceb-4bf3-8b1d-0cf79d3df75c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b2a9f536-433f-42c0-bd4f-1aaf04b44782}">
@@ -145,11 +147,6 @@
 		</property>
 		<relationship name="audioFile">
 			<destination>{730d2d8d-3ff7-4e5a-b253-d00d3887228d}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{b5a49325-dceb-4bf3-8b1d-0cf79d3df75c}">
-		<relationship name="audioFile">
-			<destination>{08aae55b-f81b-467e-b512-f4c84755d12d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{de560bb8-251c-42bc-adf7-06cd331c15eb}">

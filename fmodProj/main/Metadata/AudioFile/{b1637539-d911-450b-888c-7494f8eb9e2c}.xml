@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{b1637539-d911-450b-888c-7494f8eb9e2c}">
+		<property name="assetPath">
+			<value>metal_click2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.22564583333333332</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4f6e909b-de64-4def-8421-38c5bc317805}</destination>
+		</relationship>
+	</object>
+</objects>
