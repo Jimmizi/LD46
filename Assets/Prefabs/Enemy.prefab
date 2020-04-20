@@ -235,6 +235,8 @@ MonoBehaviour:
   PositionTargetPrefab: {fileID: 0}
   ObjectTargetPrefab: {fileID: 1694247210809019126, guid: f2c754e4ea677094fa0b4de2f9ca02f8,
     type: 3}
+  FuelRefilledFxPrefab: {fileID: 6986247292224126219, guid: 459ae7cafe8b7c649a73544269ab88da,
+    type: 3}
   ImmediateAbilitiesOnStart: 1
 --- !u!50 &8487711120022096918
 Rigidbody2D:

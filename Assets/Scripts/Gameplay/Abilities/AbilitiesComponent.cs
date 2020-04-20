@@ -11,6 +11,8 @@ public class AbilitiesComponent : MonoBehaviour
     public TargetObject PositionTargetPrefab;
     public TargetObject ObjectTargetPrefab;
 
+    public GameObject FuelRefilledFxPrefab;
+
     /// <summary>
     /// Removes the cooldown from abilities when the actor spawns, giving them immediate access
     /// </summary>
@@ -28,8 +30,15 @@ public class AbilitiesComponent : MonoBehaviour
         }
 
         AbilitySlot slot = abilitySlots[slotIndex];
-        slot.Activate();
 
+        switch (slot.ability)
+        {
+            case HealAbility heal:
+                Instantiate(FuelRefilledFxPrefab, slot.owner.transform);
+                break;
+        }
+
+        slot.Activate();
 
         switch(slot.targeting)
         {

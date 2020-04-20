@@ -4996,6 +4996,8 @@ MonoBehaviour:
     type: 3}
   PositionTargetPrefab: {fileID: 0}
   ObjectTargetPrefab: {fileID: 0}
+  FuelRefilledFxPrefab: {fileID: 6986247292224126219, guid: 459ae7cafe8b7c649a73544269ab88da,
+    type: 3}
   ImmediateAbilitiesOnStart: 0
 --- !u!114 &-2057204395311475894
 MonoBehaviour:
