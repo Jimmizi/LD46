@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d094f0c45e5a78419fdb176fc98c254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipTitleScreen: 1
+  SkipTitleScreen: 0
   GameUICanvasGroup: {fileID: 2074240755}
   MaxRaceTime: 180
   MaxEnemies: 4
