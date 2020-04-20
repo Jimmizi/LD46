@@ -114,8 +114,11 @@ public class AbilitiesComponent : MonoBehaviour
 
                         return "";
                     }
-                    
-                    Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
+
+                    if (Service.AbilityPost)
+                    {
+                        Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
+                    }
                 }
 
                 return true;
@@ -244,10 +247,11 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
-        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
+        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1),1);
 
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35), 3);
-        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
+        abilityDeck.Add(new ShieldAbility("Shield", sprites.Shield), 3);
+        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);        
     }
 
     bool IsValidSlotIndex(int slotIndex)

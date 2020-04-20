@@ -218,6 +218,8 @@ MonoBehaviour:
   MoveOffscreenOnDeath: 1
   SpawnOnDeath: {fileID: 4565659739103515897, guid: 67a3b4cb67cfb5d46a19ffad9187d745,
     type: 3}
+  ShieldFxPrefab: {fileID: -8209335682207287064, guid: 39e4d4e54f0f1e64d8b3c8a223a18993,
+    type: 3}
 --- !u!114 &3924226823969195091
 MonoBehaviour:
   m_ObjectHideFlags: 0
