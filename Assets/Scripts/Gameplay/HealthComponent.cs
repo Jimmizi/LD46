@@ -9,6 +9,8 @@ public class HealthComponent : MonoBehaviour
 
     public List<ParticleSystem> ParticlesToStopOnDead = new List<ParticleSystem>();
 
+    public bool DebugKill;
+
     public float maxHealth = 100;
     public float currentHealth = 100;
 
@@ -59,7 +61,8 @@ public class HealthComponent : MonoBehaviour
 
             if (SpawnOnDeath)
             {
-                Instantiate(SpawnOnDeath, transform);
+                GameObject.Instantiate(SpawnOnDeath, transform);
+                SpawnOnDeath = null;
             }
 
             if (MoveOffscreenOnDeath)
@@ -106,9 +109,10 @@ public class HealthComponent : MonoBehaviour
 
 
         // Backup
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 || DebugKill)
         {
-            Offset(0);
+            DebugKill = false;
+            Offset(-100, true);
         }
     }
 

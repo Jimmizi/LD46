@@ -246,8 +246,18 @@ public class PlayableGrid : MonoBehaviour
     {
         float bestDistance = -1f;
         Vector2 tileWorldPos = GetTileWorldPosition(x, y);
+
+        for (int i = Actors.Count - 1; i >= 0; i--)
+        {
+            if (Actors[i] == null)
+            {
+                Actors.RemoveAt(i);
+            }
+        }
+
         foreach (var a in Actors)
         {
+            if (a == null) continue;
             float dist = Vector3.Distance(tileWorldPos, a.transform.position);
             if (Math.Abs(bestDistance - (-1)) < 0.01f || dist < bestDistance)
             {

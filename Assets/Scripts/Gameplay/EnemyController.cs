@@ -19,6 +19,15 @@ public class EnemyController : GridActor
     new void Start()
     {
         base.Start();
+
+        var health = GetComponent<HealthComponent>();
+        if (health)
+        {
+            health.OnHealthChanged += (component, f, previousHealth) =>
+            {
+                SetJustHitObstacle();
+            };
+        }
     }
 
     // Update is called once per frame

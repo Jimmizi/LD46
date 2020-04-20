@@ -9703,12 +9703,14 @@ MonoBehaviour:
   ParticlesToStopOnDead:
   - {fileID: 7514276549020777003}
   - {fileID: 1395716835337175236}
-  maxHealth: 100
-  currentHealth: 100
+  DebugKill: 0
+  maxHealth: 35
+  currentHealth: 35
   HealthSubtractAmountPerInterval: 0
   HealthSubtractInterval: 0
   MoveOffscreenOnDeath: 1
-  SpawnOnDeath: {fileID: 0}
+  SpawnOnDeath: {fileID: 4565659739103515897, guid: 67a3b4cb67cfb5d46a19ffad9187d745,
+    type: 3}
 --- !u!114 &3924226823969195091
 MonoBehaviour:
   m_ObjectHideFlags: 0

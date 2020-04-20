@@ -4983,7 +4983,8 @@ MonoBehaviour:
   HealthSubtractAmountPerInterval: 1
   HealthSubtractInterval: 1
   MoveOffscreenOnDeath: 0
-  SpawnOnDeath: {fileID: 0}
+  SpawnOnDeath: {fileID: 4565659739103515897, guid: 67a3b4cb67cfb5d46a19ffad9187d745,
+    type: 3}
 --- !u!50 &-6044040979625218901
 Rigidbody2D:
   serializedVersion: 4
