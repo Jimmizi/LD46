@@ -181,7 +181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4621378750511911707}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4621378751743060254}
@@ -564,6 +564,26 @@ PrefabInstance:
       propertyPath: PropsTilemap
       value: 
       objectReference: {fileID: 5659062675977834009}
+    - target: {fileID: 7206540362363216491, guid: 70f37ae6d559608a8b801e82d70a85cf,
+        type: 3}
+      propertyPath: TerrainLength
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206540362363216491, guid: 70f37ae6d559608a8b801e82d70a85cf,
+        type: 3}
+      propertyPath: TerrainWidth
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206540362363216491, guid: 70f37ae6d559608a8b801e82d70a85cf,
+        type: 3}
+      propertyPath: PrintDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206540362363216491, guid: 70f37ae6d559608a8b801e82d70a85cf,
+        type: 3}
+      propertyPath: RoadWidth
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70f37ae6d559608a8b801e82d70a85cf, type: 3}
 --- !u!4 &2603266652935626253 stripped
