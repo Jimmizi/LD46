@@ -22,6 +22,7 @@
         _PixelCountU ("Pixel Count U", float) = 7
 		_PixelCountV ("Pixel Count V", float) = 9
         _Turn ("Dial Turn Factor", Range (0, 1)) = 0.2
+        [MaterialToggle] DiscreteSteps("DiscreteSteps", Float) = 0
     }
     SubShader
     {
@@ -57,6 +58,7 @@
             #pragma fragment frag
             #pragma target 2.0
             #pragma multi_compile _ PIXELSNAP_ON
+            #pragma multi_compile _ DISCRETESTEPS_ON
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
 
@@ -112,7 +114,12 @@
                 float gch = 1.0 / _GridCells;
                 float pixelWidth = 1.0f / _PixelCountU;
 				float pixelHeight = 1.0f / _PixelCountV;
-				float turn = _Turn; //round(_Turn * 100000.0) / 100000.0;				          
+				
+				
+				float turn = _Turn; //round(_Turn * 100000.0) / 100000.0;
+				#ifdef DISCRETESTEPS_ON
+				    turn = floor((turn * 0.9999) * _GridCells) / _GridCells;
+				#endif			          
 				                   
                 float2 uv = float2(i.texcoord.x, i.texcoord.y * gch + turn);
                 	
