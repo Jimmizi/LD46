@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 3}
   RapidBulletPrefab: {fileID: 4736907589465119375, guid: 94be159b9198b58458a37bae9a3bfaff,
     type: 3}
+  NovaBulletPrefab: {fileID: 4736907589465119375, guid: e8e1f44b064c12441901ba74c834b7d3,
+    type: 3}

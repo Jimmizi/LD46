@@ -253,6 +253,7 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new ShieldAbility("Shield", sprites.Shield), 3);
         abilityDeck.Add(new ShootAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, 3, 30, 0.1f, 0.1f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
         abilityDeck.Add(new ShootAbility("Rapid Fire", sprites.RapidFire, resources.RapidBulletPrefab, 12, 0.0f, 0.0f, 0.1f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
+        abilityDeck.Add(new SpiralShootAbility("Nova Shot Blast", sprites.NovaShotBlast, resources.NovaBulletPrefab, 12, 0.0f, 0.0f, 0.05f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
     }
 
     bool IsValidSlotIndex(int slotIndex)

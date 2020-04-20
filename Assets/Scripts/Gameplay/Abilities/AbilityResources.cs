@@ -7,4 +7,5 @@ public class AbilityResources : ScriptableObject
 {
     public BulletComponent BulletPrefab;
     public BulletComponent RapidBulletPrefab;
+    public BulletComponent NovaBulletPrefab;
 }
