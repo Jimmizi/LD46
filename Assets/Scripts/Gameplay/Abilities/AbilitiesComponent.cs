@@ -195,13 +195,13 @@ public class AbilitiesComponent : MonoBehaviour
         // Add abilities
         // abilityDeck.Add( new Ability...() );                
 
-        abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0));
-        abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0));
+        abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
+        abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
         abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
 
-        abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35));
-        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab));
+        abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35), 3);
+        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab), 4);
     }
 
     bool IsValidSlotIndex(int slotIndex)
@@ -239,7 +239,7 @@ public class AbilitiesComponent : MonoBehaviour
         return ObjectTargetPrefab?.CreateFor(gameObject);
     }
 
-    private const int NUM_SLOTS = 4;
+    private const int NUM_SLOTS = 5;
 
     AbilitySlot[] abilitySlots      = new AbilitySlot[NUM_SLOTS];
     float[] abilityHeldTimer        = new float[NUM_SLOTS];

@@ -6,12 +6,15 @@ using UnityEngine;
 public class AbilityDeck
 {
     /// <summary> Adds an ability to the deck </summary>
-    public void Add(AbilityBase newAbility)
+    public void Add(AbilityBase newAbility, int quantity = 1)
     {
         if (newAbility != null)
         {
-            abilities.Add(newAbility);
-            combinedWeightTotal += newAbility.drawWeight;
+            for (int i = 0; i < quantity; i++)
+            {
+                abilities.Add(newAbility);
+                combinedWeightTotal += newAbility.drawWeight;
+            }
         }
     }
 

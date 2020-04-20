@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HealthComponent : MonoBehaviour
 {
@@ -63,6 +64,12 @@ public class HealthComponent : MonoBehaviour
             {
                 GameObject.Instantiate(SpawnOnDeath, transform);
                 SpawnOnDeath = null;
+
+                var animator = GetComponent<Animator>();
+                if (animator)
+                {
+                    Destroy(animator);
+                }
             }
 
             if (MoveOffscreenOnDeath)
@@ -109,11 +116,11 @@ public class HealthComponent : MonoBehaviour
 
 
         // Backup
-        if (currentHealth <= 0 || DebugKill)
-        {
-            DebugKill = false;
-            Offset(-100, true);
-        }
+        //if (currentHealth <= 0 || DebugKill)
+        //{
+        //    DebugKill = false;
+        //    Offset(-100, true);
+        //}
     }
 
     void OnTriggerEnter2D(Collider2D other)

@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748297785}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.283, y: -0.914, z: 0}
+  m_LocalPosition: {x: -0.054, y: -0.208, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5507299787412554234}
@@ -4773,6 +4773,7 @@ GameObject:
   - component: {fileID: -6354305959426344195}
   - component: {fileID: -2057204395311475894}
   - component: {fileID: -6044040979625218901}
+  - component: {fileID: -6555810776764045607}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4789,7 +4790,7 @@ Transform:
   m_GameObject: {fileID: 5507299787412554233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.37, y: 4.77, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 748297786}
   - {fileID: 8257874909615839244}
@@ -4834,8 +4835,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ea75778a6e456d641935d750412b4e89, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -7649987750858483059, guid: 5aee1019886e91545ae80d1463e7231b,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4901,7 +4903,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MoveSpeed: 4
+  MoveSpeed: 3
   LockTargetPosition: 0
   UseLinearMovementSpeed: 0
   SelfDestroyOnTargetReached: 0
@@ -4936,14 +4938,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.72, y: 1.08}
+    oldSize: {x: 0.18, y: 0.27}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.72, y: 1.08}
+  m_Size: {x: 0.18, y: 0.26}
   m_EdgeRadius: 0
 --- !u!114 &-6354305959426344195
 MonoBehaviour:
@@ -4978,6 +4980,7 @@ MonoBehaviour:
   ParticlesToStopOnDead:
   - {fileID: 748297788}
   - {fileID: 6025468586629844329}
+  DebugKill: 0
   maxHealth: 100
   currentHealth: 100
   HealthSubtractAmountPerInterval: 1
@@ -5006,6 +5009,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &-6555810776764045607
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 39e9e406499082044a1bb82a1f3e7dd8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7420740137424924189
 GameObject:
   m_ObjectHideFlags: 0
@@ -5032,7 +5054,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7420740137424924189}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.291, y: -0.874, z: 0}
+  m_LocalPosition: {x: 0.076, y: -0.271, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5507299787412554234}
@@ -5871,7 +5893,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 6
+      scalar: 6.44
       minScalar: 10
       maxCurve:
         serializedVersion: 2
