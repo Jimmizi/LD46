@@ -105,11 +105,11 @@ public class AbilitiesComponent : MonoBehaviour
                     {
                         switch (slot.slotIndex)
                         {
-                            case 0: return "Q";
-                            case 1: return "W";
-                            case 2: return "E";
-                            case 3: return "R";
-                            case 4: return "T";
+                            case 0: return "1";
+                            case 1: return "2";
+                            case 2: return "3";
+                            case 3: return "4";
+                            case 4: return "5";
                         }
 
                         return "";

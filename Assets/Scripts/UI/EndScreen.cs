@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class EndScreen : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string SpacePressedEvent;
+    private FMOD.Studio.EventInstance spacePressInst;
+
     public float FadeInSpeed;
     public float FadeOutSpeed;
 
@@ -42,7 +46,7 @@ public class EndScreen : MonoBehaviour
     {
         while (MainGroup.alpha > 0)
         {
-            MainGroup.alpha -= 2.5f * Time.deltaTime;
+            MainGroup.alpha -= 1f * Time.deltaTime;
             yield return null;
         }
 
@@ -57,6 +61,9 @@ public class EndScreen : MonoBehaviour
     {
         if (!launchedFader)
         {
+            spacePressInst = FMODUnity.RuntimeManager.CreateInstance(SpacePressedEvent);
+            spacePressInst.start();
+
             launchedFader = true;
 
             Service.Storm.SetFull();

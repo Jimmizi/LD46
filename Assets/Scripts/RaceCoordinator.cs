@@ -23,6 +23,10 @@ public class RaceFinishEventArgs : EventArgs
 /// </summary>
 public class RaceCoordinator : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string SpacePressedEvent;
+    private FMOD.Studio.EventInstance spacePressInst;
+
     private enum RaceState
     {
         IntroToRace,
@@ -78,7 +82,7 @@ public class RaceCoordinator : MonoBehaviour
     /// <summary>
     /// Length of this part of the race, in seconds
     /// </summary>
-    private float RaceLengthTimer = 10;
+    public float RaceLengthTimer = 10;
 
     /// <summary>
     /// Current time of the race
@@ -392,6 +396,9 @@ public class RaceCoordinator : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            spacePressInst = FMODUnity.RuntimeManager.CreateInstance(SpacePressedEvent);
+            spacePressInst.start();
+
             stage = RaceState.CheckpointFadeOut;
 
             Service.Game.OnFadeCoroutineComplete += OnFadedOutFromCheckpoint;

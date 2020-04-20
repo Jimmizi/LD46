@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592fd5a4710e0d74ab49639c437d335d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpacePressedEvent: event:/Gameplay/ui_click
   FadeInSpeed: 1
   FadeOutSpeed: 1
   MainGroup: {fileID: 577701508150850449}

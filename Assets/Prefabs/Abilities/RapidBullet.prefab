@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d339976d7349c4293f005003f4c29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShotEvent: event:/Gameplay/gunshot
   speed: 5
   direction: {x: 0, y: 0}
   user: {fileID: 0}

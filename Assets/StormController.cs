@@ -6,6 +6,11 @@ using UnityEngine.Assertions;
 
 public class StormController : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string WindEvent;
+
+    private FMOD.Studio.EventInstance windInst;
+
     private const float VignetteVaule = 0.75f;
     private const float FullValue = 1.0f;
 
@@ -20,6 +25,12 @@ public class StormController : MonoBehaviour
     private float transitionStep;
 
     private Material stormMat;
+
+    public void PlayWind()
+    {
+        windInst = FMODUnity.RuntimeManager.CreateInstance(WindEvent);
+        windInst.start();
+    }
 
     void Awake()
     {
@@ -56,6 +67,11 @@ public class StormController : MonoBehaviour
 
     public void SetFull(bool instant = false)
     {
+        if (!instant)
+        {
+            PlayWind();
+        }
+
         Set(FullValue, instant);
     }
 

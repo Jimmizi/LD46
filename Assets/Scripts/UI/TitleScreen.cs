@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class TitleScreen : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string SpacePressedEvent;
+    private FMOD.Studio.EventInstance spacePressInst;
+
     public CanvasGroup CanvasFade;
 
     public EventHandler OnTitleFadedOut;
@@ -41,6 +45,8 @@ public class TitleScreen : MonoBehaviour
     {
         if (AllowPlay && stage == Stage.Idle)
         {
+            spacePressInst = FMODUnity.RuntimeManager.CreateInstance(SpacePressedEvent);
+            spacePressInst.start();
             stage++;
         }
     }
