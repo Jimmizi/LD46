@@ -1,13 +1,11 @@
-﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-
-Shader "UI/CooldownShader"
+﻿Shader "UI/DialShader"
 {
     Properties
     {
-        [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
         _MaskTex ("Alpha Mask", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
-
+        
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -15,26 +13,26 @@ Shader "UI/CooldownShader"
         _StencilReadMask ("Stencil Read Mask", Float) = 255
 
         _ColorMask ("Color Mask", Float) = 15
-        _Cooldown ("Cooldown Percent [0-1]", Float) = 1.0
-
-        [Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
+        _GridCells ("Texture Grid Cells", Int) = 11
         
         [MaterialToggle] PixelSnap("Pixel snap", Float) = 0
-		_PixelCountU ("Pixel Count U", float) = 100
-		_PixelCountV ("Pixel Count V", float) = 100
+        
+        [Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
+        
+        _PixelCountU ("Pixel Count U", float) = 7
+		_PixelCountV ("Pixel Count V", float) = 9
+        _Turn ("Dial Turn Factor", Range (0, 1)) = 0.2
     }
-
     SubShader
     {
-        Tags
-        {
+        Tags {
             "Queue"="Transparent"
             "IgnoreProjector"="True"
             "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="False"
         }
-
+        
         Stencil
         {
             Ref [_Stencil]
@@ -43,7 +41,7 @@ Shader "UI/CooldownShader"
             ReadMask [_StencilReadMask]
             WriteMask [_StencilWriteMask]
         }
-
+        
         Cull Off
         Lighting Off
         ZWrite Off
@@ -53,8 +51,8 @@ Shader "UI/CooldownShader"
 
         Pass
         {
-            Name "Default"
-        CGPROGRAM
+            Name "Dial"
+            CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.0
@@ -88,13 +86,15 @@ Shader "UI/CooldownShader"
             fixed4 _TextureSampleAdd;
             float4 _ClipRect;
             float4 _MainTex_ST;
-            float _Cooldown;
+            int _GridCells;
+            float _PixelCountU;
+			float _PixelCountV;
+			float _Turn;
             
             static const float PI = 3.141592653589793238462;
            
 
-            v2f vert(appdata_t v)
-            {
+            v2f vert(appdata_t v) {
                 v2f OUT;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
@@ -108,25 +108,27 @@ Shader "UI/CooldownShader"
                 return OUT;
             }
 
-            fixed4 frag(v2f IN) : SV_Target
-            {
-                half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
-
+            fixed4 frag (v2f i) : SV_Target {
+                float gch = 1.0 / _GridCells;
+                float pixelWidth = 1.0f / _PixelCountU;
+				float pixelHeight = 1.0f / _PixelCountV;
+				float turn = _Turn; //round(_Turn * 100000.0) / 100000.0;				          
+				                   
+                float2 uv = float2(i.texcoord.x, i.texcoord.y * gch + turn);
+                	
+                fixed4 col = tex2D(_MainTex, uv);
+                
                 #ifdef UNITY_UI_CLIP_RECT
-                color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
+                col.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
                 #endif
 
                 #ifdef UNITY_UI_ALPHACLIP
-                clip (color.a - 0.001);
+                clip (col.a - 0.001);
                 #endif
-
-                float2 cart_v = normalize(IN.texcoord.xy - 0.5);
-                float angle = (atan2(cart_v.y, cart_v.x) / PI) * 0.5 + 0.5;
-                float mask_a = tex2D(_MaskTex, IN.texcoord).a;
                 
-                return float4(_Color.rgb, _Color.a * (angle > _Cooldown) * mask_a);
+                return col;
             }
-        ENDCG
+            ENDCG
         }
     }
 }
