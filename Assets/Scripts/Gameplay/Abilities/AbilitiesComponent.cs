@@ -115,7 +115,7 @@ public class AbilitiesComponent : MonoBehaviour
                         return "";
                     }
 
-                    if (Service.AbilityPost)
+                    if (Service.AbilityPost != null && slot.ability != null)
                     {
                         Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
                     }

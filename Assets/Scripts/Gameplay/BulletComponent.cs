@@ -9,6 +9,8 @@ public class BulletComponent : MonoBehaviour
     public GameObject user;
     public float FalloffPerSecond = 1;
 
+    public GameObject BulletBreakPrefab;
+
     public float Damage = 10;
 
     private float bulletFalloff;
@@ -33,6 +35,10 @@ public class BulletComponent : MonoBehaviour
             if (hitHealth)
             {
                 hitHealth.Offset(-Damage);
+                var breakGo = Instantiate(BulletBreakPrefab);
+
+                breakGo.transform.position = transform.position;
+
                 Destroy(this.gameObject);
             }
         }

@@ -161,6 +161,11 @@ public class HealthComponent : MonoBehaviour
 
             if (healthTimer >= HealthSubtractInterval)
             {
+                if (CompareTag("Player"))
+                {
+                    Service.Score.AddScore(ScoreController.ScoreType.PerHealthTick);
+                }
+
                 Offset(-HealthSubtractAmountPerInterval);
                 healthTimer = 0;
             }
