@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DialMaterial
+  m_Name: SpeedDialMaterial
   m_Shader: {fileID: 4800000, guid: 0c4e990ee9bc25898bd4e789b9790a67, type: 3}
   m_ShaderKeywords: DISCRETESTEPS_ON PIXELSNAP_ON UNITY_UI_ALPHACLIP
   m_LightmapFlags: 4
@@ -70,7 +70,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GridCells: 12
+    - _GridCells: 14
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -85,7 +85,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Turn: 0.793
+    - _Turn: 0.013
     - _UVSec: 0
     - _UseUIAlphaClip: 1
     - _ZWrite: 1
