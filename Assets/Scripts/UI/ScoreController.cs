@@ -12,16 +12,14 @@ public class ScoreController : MonoBehaviour
         PerHealthTick
     }
 
+    public bool DelayScoreSetting;
+
     public List<DialController> DialControllers;
     [Range(0, 32000)]
     public int DebugSetScore = 0;
     
-    private static int currentScore = 0;
+    public static int currentScore = 0;
 
-    public int CurrentScore
-    {
-        get => currentScore;
-    }
 
     void Awake()
     {
@@ -31,6 +29,21 @@ public class ScoreController : MonoBehaviour
     {
         Service.Score = this;
         Assert.IsNotNull(DialControllers);
+
+        if (!DelayScoreSetting)
+        {
+            SetScore(currentScore);
+        }
+        else
+        {
+            StartCoroutine(DelayInitialScoreSet());
+        }
+    }
+
+    IEnumerator DelayInitialScoreSet()
+    {
+        yield return new WaitForSeconds(1f);
+
         SetScore(currentScore);
     }
 

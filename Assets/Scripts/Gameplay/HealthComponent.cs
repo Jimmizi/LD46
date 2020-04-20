@@ -155,6 +155,11 @@ public class HealthComponent : MonoBehaviour
 
     void Update()
     {
+        if (Service.Game && !Service.Game.IsRaceInProgress())
+        {
+            return;
+        }
+
         if (HealthSubtractInterval > 0)
         {
             healthTimer += Time.deltaTime * GameplayManager.GlobalTimeMod;
@@ -215,6 +220,12 @@ public class HealthComponent : MonoBehaviour
                     {
                         grid.PushDown();
                     }
+                }
+
+                var carSounds = GetComponent<CarSounds>();
+                if (carSounds)
+                {
+                    carSounds.PlayCrash();
                 }
 
                 Offset(-obstacleComp.GetCollisionDamage);

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3924226823969195091}
   - component: {fileID: 8487711120022096918}
   - component: {fileID: 4074325809391671343}
+  - component: {fileID: 5230328258231784764}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -145,6 +146,7 @@ MonoBehaviour:
   MoveSpeed: 3
   LockTargetPosition: 0
   UseLinearMovementSpeed: 0
+  carSounds: {fileID: 5230328258231784764}
   SelfDestroyOnTargetReached: 0
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
   Tune:
@@ -318,3 +320,18 @@ MonoBehaviour:
       type: 3}
     health: 200
     personality: 0
+--- !u!114 &5230328258231784764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507299787412554233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0a3fcaeb84f7c4797b2fdd60f3050c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkidEvent: event:/Cars/skid
+  EngineEvent: event:/Cars/engine
+  CrashEvent: event:/Cars/crash

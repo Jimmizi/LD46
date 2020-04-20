@@ -1124,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d094f0c45e5a78419fdb176fc98c254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipTitleScreen: 0
+  SkipTitleScreen: 1
   GameUICanvasGroup: {fileID: 2074240755}
   MaxRaceTime: 180
   MaxEnemies: 4
@@ -1192,6 +1192,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MenuMusicEvent: event:/Music/menu_music
   GameMusicEvent: event:/Music/gameplay_music
+--- !u!1 &1816843480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5408554896800414017, guid: de10c2aead8ac75359032ee21c342349,
+    type: 3}
+  m_PrefabInstance: {fileID: 566004033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1816843482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816843480}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23796e24150a019ce8d82f0ca894ae0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpeedDialMaterial: {fileID: 2100000, guid: 2338123b8511bcab38d15efa3e488538, type: 2}
+  FuelDialMaterial: {fileID: 2100000, guid: 69b0e453302385872b651e360195a69e, type: 2}
+  TirePressureLight: {fileID: 0}
+  HazardLight: {fileID: 0}
+  LowFuelLight: {fileID: 0}
+  EngineFaultLight: {fileID: 0}
 --- !u!1 &1861562508
 GameObject:
   m_ObjectHideFlags: 0
