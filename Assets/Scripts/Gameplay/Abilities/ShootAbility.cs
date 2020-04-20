@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpreadshotAbility : AbilityBase
+public class ShootAbility : AbilityBase
 {
     public static float SPAWN_DELAY = 0.0f;
 
-    public int NumberOfShots = 3;
+    public int numberOfShots = 3;
+    public float spread = 10;
+    public float shootRate = 0.1f;
+    public float speedVariation = 0.1f;
 
     BulletComponent bulletPrefab;
     float spawnTimer = SPAWN_DELAY;
@@ -15,36 +18,44 @@ public class SpreadshotAbility : AbilityBase
     private float bulletSpawnTimer = 0.1f;
     private int numBulletsToSpawn;
 
-    public SpreadshotAbility(string name, Sprite sprite, BulletComponent bulletPrefab, AbilityTargeting target = AbilityTargeting.Line)
+    public ShootAbility(string name, Sprite sprite, BulletComponent bulletPrefab, int numberOfShots, float spread, float speedVariation, float shootRate,  AbilityTargeting target = AbilityTargeting.Line)
     {
         this.name = name;
         this.sprite = sprite;
         this.bulletPrefab = bulletPrefab;
         this.category = AbilityType.Offensive;
         this.targeting = target;
+        this.numberOfShots = numberOfShots;
+        this.spread = spread;
+        this.shootRate = shootRate;
+        this.speedVariation = speedVariation;
     }
 
-    public SpreadshotAbility(SpreadshotAbility other)
+    public ShootAbility(ShootAbility other)
         : base(other)
     {
         bulletPrefab = other.bulletPrefab;
+        numberOfShots = other.numberOfShots;
+        spread = other.spread;
+        shootRate = other.shootRate;
+        speedVariation = other.speedVariation;
     }
 
     public override bool IsIdentical(AbilityBase other)
     {
-        return other is SpreadshotAbility;
+        return other is ShootAbility;
     }
 
     public override AbilityBase Clone()
     {
-        return new SpreadshotAbility(this);
+        return new ShootAbility(this);
     }
 
     public override bool Activate(AbilitySlot userSlot, Vector2 direction)
     {
         this.spawnTimer = SPAWN_DELAY;
         this.direction = direction;
-        numBulletsToSpawn = NumberOfShots;
+        numBulletsToSpawn = numberOfShots;
         return true;
     }
 
@@ -58,7 +69,7 @@ public class SpreadshotAbility : AbilityBase
         var dist = heading.magnitude;
         this.direction = heading / dist;
 
-        numBulletsToSpawn = NumberOfShots;
+        numBulletsToSpawn = numberOfShots;
         return true;
     }
 
@@ -76,7 +87,7 @@ public class SpreadshotAbility : AbilityBase
 
         if (bulletSpawnTimer < 0)
         {
-            bulletSpawnTimer = 0.1f;
+            bulletSpawnTimer = shootRate;
             numBulletsToSpawn--;
 
             var bullet = GameObject.Instantiate<BulletComponent>(bulletPrefab, spawnLocation, Quaternion.identity);
@@ -84,16 +95,25 @@ public class SpreadshotAbility : AbilityBase
 
             var bulletComp = bullet.GetComponent<BulletComponent>();
 
-            bulletComp.speed += Random.Range(-(bulletComp.speed / 10), (bulletComp.speed / 10));
+            bulletComp.speed *= 1 + Random.Range(-speedVariation, speedVariation);
 
-            var dirPercentageX = direction.x / 10;
-            var dirPercentageY = direction.y / 10;
-            var rndDir = new Vector2(Random.Range(-dirPercentageX, dirPercentageX),
-                Random.Range(-dirPercentageY, dirPercentageY));
+            var newRandomDirection = Rotate(direction, Random.Range(-spread, spread));
 
-            bullet.SetDirection(direction + rndDir);
+            bullet.SetDirection(newRandomDirection);
         }
         
         return numBulletsToSpawn > 0;
+    }
+
+    public static Vector2 Rotate(Vector2 v, float degrees)
+    {
+        float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+
+        float tx = v.x;
+        float ty = v.y;
+        v.x = (cos * tx) - (sin * ty);
+        v.y = (sin * tx) + (cos * ty);
+        return v;
     }
 }

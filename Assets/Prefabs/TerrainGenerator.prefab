@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TerrainTilemap: {fileID: 0}
+  PropsTilemap: {fileID: 0}
   Tiles:
   - {fileID: 11400000, guid: 89cb4981bb74da8d0bd59394cb06b28f, type: 2}
   - {fileID: 11400000, guid: c573f87aada160fbe9588436e4b0688c, type: 2}
@@ -61,15 +62,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 82b02989feb8073ec93ddc59d096d7ac, type: 2}
   - {fileID: 11400000, guid: 380b501e5ac5b947595defd58a5ff2f6, type: 2}
   - {fileID: 11400000, guid: c559219af9b21ead598f3d062116eb6d, type: 2}
-  - {fileID: 11400000, guid: 704e614bc4a205271acc1804935b955c, type: 2}
+  - {fileID: 11400000, guid: 7f0d6ceefb984c99fbdc15e85334fee4, type: 2}
   GroundLevelTiles:
   - {fileID: 11400000, guid: be4a1bd9c22687425856205496da3bef, type: 2}
   - {fileID: 11400000, guid: d259e54439f8edd928d357f2a8040aff, type: 2}
   - {fileID: 11400000, guid: 370f9ec1d3da576239258b4b7c549085, type: 2}
   - {fileID: 11400000, guid: fbafafa8c97d5c95abe29ff7ce8deb4c, type: 2}
+  - {fileID: 11400000, guid: 989c6ca513b988330939fbc846ae5f61, type: 2}
+  - {fileID: 11400000, guid: 565fa8e1b404c33459c26ae5907c8810, type: 2}
   - {fileID: 11400000, guid: 1e7cad93b454f11a0a99367b15aa50ae, type: 2}
-  - {fileID: 11400000, guid: 6e16b73f669937aca8e79d00cd6c7ffb, type: 2}
-  - {fileID: 11400000, guid: 6d47eb65894f35630bf6d050933ee4db, type: 2}
   - {fileID: 11400000, guid: 1c1ad0ad33442a7099588dbc447b3a37, type: 2}
   - {fileID: 11400000, guid: 66d72bd0b5a7ad09e9be607df3a96e82, type: 2}
   - {fileID: 11400000, guid: d04cdd5b332f303eeb3c1672edd1ae5a, type: 2}
@@ -80,4 +81,31 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2157ffbbaddc6a6078612ac754bbc672, type: 2}
   - {fileID: 11400000, guid: d959ae7aeed8ebcf7927ff7f2f665a3d, type: 2}
   - {fileID: 11400000, guid: 38a256ac02cabe460a7470ca5796b5e8, type: 2}
+  DiagonalTiles:
+  - {fileID: 11400000, guid: 6ead73ad50b51b5d9bf75e9d051d5b0f, type: 2}
+  - {fileID: 11400000, guid: 3934870764551eae79d96bd21a2e168b, type: 2}
+  - {fileID: 11400000, guid: b7975fb78b94c5a8d873e989159f8b81, type: 2}
+  - {fileID: 11400000, guid: f7f0af7ee47cb00558daa074148ae4e4, type: 2}
+  PropsTiles:
+  - {fileID: 11400000, guid: db4a459af10af96dc98d1e261cb80959, type: 2}
+  - {fileID: 11400000, guid: 07fd8492b92058c51abb755dde064c18, type: 2}
+  - {fileID: 11400000, guid: b78da2b153911aff393a1a685d2ace24, type: 2}
+  - {fileID: 11400000, guid: eee891524cf933f3ca2de4530f3a7dce, type: 2}
+  - {fileID: 11400000, guid: 33f68e1b402d13da7bba476ea63f5c3c, type: 2}
+  - {fileID: 11400000, guid: 0fc239cb35b89d0adb7d0c60e1c6df5b, type: 2}
+  - {fileID: 11400000, guid: f6bd52a22ff0f5c56a12f4ab3159f603, type: 2}
+  - {fileID: 11400000, guid: 1f314b8bae75d4d8489517fdf7916c56, type: 2}
+  - {fileID: 11400000, guid: 82314d647be0d7d29ab2b2183f463b23, type: 2}
+  - {fileID: 11400000, guid: 337b35c5973dad2fda0dffd0178762d8, type: 2}
+  - {fileID: 11400000, guid: e76295556946a0133b8f9a790dbf40a8, type: 2}
+  - {fileID: 11400000, guid: 1a30a8ae3a6890304b33759766810005, type: 2}
+  TwoTilePropsTiles:
+  - {fileID: 11400000, guid: 9a2320d7a3111451b9597ee96d636a8f, type: 2}
+  - {fileID: 11400000, guid: 0c7de9f113b820b0ab754a563bd92d29, type: 2}
+  - {fileID: 11400000, guid: fdc2351f794a74a06bccb9775cc0fc69, type: 2}
+  - {fileID: 11400000, guid: d2fafb91845cc20df963ce02ee28d8cf, type: 2}
   PrintDebug: 1
+  DiagonalTileProbability: 0.2
+  TerrainWidth: 8
+  TerrainLength: 12
+  RoadWidth: 4
