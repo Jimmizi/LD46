@@ -20,3 +20,4 @@ MonoBehaviour:
   Heal: {fileID: 21300000, guid: 31ea2f7f1d16833418bc14c88f3fd1dd, type: 3}
   Shield: {fileID: 21300000, guid: 5b1b25d2f1558d546a515051a05dab12, type: 3}
   SpreadShot: {fileID: 21300000, guid: cec21c4369e5b2f40907d95b55e1d016, type: 3}
+  RapidFire: {fileID: 21300000, guid: f539f20f092e4cf4ba7f627f09b7427c, type: 3}

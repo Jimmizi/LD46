@@ -6,4 +6,5 @@ using UnityEngine;
 public class AbilityResources : ScriptableObject
 {
     public BulletComponent BulletPrefab;
+    public BulletComponent RapidBulletPrefab;
 }

@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 4736907589465119375, guid: fce43ed09543a5646914655a80d57f98,
     type: 3}
+  RapidBulletPrefab: {fileID: 4736907589465119375, guid: 94be159b9198b58458a37bae9a3bfaff,
+    type: 3}
