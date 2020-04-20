@@ -4757,6 +4757,36 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!1 &549483224621894251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 863510029284504045}
+  m_Layer: 0
+  m_Name: FlameFxPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &863510029284504045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549483224621894251}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.137, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5507299787412554234}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5507299787412554233
 GameObject:
   m_ObjectHideFlags: 0
@@ -4794,6 +4824,7 @@ Transform:
   m_Children:
   - {fileID: 748297786}
   - {fileID: 8257874909615839244}
+  - {fileID: 863510029284504045}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4836,7 +4867,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7649987750858483059, guid: 5aee1019886e91545ae80d1463e7231b,
+  m_Sprite: {fileID: 1098935618530121676, guid: 5c6f170ee4f81474e9e1434af2f45883,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4938,7 +4969,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.18, y: 0.27}
+    oldSize: {x: 0.18, y: 0.28}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -4965,6 +4996,7 @@ MonoBehaviour:
     type: 3}
   PositionTargetPrefab: {fileID: 0}
   ObjectTargetPrefab: {fileID: 0}
+  ImmediateAbilitiesOnStart: 0
 --- !u!114 &-2057204395311475894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5019,7 +5051,7 @@ Animator:
   m_GameObject: {fileID: 5507299787412554233}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 39e9e406499082044a1bb82a1f3e7dd8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 017e39dc573a0e74cbd5afa08f5d31ae, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

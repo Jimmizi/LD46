@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -11,6 +12,9 @@ public class ObstaclePicker : MonoBehaviour
     {
         [SerializeField]
         public Sprite sprite;
+
+        [SerializeField]
+        public AnimatorController controller;
 
         [SerializeField]
         public int damageOnCollision;
@@ -29,6 +33,12 @@ public class ObstaclePicker : MonoBehaviour
         Obstacles.Shuffle();
 
         GetComponent<SpriteRenderer>().sprite = Obstacles[0].sprite;
+
+        if (Obstacles[0].controller)
+        {
+            var anim = gameObject.AddComponent<Animator>();
+            anim.runtimeAnimatorController = Obstacles[0].controller as RuntimeAnimatorController;
+        }
     }
 
     public float GetCollisionDamage => Obstacles[0].damageOnCollision;

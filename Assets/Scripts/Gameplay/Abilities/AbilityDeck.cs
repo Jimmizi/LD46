@@ -138,9 +138,16 @@ public class AbilityDeck
             }
         }
 
-        var firstSideTurn = abilities.First(x => x is MoveAbility mov && mov.direction.x != 0);
+        foreach (var abil in abilities)
+        {
+            if (abil is MoveAbility mov
+                && mov.direction.x != 0)
+            {
+                return abil.Clone();
+            }
+        }
 
-        return firstSideTurn.Clone();
+        return null;
     }
 
     private List<AbilityBase> abilities = new List<AbilityBase>();

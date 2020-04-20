@@ -204,17 +204,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Obstacles:
   - sprite: {fileID: 21300000, guid: 2de6acbd286bbf84abe35d05438e2a73, type: 3}
+    controller: {fileID: 0}
     damageOnCollision: 15
     moveBackOne: 0
   - sprite: {fileID: 21300000, guid: 5225efe8ef60095499fb5d05c70addae, type: 3}
+    controller: {fileID: 0}
     damageOnCollision: 25
     moveBackOne: 0
   - sprite: {fileID: 21300000, guid: 09714bb6011a7f84d84479605fe86804, type: 3}
+    controller: {fileID: 0}
     damageOnCollision: 20
     moveBackOne: 0
   - sprite: {fileID: 21300000, guid: 958b372a28845b0468daa1f707d83588, type: 3}
+    controller: {fileID: 0}
     damageOnCollision: 5
     moveBackOne: 1
   - sprite: {fileID: 21300000, guid: a79a317c2aabedf45a6547fbfb5ca116, type: 3}
+    controller: {fileID: 0}
     damageOnCollision: 40
+    moveBackOne: 0
+  - sprite: {fileID: -3618416564793563230, guid: a35eab27a89c0ef45836ec17b40bcceb,
+      type: 3}
+    controller: {fileID: 9100000, guid: dd7de6a210fdf6d4fbf52f244944f329, type: 2}
+    damageOnCollision: 100
     moveBackOne: 0

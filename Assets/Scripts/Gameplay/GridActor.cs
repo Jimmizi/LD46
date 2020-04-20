@@ -35,6 +35,8 @@ public class GridActor : MonoBehaviour
     }
     private MovementData CurrentMove = new MovementData();
 
+    public Vector2Int CurrentTile => Service.Grid.GetWorldTilePosition(transform.position);
+
     public bool LockTargetPosition;
 
     public bool UseLinearMovementSpeed;

@@ -192,6 +192,9 @@ public class PlayableGrid : MonoBehaviour
         Vector2 originWorldPos = GetTileWorldPosition(origin);
         float bestScore = 1.0f;
 
+        //Store of scores and 
+        Dictionary<float, List<Vector2Int>> scoreDictionary = new Dictionary<float, List<Vector2Int>>();
+
         for (int x = start.x; x < end.x + 1; x++)
         {
             for (int y = start.y; y < end.y + 1; y++)
@@ -228,6 +231,13 @@ public class PlayableGrid : MonoBehaviour
                     originWorldPos = GetTileWorldPosition(sidewaysOrigin, y);
                 }
 
+                if (!scoreDictionary.ContainsKey(tilescore))
+                {
+                    scoreDictionary.Add(tilescore, new List<Vector2Int>());
+                }
+
+                scoreDictionary[tilescore].Add(new Vector2Int(x, y));
+
                 if (tilescore < bestScore)
                 {
                     if (IsRaycastSuccessfulBetweenPoints(originWorldPos, GetTileWorldPosition(x, y)))
@@ -239,6 +249,16 @@ public class PlayableGrid : MonoBehaviour
             }
         }
 
+        if (scoreDictionary.ContainsKey(bestScore))
+        {
+            var bestScores = scoreDictionary[bestScore];
+            if (bestScores.Count > 0)
+            {
+                bestScores.Shuffle();
+                return bestScores[0];
+            }
+        }
+        
         return bestTileIndex;
     }
 
@@ -458,6 +478,30 @@ public class PlayableGrid : MonoBehaviour
 
             if (TerrainCollisions[tile.x, tile.y])
             {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool AreSpacesInDirectionFreeFromTerrain(Vector2Int tilePoint, Vector2Int dir, int distance, out int distanceTo)
+    {
+        distanceTo = 0;
+        Assert.IsFalse(dir.x != 0 && dir.y != 0);
+
+        for (int i = 1; i < distance + 1; i++)
+        {
+            var tile = new Vector2Int(tilePoint.x + dir.x * i, tilePoint.y + dir.y * i);
+
+            if (tile.x < 0 || tile.x >= Columns || tile.y < 0 || tile.y >= Rows)
+            {
+                return true;
+            }
+
+            if (TerrainCollisions[tile.x, tile.y])
+            {
+                distanceTo = i;
                 return false;
             }
         }
