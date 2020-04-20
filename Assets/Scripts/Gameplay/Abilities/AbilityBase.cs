@@ -10,6 +10,7 @@ public abstract class AbilityBase
     public AbilityTargeting targeting;
     public Sprite sprite;
     public float drawWeight = 1.0f;
+    public int rarity = 0; //0, 1, 2
 
     /// <summary> Base construct </summary>
     public AbilityBase() { }
@@ -53,7 +54,9 @@ public enum AbilityType
     Offensive,
     Support,
     Movement,
-    Upgrade
+    Upgrade,
+
+    None
 }
 
 public enum AbilityTargeting

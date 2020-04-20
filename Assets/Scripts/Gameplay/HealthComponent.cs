@@ -15,12 +15,19 @@ public class HealthComponent : MonoBehaviour
     public float maxHealth = 100;
     public float currentHealth = 100;
 
+    /// <summary>
+    /// 0.0 to 1.0 percentage of health
+    /// </summary>
+    public float HealthPercentage => currentHealth / maxHealth;
+
     [Range(0, 50)]
     public float HealthSubtractAmountPerInterval = 1;
 
     public float HealthSubtractInterval = 1;
 
     private float healthTimer;
+
+    private int shieldCount = 0;
 
     public event HealthEvent OnHealthDepleted;
     public event HealthEvent OnHealthRestored;
@@ -104,6 +111,11 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
+    public void AddShield()
+    {
+        shieldCount++;
+    }
+
     void Update()
     {
         if (HealthSubtractInterval > 0)
@@ -148,6 +160,13 @@ public class HealthComponent : MonoBehaviour
             if (obstacleComp)
             {
                 ObstaclesHit.Add(other.gameObject);
+
+                // If we have shields, use one of them
+                if (shieldCount > 0)
+                {
+                    shieldCount--;
+                    return;
+                }
 
                 if (obstacleComp.HasPushBack)
                 {

@@ -51,7 +51,7 @@ public class PlayableGrid : MonoBehaviour
     /// <summary>
     /// Used to make it a little easier to find empty areas
     /// </summary>
-    private float[,] presenceInfluenceMap;
+    public float[,] presenceInfluenceMap;
 
     private const float influenceMapUpdateTime = 1f;
     private float updateInfluenceMapTimer = -2f;
@@ -288,6 +288,15 @@ public class PlayableGrid : MonoBehaviour
         return bestDistance;
     }
     
+    public int GetManhattanDistance(Vector2Int a, Vector2Int b)
+    {
+        var posDiff = a - b;
+        posDiff.x = Math.Abs(posDiff.x);
+        posDiff.y = Math.Abs(posDiff.y);
+
+        return posDiff.x + posDiff.y;
+    }
+
     public List<Vector2Int> GetPath(Vector2Int origin, Vector2Int destination, bool preferLeastCrowdedPath = false)
     {
         List<Vector2Int> finalpath = new List<Vector2Int>();
@@ -325,15 +334,6 @@ public class PlayableGrid : MonoBehaviour
         }
         void CalculateScore(Vector2Int point)
         {
-            int GetManhattanDistance(Vector2Int a, Vector2Int b)
-            {
-                var posDiff = a - b;
-                posDiff.x = Math.Abs(posDiff.x);
-                posDiff.y = Math.Abs(posDiff.y);
-
-                return posDiff.x + posDiff.y;
-            }
-
             var distToDestination = GetManhattanDistance(point, destination);
             scores.Add(point, distToDestination + movementCost[point]);
         }
@@ -519,6 +519,8 @@ public class PlayableGrid : MonoBehaviour
 
         return hit.collider == null;
     }
+
+    
 
     void Update()
     {

@@ -2,9 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FMOD;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
+
+public class Pair<T1, T2>
+{
+    public Pair(T1 f, T2 s)
+    {
+        First = f;
+        Second = s;
+    }
+    public T1 First { get; set; }
+    public T2 Second { get; set; }
+}
 
 public class EnemyController : GridActor
 {
@@ -30,33 +44,6 @@ public class EnemyController : GridActor
         PostAction //Any cleanup needed for this action before going back to Waiting
     }
 
-    public struct DecisionMakingData
-    {
-        public enum MainLane
-        {
-            Left,
-            Middle,
-            Right
-        }
-
-        /// <summary>
-        /// What lane this npc wants to try to be in.
-        /// </summary>
-        public MainLane CurrentMainLaneTarget;
-
-        // Are the main target-able lanes blocked
-        public bool[] MainLaneBlocked;
-        public int[] MainLaneBlockedDistance;
-
-        // Is the lane to the left, in front, and right blocked?
-        public bool[] ImmediateLanesBlocked;
-        public int[] ImmediateLanesBlockedDistance;
-
-        public List<AbilitySlot> AvailableAbilities;
-
-        public float DistanceToTarget;
-    }
-
     [Serializable]
     public struct DecisionTuning
     {
@@ -64,6 +51,8 @@ public class EnemyController : GridActor
         /// At how far away should the ai care about there being terrain in front
         /// </summary>
         public int InFrontAvoidanceDistance;
+
+        public int IdealTileDistanceAway;
     }
 
     [Serializable]
@@ -115,8 +104,469 @@ public class EnemyController : GridActor
 
 
 
+    public struct DecisionMakingData
+    {
+        public enum MainLane
+        {
+            Left,
+            Middle,
+            Right
+        }
+
+        /// <summary>
+        /// What lane this npc wants to try to be in.
+        /// </summary>
+        public MainLane CurrentMainLaneTarget;
+
+        // Are the main target-able lanes blocked
+        public bool[] MainLaneBlocked;
+        public int[] MainLaneBlockedDistance;
+        public bool[] MainLaneBlockedIsTerrain;
+
+        // Is the lane to the left, in front, and right blocked?
+        public bool[] ImmediateLanesBlocked;
+        public int[] ImmediateLanesBlockedDistance;
+        public bool[] ImmediateLanesBlockedIsTerrain;
+
+        public List<AbilitySlot> AvailableAbilities;
+
+        public float DistanceToTarget;
+
+        public AbilityType LastAbilityTypeUsed;
+
+    }
     [HideInInspector]
     public DecisionMakingData decisionData = new DecisionMakingData();
+
+    private enum ScoreAmount
+    {
+        Weak,
+        Average,
+        Good,
+        Important,
+        Critical
+    }
+
+    bool DetermineNextAction()
+    {
+        float idealDistance = Service.Grid.GetTileScale * Tune.IdealTileDistanceAway;
+
+        //bool wantCloserToTarget = Math.Abs(decisionData.DistanceToTarget - idealDistance) > 0.5f;
+        //bool wantToMoveAwayFromObstacle = decisionData.ImmediateLanesBlocked[1] && decisionData.ImmediateLanesBlockedDistance[1] < 3;
+
+        const float ScoreWeak = 0.25f;
+        const float ScoreAverage = 0.5f;
+        const float ScoreGood = 0.75f;
+        const float ScoreImportant = 1.0f;
+        const float ScoreCritical = 2f;
+
+        float movementScore = 0f;
+        Vector2 directionScore = Vector2.zero;
+
+        float attackScore = 0f;
+        float supportScore = 0f;
+
+
+        #region FIRST: Find out what kind of ability we want to use.
+
+
+        int scoresAdded = 0;
+        float runningScore = 0f;
+
+        void AddScore(ScoreAmount scoretype)
+        {
+            float amount = 0f;
+
+            switch (scoretype)
+            {
+                case ScoreAmount.Weak:
+                    amount = ScoreWeak;
+                    break;
+                case ScoreAmount.Average:
+                    amount = ScoreAverage;
+                    break;
+                case ScoreAmount.Good:
+                    amount = ScoreGood;
+                    break;
+                case ScoreAmount.Important:
+                    amount = ScoreImportant;
+                    break;
+                case ScoreAmount.Critical:
+                    amount = ScoreCritical;
+                    break;
+            }
+
+            runningScore += amount;
+            scoresAdded++;
+        }
+        float GetFinalScore()
+        {
+            if (scoresAdded == 0)
+            {
+                return 0f;
+            }
+
+            float ret = runningScore /= scoresAdded;
+            scoresAdded = 0;
+            return ret;
+        }
+
+        // Only score movement if we have abilities for it
+        if (decisionData.AvailableAbilities.Any(x => x.ability.category == AbilityType.Movement))
+        {
+            // If we're not within 2 tiles of our ideal range
+            if (Math.Abs(decisionData.DistanceToTarget - idealDistance) > Service.Grid.GetTileScale * 2.2f)
+            {
+                AddScore(ScoreAmount.Good);
+            }
+
+            // If we're too close, we'll want to move away
+            if (decisionData.DistanceToTarget < Service.Grid.GetTileScale * 1.2f)
+            {
+                AddScore(ScoreAmount.Important);
+            }
+
+            // If the lane ahead of us is blocked
+            if (decisionData.ImmediateLanesBlocked[1])
+            {
+                // If it's terrain we care immediately
+                if (decisionData.ImmediateLanesBlockedIsTerrain[1])
+                {
+                    // Important if further away, critical if closer
+                    AddScore(decisionData.ImmediateLanesBlockedDistance[1] < 3 ? ScoreAmount.Critical : ScoreAmount.Important);
+                }
+                // Otherwise if it's just an obstacle we will deal with it later
+                else if(decisionData.ImmediateLanesBlockedDistance[1] < 3)
+                {
+                    // Score depending on health amount, if we're good on health, then not as important
+                    AddScore(health.HealthPercentage > 0.85f ? ScoreAmount.Good : ScoreAmount.Important);
+                }
+            }
+
+            movementScore = GetFinalScore();
+        }
+
+        // Only score attacking if we have abilities for it
+        if (decisionData.AvailableAbilities.Any(x => x.ability.category == AbilityType.Offensive))
+        {
+            //Blend between average and good so that it beats average but not good
+            AddScore(ScoreAmount.Average);
+            AddScore(ScoreAmount.Good);
+
+            attackScore = GetFinalScore();
+        }
+
+        // Only score support if we have abilities for it
+        if (decisionData.AvailableAbilities.Any(x => x.ability.category == AbilityType.Support))
+        {
+            var per = health.HealthPercentage;
+            if (per < 0.75f)
+            {
+                // If we're under 75% health and we have a heal ability only score it at this point
+                if (decisionData.AvailableAbilities.Any(x => x.ability is HealAbility))
+                {
+                    if (per < 0.25f)
+                    {
+                        AddScore(ScoreAmount.Critical);
+                    }
+                    else if (per < 0.5f)
+                    {
+                        AddScore(ScoreAmount.Important);
+                    }
+                    else if (per < 0.75f)
+                    {
+                        AddScore(ScoreAmount.Good);
+                    }
+                }
+            }
+
+            //TODO Add shield ability
+
+            supportScore = GetFinalScore();
+        }
+
+        // Modify final scores depending on if the last ability used was of that type
+        switch (decisionData.LastAbilityTypeUsed)
+        {
+            case AbilityType.Offensive:
+                attackScore *= 0.6f;
+                break;
+            case AbilityType.Support:
+                supportScore *= 0.7f;
+                break;
+            case AbilityType.Movement:
+                movementScore *= 0.9f;
+                break;
+            case AbilityType.Upgrade:
+                break;
+        }
+
+        AbilityType idealType;
+
+        SortedDictionary<float, AbilityType> abilityPriority = new SortedDictionary<float, AbilityType>();
+
+        abilityPriority.Add(movementScore, AbilityType.Movement);
+        abilityPriority.Add(attackScore, AbilityType.Offensive);
+        abilityPriority.Add(supportScore, AbilityType.Support);
+
+
+        #endregion
+
+        #region SECOND: Now we have a goal type, figure out what ability to use within that category
+
+
+        foreach (var abilityType in abilityPriority)
+        {
+            if (abilityType.Key <= 0.0f)
+            {
+                continue;
+            }
+
+            var AbilitiesForType = decisionData.AvailableAbilities.FindAll(x => x.ability.category == abilityType.Value);
+
+            if (AbilitiesForType.Count == 0)
+            {
+                Debug.LogError("Something messed up. Got to scoring ability type actions but have no slots.");
+                continue;
+            }
+
+            if (abilityType.Value == AbilityType.Movement)
+            {
+                /* The ideal position:
+                 * 1. Is at the ideal distance
+                 * 2. Not too close to other enemies
+                 * 3. Out of the way from obstacles and terrain
+                 */
+
+                // First step, find good position within the above.
+                //      Use distance to target from the position, influence map, terrain collisions, and obstacle paths
+
+                var pathToPlayer = Service.Grid.GetPath(CurrentTile, combatTarget.TargetPosition);
+                var extraTiles = new List<Vector2Int>();
+
+                // Bleed out the path to widen it a little
+                foreach (var tile in pathToPlayer)
+                {
+                    if (tile.x > 0)
+                    {
+                        var newTile = tile - new Vector2Int(-1, 0);
+                        if (!pathToPlayer.Contains(newTile))
+                        {
+                            extraTiles.Add(newTile);
+                        }
+                    }
+                    if (tile.x < Service.Grid.Columns-1)
+                    {
+                        var newTile = tile - new Vector2Int(1, 0);
+                        if (!pathToPlayer.Contains(newTile))
+                        {
+                            extraTiles.Add(newTile);
+                        }
+                    }
+
+                    if (tile.y > 0)
+                    {
+                        var newTile = tile - new Vector2Int(0, -1);
+                        if (!pathToPlayer.Contains(newTile))
+                        {
+                            extraTiles.Add(newTile);
+                        }
+                    }
+
+                    if (tile.y < Service.Grid.Rows - 1)
+                    {
+                        var newTile = tile - new Vector2Int(0, 1);
+                        if (!pathToPlayer.Contains(newTile))
+                        {
+                            extraTiles.Add(newTile);
+                        }
+                    }
+                }
+                pathToPlayer.AddRange(extraTiles);
+
+                float bestScore = 9999999999f;
+                Vector2Int bestScoreTile = combatTarget.TargetPosition;
+
+                // Score each tile in the widened path
+                foreach (var tile in pathToPlayer)
+                {
+                    // If terrain don't even score
+                    if (Service.Grid.TerrainCollisions[tile.x, tile.y])
+                    {
+                        continue;
+                    }
+
+                    // When better, influence map tile will have a lower score
+                    float score = Service.Grid.presenceInfluenceMap[tile.x, tile.y];
+
+                    float distToPlayer = Service.Grid.GetManhattanDistance(tile, combatTarget.TargetPosition) / 10f;
+
+                    // If too close, multiply the score
+                    if (distToPlayer < Tune.IdealTileDistanceAway)
+                    {
+                        distToPlayer *= 3;
+                    }
+
+                    score += distToPlayer;
+
+                    // Lots of score if going to be blocked by terrain
+                    int distToTerrain = 0;
+                    if (!Service.Grid.AreSpacesInDirectionFreeFromTerrain(tile, new Vector2Int(0, 1),
+                        Tune.InFrontAvoidanceDistance, out distToTerrain))
+                    {
+                        score += Tune.InFrontAvoidanceDistance - distToTerrain;
+                    }
+
+                    // Not as much score addition to obstacles
+                    int distToObstacle = 0;
+                    if (IsObstacleBlockingLane(tile, out distToObstacle))
+                    {
+                        score += (Tune.InFrontAvoidanceDistance - distToObstacle) * 0.25f;
+                    }
+
+                    if (score < bestScore)
+                    {
+                        bestScore = score;
+                        bestScoreTile = tile;
+                    }
+
+                }
+
+
+
+                // Second step, check what directions we can go in.
+
+                //Direction to the target
+                var heading = combatTarget.gameObject.transform.position - new Vector3(transform.position.x, transform.position.y, 0);
+                heading.z = 0;
+
+                var dist = heading.magnitude;
+                var dir = heading / dist;
+                
+
+                List<Pair<float, AbilitySlot>> scores = new List<Pair<float, AbilitySlot>>();
+               
+                foreach (var mover in AbilitiesForType)
+                {
+                    if (!(mover.ability is MoveAbility mov))
+                    {
+                        continue;
+                    }
+
+                    var diff = dir - new Vector3(mov.direction.x, mov.direction.y, 0);
+                    diff.x = Mathf.Abs(diff.x);
+                    diff.y = Mathf.Abs(diff.y);
+
+
+                    scores.Add(new Pair<float, AbilitySlot>(diff.x + diff.y, mover));
+                }
+
+                
+                // Third step see if using directions would put us in harms way
+
+                foreach (var s in scores)
+                {
+                    if (!(s.Second.ability is MoveAbility mov))
+                    {
+                        continue;
+                    }
+
+                    var targetTile = CurrentTile + mov.direction;
+
+                    int distToTerrain = 0;
+                    if (!Service.Grid.AreSpacesInDirectionFreeFromTerrain(targetTile, new Vector2Int(0, 1),
+                        Tune.InFrontAvoidanceDistance, out distToTerrain))
+                    {
+                        s.First += (Tune.InFrontAvoidanceDistance - distToTerrain) * 0.75f;
+                    }
+
+                    int distToObst = 0;
+                    if (IsObstacleBlockingLane(targetTile, out distToObst))
+                    {
+                        s.First += (Tune.IdealTileDistanceAway - distToObst) * 0.25f;
+                    }
+                }
+
+                bestScore = 99999f;
+                AbilitySlot bestAbil = null;
+
+                for (int i = 0; i < scores.Count; i++)
+                {
+                    if (scores[i].First < bestScore)
+                    {
+                        bestScore = scores[i].First;
+                        bestAbil = scores[i].Second;
+                    }
+                }
+
+                if (bestAbil == null)
+                {
+                    bestAbil = AbilitiesForType[0];
+                }
+
+                activateSlot = bestAbil;
+                return true;
+
+            }
+            else if (abilityType.Value == AbilityType.Offensive)
+            {
+                // For offensive just care about rarity
+
+                int highestRarity = 0;
+                int index = 0;
+
+                AbilitiesForType.Shuffle();
+
+                for (var i = 0; i < AbilitiesForType.Count; i++)
+                {
+                    var a = AbilitiesForType[i];
+                    if (a.ability.rarity > highestRarity)
+                    {
+                        index = i;
+                    }
+                }
+
+                activateSlot = AbilitiesForType[index];
+                return true;
+            }
+            else if (abilityType.Value == AbilityType.Support)
+            {
+                // For support, priorise healing if low on health, otherwise use shields if we have them
+
+                AbilitiesForType.Shuffle();
+                
+                bool hasShield = AbilitiesForType.Any(x => x.ability is ShieldAbility);
+                bool hasHeal = AbilitiesForType.Any(x => x.ability is HealAbility);
+
+                if (hasShield && hasHeal)
+                {
+                    if (health.HealthPercentage < 0.5f)
+                    {
+                        activateSlot = AbilitiesForType.First(x => x.ability is HealAbility);
+                    }
+                    else
+                    {
+                        activateSlot = AbilitiesForType.First(x => x.ability is ShieldAbility);
+                    }
+                }
+                else
+                {
+                    activateSlot = AbilitiesForType[0];
+                }
+
+                return true;
+            }
+        }
+
+        #endregion
+
+        // If all else fails
+        activateSlot = decisionData.AvailableAbilities[0];
+
+        return true;
+    }
+
+    
 
     /* Steps per action time:
      * 1). Decide upon the action type. Take into account:
@@ -150,6 +600,8 @@ public class EnemyController : GridActor
         Assert.IsNotNull(health);
 
         combatTarget = Service.Grid.PlayerActor;
+
+        decisionData.LastAbilityTypeUsed = AbilityType.None;
     }
 
     // Update is called once per frame
@@ -221,6 +673,7 @@ public class EnemyController : GridActor
                 break;
             case ActionState.DoAction:
 
+                decisionData.LastAbilityTypeUsed = activateSlot.ability.category;
                 abilities.ActivateAbility(activateSlot.slotIndex);
 
                 foreach (var abil in shuffleSlots)
@@ -239,40 +692,42 @@ public class EnemyController : GridActor
         }
     }
 
-    bool StoreWorldState()
+    bool IsObstacleBlockingLane(Vector2Int origin, out int dist)
     {
-        bool IsObstacleBlocking(Vector2Int origin, out int dist)
+        dist = 0;
+
+        foreach (var ob in Service.Game.CurrentRace.ObstacleList)
         {
-            dist = 0;
-
-            foreach (var ob in Service.Game.CurrentRace.ObstacleList)
+            var gridActor = ob.GetComponent<GridActor>();
+            if (!gridActor)
             {
-                var gridActor = ob.GetComponent<GridActor>();
-                if (!gridActor)
-                {
-                    continue;
-                }
-
-                var obstacleTile = gridActor.CurrentTile;
-
-                //if not on origin lane not valid
-                if (obstacleTile.x != origin.x)
-                {
-                    continue;
-                }
-
-                //Not valid if below the origin
-                if (obstacleTile.y < origin.y)
-                {
-                    continue;
-                }
-
-                dist = obstacleTile.y - origin.y;
-                return true;
+                continue;
             }
 
-            return false;
+            var obstacleTile = gridActor.CurrentTile;
+
+            //if not on origin lane not valid
+            if (obstacleTile.x != origin.x)
+            {
+                continue;
+            }
+
+            //Not valid if below the origin
+            if (obstacleTile.y < origin.y)
+            {
+                continue;
+            }
+
+            dist = obstacleTile.y - origin.y;
+            return true;
         }
+
+        return false;
+    }
+
+    bool StoreWorldState()
+    {
+        
 
         decisionData.MainLaneBlocked = new bool[NUM_LANES];
         decisionData.MainLaneBlockedDistance = new int[NUM_LANES];
@@ -290,6 +745,7 @@ public class EnemyController : GridActor
         {
             var tilePoint = new Vector2Int(GetMainLaneTileX(i), TargetPosition.y);
 
+            decisionData.MainLaneBlockedIsTerrain[i] = false;
             decisionData.MainLaneBlocked[i] = !Service.Grid.AreSpacesInDirectionFreeFromTerrain( tilePoint,
                                                                                                 new Vector2Int(0, 1), 
                                                                                                 Tune.InFrontAvoidanceDistance, 
@@ -298,7 +754,11 @@ public class EnemyController : GridActor
             //If not blocked by terrain, check if an obstacle is blocking it
             if (!decisionData.MainLaneBlocked[i])
             {
-                decisionData.MainLaneBlocked[i] = IsObstacleBlocking(tilePoint, out decisionData.MainLaneBlockedDistance[i]);
+                decisionData.MainLaneBlocked[i] = IsObstacleBlockingLane(tilePoint, out decisionData.MainLaneBlockedDistance[i]);
+            }
+            else
+            {
+                decisionData.MainLaneBlockedIsTerrain[i] = true;
             }
         }
 
@@ -321,9 +781,11 @@ public class EnemyController : GridActor
             if (tilePos.x < 0 || tilePos.x >= Service.Grid.Columns)
             {
                 decisionData.ImmediateLanesBlocked[i] = true;
+                decisionData.ImmediateLanesBlockedIsTerrain[i] = true;
                 continue;
             }
 
+            decisionData.ImmediateLanesBlockedIsTerrain[i] = false;
             decisionData.ImmediateLanesBlocked[i] = !Service.Grid.AreSpacesInDirectionFreeFromTerrain(tilePos,
                 new Vector2Int(0, 1),
                 Tune.InFrontAvoidanceDistance,
@@ -332,9 +794,12 @@ public class EnemyController : GridActor
             //If not blocked by terrain, check if an obstacle is blocking it
             if (!decisionData.ImmediateLanesBlocked[i])
             {
-                decisionData.ImmediateLanesBlocked[i] = IsObstacleBlocking(tilePos, out decisionData.ImmediateLanesBlockedDistance[i]);
+                decisionData.ImmediateLanesBlocked[i] = IsObstacleBlockingLane(tilePos, out decisionData.ImmediateLanesBlockedDistance[i]);
             }
-
+            else
+            {
+                decisionData.ImmediateLanesBlockedIsTerrain[i] = true;
+            }
         }
 
 
@@ -376,12 +841,7 @@ public class EnemyController : GridActor
         return true;
     }
 
-    bool DetermineNextAction()
-    {
-        activateSlot = decisionData.AvailableAbilities[0];
-
-        return true;
-    }
+    
 
     bool InitialiseAction()
     {
