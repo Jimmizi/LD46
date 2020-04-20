@@ -1,24 +1,32 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
+
+    /// <summary>
+    /// ScoreController reference (UI part)
+    /// </summary>
+    public ScoreController UIScoreController;
+
+    private int score;
     
-    // Start is called before the first frame update
     void Start() {
         
     }
 
-    // Update is called once per frame
     void Update() {
         
     }
 
-    public void AddScore(float score) {
-        
+    public void AddScore(int score) {
+        score = Math.Abs(this.score);
+        UIScoreController.SetScore(score);
     }
 
     public void ResetScore() {
-        
+        score = 0;
+        UIScoreController.SetScore(score);
     }
 }

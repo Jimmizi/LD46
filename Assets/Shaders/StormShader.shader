@@ -3,6 +3,10 @@
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
         _Turnitup ("Storm Factor", Range (0, 1)) = 0.75
+        
+        [MaterialToggle] PixelSnap("Pixel snap", Float) = 0
+		_PixelCountU ("Pixel Count U", float) = 100
+		_PixelCountV ("Pixel Count V", float) = 100
     }
     
     SubShader {
@@ -24,7 +28,7 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            #pragma multi_compile _ PIXELSNAP_ON
             #include "UnityCG.cginc"
 
             struct appdata {
@@ -40,12 +44,16 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _Turnitup;
+            float _PixelCountU;
+			float _PixelCountV;
 
             v2f vert (appdata v) {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                #ifdef PIXELSNAP_ON
+				    o.vertex = UnityPixelSnap(o.vertex);
+	            #endif
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
             
@@ -94,10 +102,16 @@
 
             fixed4 frag (v2f input) : SV_Target {
   
-                float scl = 300.0;
-                float2 uv = floor(input.uv * scl) / scl;
+                
+                float pixelWidth = 1.0f / _PixelCountU;
+				float pixelHeight = 1.0f / _PixelCountV;
+				
+				half2 uv = half2(round(input.uv.x / pixelWidth) * pixelWidth,
+				                 round(input.uv.y / pixelHeight) * pixelHeight);
+                
                 float2 storm_sink = float2(0.5, 0.5);
                 float time = floor(_Time.y * 14.0) / 14.0 * 0.8;
+                time = fmod(time, 10.0);
 
                 float2 uv_m = uv * (1.0 + 0.2 * length(uv));
                 float uvlen = 1.0 - length(uv_m);
@@ -145,7 +159,17 @@
                 rcl = float4(color_r * floor(rcl.rgb / color_r), rcl.a);
     
                 float3 altc = float3(0.455, 0.369, 0.329);
-                rcl = float4(lerp(altc, rcl.rgb, rcl.r), lerp(rcl.a * rcl.r * 0.8, 1.0, _Turnitup));
+                
+                
+                uv *=  1.0 - uv.yx;   
+    float vig = uv.x*uv.y * lerp(120.0, 0.0, _Turnitup); //min(_PixelCountU, _PixelCountV) * 0.5; // multiply with sth for intensity
+    vig = pow(vig, 0.8); // change pow for modifying the extend of the  vignette
+    vig += (isaid_areyouready(float3(uv_m * 90.0 - 20.0 + float2(0.0, time * 10.0), time)) - 0.5) * 0.255;
+
+
+                
+                rcl = float4(lerp(altc, rcl.rgb, rcl.r), lerp(rcl.a * rcl.r * 0.8 * (1.0 - vig), 1.0 * (1.0 - vig), _Turnitup));
+                //rcl =float4(vig, 0.0, 0.0, 1.0);
     
                 return rcl;
             }
