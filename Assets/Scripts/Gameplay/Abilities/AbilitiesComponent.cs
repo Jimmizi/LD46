@@ -114,8 +114,11 @@ public class AbilitiesComponent : MonoBehaviour
 
                         return "";
                     }
-                    
-                    Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
+
+                    if (Service.AbilityPost != null && slot.ability != null)
+                    {
+                        Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
+                    }
                 }
 
                 return true;
@@ -244,10 +247,13 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
-        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
+        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1),1);
 
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35), 3);
-        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
+        abilityDeck.Add(new ShieldAbility("Shield", sprites.Shield), 3);
+        abilityDeck.Add(new ShootAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, 3, 30, 0.1f, 0.1f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
+        abilityDeck.Add(new ShootAbility("Rapid Fire", sprites.RapidFire, resources.RapidBulletPrefab, 12, 0.0f, 0.0f, 0.1f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
+        abilityDeck.Add(new SpiralShootAbility("Nova Shot Blast", sprites.NovaShotBlast, resources.NovaBulletPrefab, 12, 0.0f, 0.0f, 0.05f, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
     }
 
     bool IsValidSlotIndex(int slotIndex)

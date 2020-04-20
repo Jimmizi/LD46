@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasFade: {fileID: 807529625616447053}
-  Title: {fileID: 3221885349859083934}
+  Title: {fileID: 5368955774527181255}
   PressToPlayCanvasGroup: {fileID: 9206911704915187638}
 --- !u!225 &807529625616447053
 CanvasGroup:

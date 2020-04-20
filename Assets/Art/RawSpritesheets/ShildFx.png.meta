@@ -1,7 +1,49 @@
 fileFormatVersion: 2
 guid: aa451873d2a3ada4883d94ab2197f675
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6835990735945322794
+    second: ShildFx_0
+  - first:
+      213: -4326115675579438051
+    second: ShildFx_1
+  - first:
+      213: 6866378960917000586
+    second: ShildFx_2
+  - first:
+      213: -688138698893556433
+    second: ShildFx_3
+  - first:
+      213: -2932822639705443699
+    second: ShildFx_4
+  - first:
+      213: 251126119106008574
+    second: ShildFx_5
+  - first:
+      213: 8045201871170274563
+    second: ShildFx_6
+  - first:
+      213: -139311782742780531
+    second: ShildFx_0
+  - first:
+      213: 6998241499865307345
+    second: ShildFx_1
+  - first:
+      213: -5479806869566629820
+    second: ShildFx_2
+  - first:
+      213: 2866865475470162748
+    second: ShildFx_3
+  - first:
+      213: 2298061736482233177
+    second: ShildFx_4
+  - first:
+      213: -6271847520382551823
+    second: ShildFx_5
+  - first:
+      213: 2884123095332256288
+    second: ShildFx_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -97,7 +139,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ShildFx_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d851794fba0111ef0800000000000000
+      internalID: -139311782742780531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d85edbd09fbe1160800000000000000
+      internalID: 6998241499865307345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4485cb57fa0d3f3b0800000000000000
+      internalID: -5479806869566629820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3bfa3ce5f629c720800000000000000
+      internalID: 2866865475470162748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95bd0f249fa54ef10800000000000000
+      internalID: 2298061736482233177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f8fe2ee8ebe5f8a0800000000000000
+      internalID: -6271847520382551823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShildFx_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02a77c9aca6760820800000000000000
+      internalID: 2884123095332256288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

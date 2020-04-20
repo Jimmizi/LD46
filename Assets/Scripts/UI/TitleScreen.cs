@@ -25,7 +25,8 @@ public class TitleScreen : MonoBehaviour
 
     private enum Stage
     {
-        Intro = 0,
+        WaitBeforeIntro = 0,
+        Intro,
         Idle,
 
         Fading,
@@ -72,6 +73,10 @@ public class TitleScreen : MonoBehaviour
         OriginalTitlePosition = Title.transform.position;
         Title.transform.position += new Vector3(0, titleMoveUp);
         PressToPlayCanvasGroup.alpha = 0;
+
+        
+
+        StartCoroutine(WaitAtStart());
     }
 
     // Update is called once per frame
@@ -99,6 +104,7 @@ public class TitleScreen : MonoBehaviour
             case Stage.Fading:
                 if (!stageLaunchedCoroutine)
                 {
+                    Service.Music.StopMenuMusic();
                     StartCoroutine(fadeOutCanvasGroupEnumerator(CanvasFade, 2));
                 }
                 break;
@@ -119,6 +125,14 @@ public class TitleScreen : MonoBehaviour
                 Destroy(this);
                 break;
         }
+    }
+
+    IEnumerator WaitAtStart()
+    {
+        yield return new WaitForSeconds(1f);
+
+        Service.Music.PlayMenuMusic();
+        stage = Stage.Intro;
     }
 
     IEnumerator BringInTitle()

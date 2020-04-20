@@ -5,26 +5,42 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class ScoreController : MonoBehaviour {
+public class ScoreController : MonoBehaviour
+{
+    public enum ScoreType
+    {
+        PerHealthTick
+    }
 
     public List<DialController> DialControllers;
     [Range(0, 32000)]
     public int DebugSetScore = 0;
     
-    private int currentScore = 0;
-    
-    
-    void Start() {
+    private static int currentScore = 0;
+
+    public int CurrentScore
+    {
+        get => currentScore;
+    }
+
+    void Awake()
+    {
+        Service.Score = this;
+    }
+    void Start()
+    {
+        Service.Score = this;
         Assert.IsNotNull(DialControllers);
+        SetScore(currentScore);
     }
 
     void Update() {
         if (DebugSetScore != currentScore) {
-            SetScore(DebugSetScore);
+            //SetScore(DebugSetScore);
         }
     }
     
-    private static IEnumerable<int> GetDigits(int source) {
+    public static IEnumerable<int> GetDigits(int source) {
         int individualFactor = 0;
         int tennerFactor = Convert.ToInt32(Math.Pow(10, source.ToString().Length));
         do {
@@ -36,12 +52,29 @@ public class ScoreController : MonoBehaviour {
         } while (tennerFactor > 1);
     }
 
-    public void SetScore(int score) {
+    public void AddScore(ScoreType scoretype)
+    {
+        int extrascore = 0;
+        switch (scoretype)
+        {
+            case ScoreType.PerHealthTick:
+                extrascore = 10;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(scoretype), scoretype, null);
+        }
+
+        SetScore(currentScore + extrascore);
+    }
+
+    public void SetScore(int score) 
+    {
         currentScore = Math.Abs(score);
         int digitIndex = 0;
         int[] digits = GetDigits(currentScore).ToArray();
         
-        for (int i = 0; i < DialControllers.Count; i++) {
+        for (int i = 0; i < DialControllers.Count; i++) 
+        {
             if (i < digits.Length) {
                 DialControllers[digitIndex].SetTo(digits[digits.Length - i - 1]);
             } else {

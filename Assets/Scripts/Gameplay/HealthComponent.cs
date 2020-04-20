@@ -37,9 +37,21 @@ public class HealthComponent : MonoBehaviour
 
     public GameObject SpawnOnDeath = null;
 
+    public ShieldComponent ShieldFxPrefab = null;
+
+    ShieldComponent ShieldFx = null;
+
     public void Offset(float offset, bool backupCall = false)
     {
         float previousHealth = currentHealth;
+
+        if (offset<-HealthSubtractAmountPerInterval)
+        {
+            if(ReduceShield())
+            {
+                return;
+            }
+        }
 
         currentHealth += offset;
 
@@ -113,7 +125,32 @@ public class HealthComponent : MonoBehaviour
 
     public void AddShield()
     {
+        if( shieldCount == 0 )
+        {
+            ShieldFx = GameObject.Instantiate<ShieldComponent>(ShieldFxPrefab, transform);
+            ShieldFx.transform.parent = transform;
+        }
+
         shieldCount++;
+    }
+
+    public bool ReduceShield()
+    {
+        // If we have shields, use one of them
+        if (shieldCount > 0)
+        {
+            shieldCount--;
+
+            if (shieldCount == 0 && ShieldFx)
+            {
+                ShieldFx.DestroyShield();
+                ShieldFx = null;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     void Update()
@@ -124,6 +161,11 @@ public class HealthComponent : MonoBehaviour
 
             if (healthTimer >= HealthSubtractInterval)
             {
+                if (CompareTag("Player"))
+                {
+                    Service.Score.AddScore(ScoreController.ScoreType.PerHealthTick);
+                }
+
                 Offset(-HealthSubtractAmountPerInterval);
                 healthTimer = 0;
             }
@@ -161,12 +203,10 @@ public class HealthComponent : MonoBehaviour
             {
                 ObstaclesHit.Add(other.gameObject);
 
-                // If we have shields, use one of them
-                if (shieldCount > 0)
+                if (ReduceShield())
                 {
-                    shieldCount--;
                     return;
-                }
+                }                
 
                 if (obstacleComp.HasPushBack)
                 {
