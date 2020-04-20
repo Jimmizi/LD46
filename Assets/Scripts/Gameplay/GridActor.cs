@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridActor : MonoBehaviour
 {
@@ -85,6 +86,8 @@ public class GridActor : MonoBehaviour
         }
     }
 
+    private Vector2 SlightlyErraticTargetPosition = new Vector2();
+
     private bool doingObstacleShake;
 
     /// <summary>
@@ -104,6 +107,22 @@ public class GridActor : MonoBehaviour
                          || target.y >= Service.Grid.Rows)
         {
             return;
+        }
+
+        if (CompareTag("Player"))
+        {
+            if (x != 0)
+            {
+                Service.Speed.SetSpeedAfterMove(SpeedGaugeController.SpeedType.SlightlyLower);
+            }
+            else if (y > 0)
+            {
+                Service.Speed.SetSpeedAfterMove(SpeedGaugeController.SpeedType.High);
+            }
+            else if (y < 0)
+            {
+                Service.Speed.SetSpeedAfterMove(SpeedGaugeController.SpeedType.Low);
+            }
         }
 
         TargetPosition = target;
@@ -150,15 +169,17 @@ public class GridActor : MonoBehaviour
             }
         }
 
+        SlightlyErraticTargetPosition = CurrentMove.TargetWorldPosition + new Vector2(Random.Range(-0.5f, 0.5f), 0);
+
         ProcessAngling();
 
         if (!UseLinearMovementSpeed)
         {
-            transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod);
+            transform.position = Vector3.Lerp(transform.position, SlightlyErraticTargetPosition, MoveSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod);
         }
         else
         {
-            var heading = CurrentMove.TargetWorldPosition - new Vector2(transform.position.x, transform.position.y);
+            var heading = SlightlyErraticTargetPosition - new Vector2(transform.position.x, transform.position.y);
             var dist = heading.magnitude;
             var dir = heading / dist;
 

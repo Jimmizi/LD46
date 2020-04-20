@@ -143,6 +143,11 @@ public class EnemyController : GridActor
 
         public AbilityType LastAbilityTypeUsed;
 
+        
+
+        // Add a little bit into this everytime we don't pick attack
+        public float RollingAttackScoreBuildup;
+
     }
     [HideInInspector]
     public DecisionMakingData decisionData = new DecisionMakingData();
@@ -182,6 +187,11 @@ public class EnemyController : GridActor
         int scoresAdded = 0;
         float runningScore = 0f;
 
+        void AddManualScore(float val)
+        {
+            runningScore += val;
+            scoresAdded++;
+        }
         void AddScore(ScoreAmount scoretype)
         {
             float amount = 0f;
@@ -261,6 +271,8 @@ public class EnemyController : GridActor
             //Blend between average and good so that it beats average but not good
             AddScore(ScoreAmount.Average);
             AddScore(ScoreAmount.Good);
+
+            AddManualScore(decisionData.RollingAttackScoreBuildup);
 
             attackScore = GetFinalScore();
         }
@@ -694,10 +706,21 @@ public class EnemyController : GridActor
                 break;
             case ActionState.DoAction:
 
+                const float RollingAttackBuildupPerNonUse = 0.25f;
+
                 Debug.Log($"Actor at {CurrentTile} decided to use: {activateSlot.ability}");
                 
                 decisionData.LastAbilityTypeUsed = activateSlot.ability.category;
                 abilities.ActivateAbility(activateSlot.slotIndex);
+
+                if (decisionData.LastAbilityTypeUsed != AbilityType.Offensive)
+                {
+                    decisionData.RollingAttackScoreBuildup += RollingAttackBuildupPerNonUse;
+                }
+                else
+                {
+                    decisionData.RollingAttackScoreBuildup = 0.0f;
+                }
 
                 foreach (var abil in shuffleSlots)
                 {

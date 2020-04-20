@@ -105,6 +105,7 @@ public class GameplayManager : MonoBehaviour
         };
 
         RaceCount++;
+        Service.Counter.SetRaceCounter(RaceCount);
     }
 
     public EventHandler OnFadeCoroutineComplete;

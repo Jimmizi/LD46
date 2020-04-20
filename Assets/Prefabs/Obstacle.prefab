@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bd0e6f87b56a52c9b436060acc799c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: -7975249404588759376, guid: 925ff912d9590483ba215347199681c8, type: 3}
+  Icon: {fileID: 8599436577718238185, guid: 925ff912d9590483ba215347199681c8, type: 3}
   MainCamera: {fileID: 0}
   ScreenMargin: 10
 --- !u!50 &-1535242827573690651
