@@ -149,6 +149,11 @@ public class EnemyController : GridActor
     // Update is called once per frame
     new void Update()
     {
+        if (!Service.Game?.CurrentRace?.RaceInProgress ?? false)
+        {
+            return;
+        }
+
         base.Update();
 
         switch (currentActionState)
@@ -216,7 +221,7 @@ public class EnemyController : GridActor
                 break;
             case ActionState.PostAction:
 
-                //currentActionState = ActionState.PickWaitingTime;
+                currentActionState = ActionState.PickWaitingTime;
 
                 break;
         }

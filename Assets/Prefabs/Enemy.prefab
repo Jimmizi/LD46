@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: ea75778a6e456d641935d750412b4e89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -151,21 +151,21 @@ MonoBehaviour:
     InFrontAvoidanceDistance: 5
   AggressiveStats:
     TimeBetweenActions:
-      Base: 2
+      Base: 3
       Min: -0.5
       Max: 0.5
       Lowest: 0
       Highest: 0
   PersistentStats:
     TimeBetweenActions:
-      Base: 2.5
-      Min: -0.5
+      Base: 4.5
+      Min: -2.5
       Max: 0.5
       Lowest: 0
       Highest: 0
   PassiveStats:
     TimeBetweenActions:
-      Base: 3
+      Base: 4
       Min: -1
       Max: 1
       Lowest: 0
