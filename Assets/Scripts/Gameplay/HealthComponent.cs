@@ -57,7 +57,10 @@ public class HealthComponent : MonoBehaviour
 
             foreach (var ptfx in ParticlesToStopOnDead)
             {
-                ptfx.Pause(true);
+                if (ptfx)
+                {
+                    ptfx.Pause(true);
+                }
             }
 
             if (SpawnOnDeath)

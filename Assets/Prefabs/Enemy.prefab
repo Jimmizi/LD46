@@ -249,44 +249,44 @@ MonoBehaviour:
   Rank1Presets:
   - Prefab: {fileID: 4796397794443911180, guid: 7a4226cdae46fb242a084d28a905055e,
       type: 3}
-    health: 35
+    health: 25
     personality: -1
   - Prefab: {fileID: 2812272985445875587, guid: 1ba6a22538a2a4b4e828072f99b9aeaf,
       type: 3}
-    health: 35
+    health: 25
     personality: -1
   - Prefab: {fileID: 3153025476336348118, guid: 0b7b1d1fd80ce9043aa039344515dc23,
       type: 3}
-    health: 35
+    health: 25
     personality: -1
   Rank2Presets:
   - Prefab: {fileID: 4477860368242818564, guid: 249e322c02757484891ef45d566ccb2e,
       type: 3}
-    health: 60
+    health: 50
     personality: -1
   - Prefab: {fileID: 7595263196092334130, guid: 45aed8ac58343114cac4efcb5545369a,
       type: 3}
-    health: 60
+    health: 50
     personality: -1
   - Prefab: {fileID: 4813943228150847517, guid: bfe614d689391aa4b817640f05aea00e,
       type: 3}
-    health: 60
+    health: 50
     personality: -1
   Rank3Presets:
   - Prefab: {fileID: 7401004444630012593, guid: b49f8f2e10f900f4e9399a7a3c9c35b8,
       type: 3}
-    health: 100
+    health: 75
     personality: -1
   - Prefab: {fileID: 6335328302781128188, guid: 702e6b1c16a59ab459421b2eb325113c,
       type: 3}
-    health: 100
+    health: 75
     personality: -1
   - Prefab: {fileID: 8866343374636948498, guid: c255d21602a84dd4eaca28f650555994,
       type: 3}
-    health: 100
+    health: 75
     personality: -1
   Rank4Presets:
   - Prefab: {fileID: 2597506197016466381, guid: d9c922c550841d74588846bd6ffa4e8c,
       type: 3}
-    health: 300
+    health: 200
     personality: 0

@@ -56,6 +56,7 @@ public class NewAbilityPoster : MonoBehaviour
         {
             if (AddedText[i])
             {
+                //Canvas text is dodge
                 AddedText[i].transform.position =
                     TextPrefab.transform.position + new Vector3(253 *2, (124 * 2) + ShiftUpAmount * i, 0);
 

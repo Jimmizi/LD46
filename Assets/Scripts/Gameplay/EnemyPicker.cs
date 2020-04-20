@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -119,6 +120,11 @@ public class EnemyPicker : MonoBehaviour
         spriteGo.transform.position = Vector3.zero;
         spriteGo.transform.SetParent(this.gameObject.transform);
         spriteGo.transform.position = Vector3.zero;
+
+        if (health)
+        {
+            health.ParticlesToStopOnDead = GetComponentsInChildren<ParticleSystem>().ToList();
+        }
 
         controller.Personality = preset.personality;
 

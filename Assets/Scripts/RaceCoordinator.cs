@@ -242,7 +242,7 @@ public class RaceCoordinator : MonoBehaviour
 
             Service.Grid.PlayerActor = PlayerGameObject.GetComponent<GridActor>();
 
-            Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, Service.Grid.Rows / 2);
+            Service.Grid.PlayerActor.TargetPosition = new Vector2Int(Service.Grid.Columns / 2, (Service.Grid.Rows / 2) - 1);
 
             healthComp.OnHealthDepleted += (component, health, previousHealth) =>
             {
