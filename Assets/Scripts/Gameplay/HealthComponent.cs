@@ -108,7 +108,7 @@ public class HealthComponent : MonoBehaviour
     {
         if (HealthSubtractInterval > 0)
         {
-            healthTimer += Time.deltaTime;
+            healthTimer += Time.deltaTime * GameplayManager.GlobalTimeMod;
 
             if (healthTimer >= HealthSubtractInterval)
             {

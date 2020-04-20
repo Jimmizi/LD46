@@ -166,7 +166,7 @@ public class AbilitiesComponent : MonoBehaviour
         {
             if (!abilityNeedsKeyLift[slot])
             {
-                abilityHeldTimer[slot] += Time.deltaTime;
+                abilityHeldTimer[slot] += Time.deltaTime * GameplayManager.GlobalTimeMod;
                 if (abilityHeldTimer[slot] >= AbilitySlot.HOLD_TO_SHUFFLE_TIME)
                 {
                     ShuffleAbility(slot);
@@ -194,7 +194,7 @@ public class AbilitiesComponent : MonoBehaviour
     {
         foreach (AbilitySlot slot in abilitySlots)
         {
-            slot?.Update(Time.deltaTime);
+            slot?.Update(Time.deltaTime * GameplayManager.GlobalTimeMod);
         }
 
         // Under this is UI control that only the player should process

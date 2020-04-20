@@ -200,7 +200,7 @@ public class RaceCoordinator : MonoBehaviour
     {
         while (Service.Flow.GameUICanvasGroup.alpha < 1)
         {
-            Service.Flow.GameUICanvasGroup.alpha += 2 * Time.deltaTime;
+            Service.Flow.GameUICanvasGroup.alpha += 2 * Time.deltaTime * GameplayManager.GlobalTimeMod;
             yield return null;
         }
 
@@ -211,7 +211,7 @@ public class RaceCoordinator : MonoBehaviour
     {
         while (Service.Flow.GameUICanvasGroup.alpha > 0)
         {
-            Service.Flow.GameUICanvasGroup.alpha -= 2 * Time.deltaTime;
+            Service.Flow.GameUICanvasGroup.alpha -= 2 * Time.deltaTime * GameplayManager.GlobalTimeMod;
             yield return null;
         }
 
@@ -275,8 +275,8 @@ public class RaceCoordinator : MonoBehaviour
 
         //While racing, add onto the race time and wait for it to expire
         RaceTime += Time.deltaTime;
-        ObstacleSpawnTimer += Time.deltaTime;
-        EnemySpawnTimer += Time.deltaTime;
+        ObstacleSpawnTimer += Time.deltaTime * GameplayManager.GlobalTimeMod;
+        EnemySpawnTimer += Time.deltaTime * GameplayManager.GlobalTimeMod;
 
 #if UNITY_EDITOR
         if (DebugStopObstacleSpawning)

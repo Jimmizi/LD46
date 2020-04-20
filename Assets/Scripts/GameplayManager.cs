@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class GameplayManager : MonoBehaviour
 {
+    public static float GlobalTimeMod = 1.0f;
+    
     public CanvasGroup Fader;
     public float FadeSpeed = 1f;
 

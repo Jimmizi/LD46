@@ -169,7 +169,7 @@ public class EnemyController : GridActor
                 break;
             case ActionState.Waiting:
 
-                actionTimer += Time.deltaTime;
+                actionTimer += Time.deltaTime * GameplayManager.GlobalTimeMod;
 
                 if (actionTimer >= timeUntilNextAction)
                 {

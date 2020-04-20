@@ -20,7 +20,7 @@ public class SelfDelete : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * GameplayManager.GlobalTimeMod;
 
         if (timer >= TimeToDestruct)
         {
@@ -43,7 +43,7 @@ public class SelfDelete : MonoBehaviour
     {
         while (myGroup.alpha > 0)
         {
-            myGroup.alpha -= Time.deltaTime;
+            myGroup.alpha -= Time.deltaTime * GameplayManager.GlobalTimeMod;
             yield return null;
         }
 

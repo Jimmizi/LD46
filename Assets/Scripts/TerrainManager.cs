@@ -48,10 +48,10 @@ public class TerrainManager : MonoBehaviour {
 
         if (Tilemap != null) 
         {
-            Tilemap.transform.Translate(Time.deltaTime * Speed * Vector3.down);
+            Tilemap.transform.Translate(Time.deltaTime * GameplayManager.GlobalTimeMod * Speed * Vector3.down);
         }
 
-        advance += Time.deltaTime * Speed;
+        advance += Time.deltaTime * GameplayManager.GlobalTimeMod * Speed;
 
         if (advance >= 1.0f) {
             advance = advance - 1.0f;

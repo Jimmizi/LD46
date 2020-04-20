@@ -61,7 +61,7 @@ public class EndScreen : MonoBehaviour
     {
         while (group.alpha < 1)
         {
-            group.alpha += FadeInSpeed * Time.deltaTime;
+            group.alpha += FadeInSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod;
             yield return null;
         }
 
@@ -74,7 +74,7 @@ public class EndScreen : MonoBehaviour
     {
         while (group.alpha > 0)
         {
-            group.alpha -= FadeOutSpeed * Time.deltaTime;
+            group.alpha -= FadeOutSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod;
             yield return null;
         }
 

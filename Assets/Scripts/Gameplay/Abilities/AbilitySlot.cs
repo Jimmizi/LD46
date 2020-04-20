@@ -179,7 +179,7 @@ public class AbilitySlot
             // No ability
             if (cooldownTimer > 0.0f)
             {
-                cooldownTimer -= DeltaTime;
+                cooldownTimer -= DeltaTime * GameplayManager.GlobalTimeMod;
                 if (cooldownTimer <= 0.0f)
                 {
                     cooldownTimer = 0.0f;
@@ -195,7 +195,7 @@ public class AbilitySlot
             // Yes ability
             if (state == State.Active)
             {
-                if(!ability.Update(this, DeltaTime))
+                if(!ability.Update(this, DeltaTime * GameplayManager.GlobalTimeMod))
                 {
                     Clear(true);
                     return false;
