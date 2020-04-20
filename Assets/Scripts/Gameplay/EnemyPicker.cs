@@ -100,6 +100,14 @@ public class EnemyPicker : MonoBehaviour
                 break;
             case 3:
                 preset = Rank4Presets[0];
+
+                var collider = GetComponent<BoxCollider2D>();
+                if (collider)
+                {
+                    //special collider increase for the boss
+                    collider.size = new Vector2(collider.size.x, 2);
+                }
+
                 break;
             case 0:
             default:
