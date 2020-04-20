@@ -79,6 +79,26 @@ public class AbilitiesComponent : MonoBehaviour
                 }
 
                 slot.ability = abilityDeck.Draw(abilitySlots, x, y);
+
+                if (tag == "Player")
+                {
+                    string GetLetterForSlot()
+                    {
+                        switch (slot.slotIndex)
+                        {
+                            case 0: return "Q";
+                            case 1: return "W";
+                            case 2: return "E";
+                            case 3: return "R";
+                            case 4: return "T";
+                        }
+
+                        return "";
+                    }
+                    
+                    Service.AbilityPost.PostText($"{GetLetterForSlot()}: {slot.ability.name}");
+                }
+
                 return true;
             }
         }

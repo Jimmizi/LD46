@@ -5,6 +5,7 @@ using UnityEngine;
 
 public static class Service
 {
+    public static NewAbilityPoster AbilityPost = null;
     public static FlowManager Flow = null;
     public static OptionsMonobehaviour Options = null;
     public static EndScreen End = null;
