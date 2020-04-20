@@ -149,6 +149,7 @@ MonoBehaviour:
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
   Tune:
     InFrontAvoidanceDistance: 5
+    IdealTileDistanceAway: 2
   AggressiveStats:
     TimeBetweenActions:
       Base: 3

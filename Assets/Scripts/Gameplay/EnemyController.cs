@@ -20,6 +20,15 @@ public class Pair<T1, T2>
     public T2 Second { get; set; }
 }
 
+public class ReverseComparer : IComparer<float>
+{
+    public int Compare(float x, float y)
+    {
+        // Compare y and x in reverse order.
+        return y < x ? 1 : 0;
+    }
+}
+
 public class EnemyController : GridActor
 {
     private const int NUM_LANES = 3;
@@ -303,13 +312,25 @@ public class EnemyController : GridActor
 
         AbilityType idealType;
 
-        SortedDictionary<float, AbilityType> abilityPriority = new SortedDictionary<float, AbilityType>();
+        List<Pair<float, AbilityType>> abilityPriority = new List<Pair<float, AbilityType>>();
 
-        abilityPriority.Add(movementScore, AbilityType.Movement);
-        abilityPriority.Add(attackScore, AbilityType.Offensive);
-        abilityPriority.Add(supportScore, AbilityType.Support);
+        var sorter = new float[3];
+        sorter[0] = movementScore;
+        sorter[1] = attackScore;
+        sorter[2] = supportScore;
+        var sorterTypes = new AbilityType[3];
+        sorterTypes[0] = AbilityType.Movement;
+        sorterTypes[1] = AbilityType.Offensive;
+        sorterTypes[2] = AbilityType.Support;
+        
+        ReverseComparer rc = new ReverseComparer();
+        System.Array.Sort(sorter, sorterTypes, rc);
 
-
+        for (var index = 0; index < sorter.Length; index++)
+        {
+            abilityPriority.Add(new Pair<float, AbilityType>(sorter[index], sorterTypes[index]));
+        }
+        
         #endregion
 
         #region SECOND: Now we have a goal type, figure out what ability to use within that category
@@ -317,12 +338,12 @@ public class EnemyController : GridActor
 
         foreach (var abilityType in abilityPriority)
         {
-            if (abilityType.Key <= 0.0f)
+            if (abilityType.First <= 0.0f)
             {
                 continue;
             }
 
-            var AbilitiesForType = decisionData.AvailableAbilities.FindAll(x => x.ability.category == abilityType.Value);
+            var AbilitiesForType = decisionData.AvailableAbilities.FindAll(x => x.ability.category == abilityType.Second);
 
             if (AbilitiesForType.Count == 0)
             {
@@ -330,7 +351,7 @@ public class EnemyController : GridActor
                 continue;
             }
 
-            if (abilityType.Value == AbilityType.Movement)
+            if (abilityType.Second == AbilityType.Movement)
             {
                 /* The ideal position:
                  * 1. Is at the ideal distance
@@ -508,7 +529,7 @@ public class EnemyController : GridActor
                 return true;
 
             }
-            else if (abilityType.Value == AbilityType.Offensive)
+            else if (abilityType.Second == AbilityType.Offensive)
             {
                 // For offensive just care about rarity
 
@@ -529,7 +550,7 @@ public class EnemyController : GridActor
                 activateSlot = AbilitiesForType[index];
                 return true;
             }
-            else if (abilityType.Value == AbilityType.Support)
+            else if (abilityType.Second == AbilityType.Support)
             {
                 // For support, priorise healing if low on health, otherwise use shields if we have them
 
@@ -673,6 +694,8 @@ public class EnemyController : GridActor
                 break;
             case ActionState.DoAction:
 
+                Debug.Log($"Actor at {CurrentTile} decided to use: {activateSlot.ability}");
+                
                 decisionData.LastAbilityTypeUsed = activateSlot.ability.category;
                 abilities.ActivateAbility(activateSlot.slotIndex);
 
@@ -695,6 +718,8 @@ public class EnemyController : GridActor
     bool IsObstacleBlockingLane(Vector2Int origin, out int dist)
     {
         dist = 0;
+
+        Service.Game.CurrentRace.FlushNullObstacles();
 
         foreach (var ob in Service.Game.CurrentRace.ObstacleList)
         {
@@ -735,6 +760,9 @@ public class EnemyController : GridActor
         // To the left, in front, and right of me
         decisionData.ImmediateLanesBlocked = new bool[NUM_IMMEDIATE_LANES];
         decisionData.ImmediateLanesBlockedDistance = new int[NUM_IMMEDIATE_LANES];
+
+        decisionData.MainLaneBlockedIsTerrain = new bool[NUM_LANES];
+        decisionData.ImmediateLanesBlockedIsTerrain = new bool[NUM_IMMEDIATE_LANES];
 
         decisionData.AvailableAbilities = new List<AbilitySlot>();
         shuffleSlots.Clear();

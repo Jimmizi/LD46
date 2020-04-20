@@ -400,12 +400,8 @@ public class RaceCoordinator : MonoBehaviour
     }
 
 
-    #region Spawning functions
-
-    void SpawnNewObstacle()
+    public void FlushNullObstacles()
     {
-        GenerateTimerForNextObstacle();
-
         for (int i = ObstacleList.Count - 1; i >= 0; i--)
         {
             if (ObstacleList[i] == null)
@@ -413,6 +409,16 @@ public class RaceCoordinator : MonoBehaviour
                 ObstacleList.RemoveAt(i);
             }
         }
+    }
+
+    #region Spawning functions
+
+
+    void SpawnNewObstacle()
+    {
+        GenerateTimerForNextObstacle();
+
+        FlushNullObstacles();
 
         if (ObstacleList.Count >= Service.Flow.MaxObstacles)
         {
