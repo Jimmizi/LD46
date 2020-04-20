@@ -35,6 +35,8 @@ public class GameplayManager : MonoBehaviour
     {
         Debug.Log("Gameplay Start.");
         Service.Game = this;
+
+        Service.Music.PlayGameLoopMusic();
     }
 
     public void Shutdown()

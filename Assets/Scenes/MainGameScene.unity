@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -259,6 +260,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CenterCamera: 1
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: -1
 --- !u!1001 &566004033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -295,6 +309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -21.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1177080545377233377, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: slotIndex
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1299582060772615806, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
@@ -1085,6 +1104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1805636659}
   - component: {fileID: 1805636658}
+  - component: {fileID: 1805636660}
   m_Layer: 0
   m_Name: __FLOW
   m_TagString: Untagged
@@ -1104,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d094f0c45e5a78419fdb176fc98c254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipTitleScreen: 1
+  SkipTitleScreen: 0
   GameUICanvasGroup: {fileID: 2074240755}
   MaxRaceTime: 180
   MaxEnemies: 4
@@ -1158,6 +1178,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805636660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805636657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a9c4ca09268634f856951ae440b687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuMusicEvent: event:/Music/menu_music
+  GameMusicEvent: event:/Music/gameplay_music
 --- !u!1 &1861562508
 GameObject:
   m_ObjectHideFlags: 0

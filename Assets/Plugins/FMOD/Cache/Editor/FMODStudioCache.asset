@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: event:/Music/menu_music
   guid: 25fe53075839234e8b6101a82863571a
   Banks:
-  - {fileID: -2811504459421212400}
+  - {fileID: 4194408231236879808}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   Path: event:/Cars/crash
   guid: ca9839e1aef9d34798b89427e964fa7f
   Banks:
-  - {fileID: 7212794143876246206}
+  - {fileID: 3973551427083544901}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -46,6 +46,24 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 807
+--- !u!114 &-6325283868416314976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: fmodProj/main/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637230177316984604
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-5290014759000933727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,7 +79,7 @@ MonoBehaviour:
   Path: event:/Cars/engine_bike
   guid: e39e511534489e41967fc2e4705f2ecd
   Banks:
-  - {fileID: 7212794143876246206}
+  - {fileID: 3973551427083544901}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -84,7 +102,7 @@ MonoBehaviour:
   Path: event:/Cars/skid
   guid: 9ad46cc1b72b4840b5fed046dff27ac0
   Banks:
-  - {fileID: 7212794143876246206}
+  - {fileID: 3973551427083544901}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -127,7 +145,7 @@ MonoBehaviour:
   lastModified: 637230166018124392
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-2509024045953615649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +161,7 @@ MonoBehaviour:
   Path: event:/Cars/engine_big
   guid: 01f41d49e06aa241bb54e1870531e12a
   Banks:
-  - {fileID: 7212794143876246206}
+  - {fileID: 3973551427083544901}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -168,7 +186,7 @@ MonoBehaviour:
   lastModified: 637230166018089359
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,10 +201,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 6820387830089912646}
-  - {fileID: 7212794143876246206}
-  - {fileID: -534097094053252794}
-  - {fileID: 772626747261017616}
-  - {fileID: -2811504459421212400}
+  - {fileID: 3973551427083544901}
+  - {fileID: 7000260023023920229}
+  - {fileID: -6325283868416314976}
+  - {fileID: 4194408231236879808}
   EditorEvents:
   - {fileID: -2509024045953615649}
   - {fileID: 120203048011614745}
@@ -198,10 +216,10 @@ MonoBehaviour:
   - {fileID: -9047378257812920950}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 772626747261017616}
+  - {fileID: -6325283868416314976}
   StringsBanks:
   - {fileID: 6820387830089912646}
-  stringsBankWriteTime: 637230166018049330
+  stringsBankWriteTime: 637230177316994606
   cacheVersion: 3
 --- !u!114 &120203048011614745
 MonoBehaviour:
@@ -218,7 +236,7 @@ MonoBehaviour:
   Path: event:/Cars/engine
   guid: 187a128bef401847a3917a0d3bad39b7
   Banks:
-  - {fileID: 7212794143876246206}
+  - {fileID: 3973551427083544901}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -243,7 +261,7 @@ MonoBehaviour:
   lastModified: 637230166018044326
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &3346794205444280545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,8 +277,8 @@ MonoBehaviour:
   Path: event:/Music/gameplay_music
   guid: d973539f9ad96048894aa5abb7b2b0f7
   Banks:
-  - {fileID: -534097094053252794}
-  - {fileID: -2811504459421212400}
+  - {fileID: 7000260023023920229}
+  - {fileID: 4194408231236879808}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -268,6 +286,42 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 48000
+--- !u!114 &3973551427083544901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Cars.bank
+  m_EditorClassIdentifier: 
+  Path: fmodProj/main/Build/Desktop/Cars.bank
+  SubDir: 
+  lastModified: 637230177303893337
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &4194408231236879808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/music.bank
+  m_EditorClassIdentifier: 
+  Path: fmodProj/main/Build/Desktop/music.bank
+  SubDir: 
+  lastModified: 637230177322608760
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &4205505688145115791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +337,7 @@ MonoBehaviour:
   Path: event:/Gameplay/explosion
   guid: 94a39dbe710a834ea2de3879c0c98e33
   Banks:
-  - {fileID: -534097094053252794}
+  - {fileID: 7000260023023920229}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -305,11 +359,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: fmodProj/main/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637230166018049330
+  lastModified: 637230177316994606
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1200
+    Value: 1208
+  Exists: 1
+--- !u!114 &7000260023023920229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/gameplay.bank
+  m_EditorClassIdentifier: 
+  Path: fmodProj/main/Build/Desktop/gameplay.bank
+  SubDir: 
+  lastModified: 637230177316959579
+  LoadResult: 0
+  FileSizes: []
   Exists: 1
 --- !u!114 &7212794143876246206
 MonoBehaviour:
@@ -328,4 +400,4 @@ MonoBehaviour:
   lastModified: 637230166018034315
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0

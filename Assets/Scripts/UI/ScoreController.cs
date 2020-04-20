@@ -16,7 +16,7 @@ public class ScoreController : MonoBehaviour
     [Range(0, 32000)]
     public int DebugSetScore = 0;
     
-    private int currentScore = 0;
+    private static int currentScore = 0;
 
     public int CurrentScore
     {
