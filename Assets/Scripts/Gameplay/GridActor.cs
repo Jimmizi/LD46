@@ -126,6 +126,11 @@ public class GridActor : MonoBehaviour
         OnActorDestroy?.Invoke(this, new EventArgs());
     }
 
+    public void PushDown()
+    {
+        MoveInDirection(0, -1);
+    }
+
     // Update is called once per frame
     protected void Update()
     {

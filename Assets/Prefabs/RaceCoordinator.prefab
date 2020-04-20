@@ -231,8 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DebugIgnoreRaceTimer: 1
   DebugForceCheckpoint: 0
-  DebugStopObstacleSpawning: 0
-  DebugStopEnemySpawning: 0
+  DebugStopObstacleSpawning: 1
+  DebugStopEnemySpawning: 1
   DebugSpawnEnemy: 0
   DebugSpawnObstacle: 0
   ObstacleList: []

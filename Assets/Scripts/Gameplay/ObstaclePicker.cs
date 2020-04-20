@@ -14,9 +14,13 @@ public class ObstaclePicker : MonoBehaviour
 
         [SerializeField]
         public int damageOnCollision;
+
+        [SerializeField]
+        public bool moveBackOne;
     }
 
     public List<ObstaclePreset> Obstacles = new List<ObstaclePreset>();
+    public bool HasPushBack => Obstacles.Count > 0 && Obstacles[0].moveBackOne;
 
     // Start is called before the first frame update
     void Start()

@@ -126,13 +126,38 @@ public class HealthComponent : MonoBehaviour
         //}
     }
 
+    List<GameObject> ObstaclesHit = new List<GameObject>();
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Obstacle")
         {
+            for (int i = ObstaclesHit.Count - 1; i >= 0; i--)
+            {
+                if (ObstaclesHit[i] == null)
+                {
+                    ObstaclesHit.RemoveAt(i);
+                }
+            }
+
+            if (ObstaclesHit.Contains(other.gameObject))
+            {
+                return;
+            }
+
             var obstacleComp = other.GetComponent<ObstaclePicker>();
             if (obstacleComp)
             {
+                ObstaclesHit.Add(other.gameObject);
+
+                if (obstacleComp.HasPushBack)
+                {
+                    var grid = GetComponent<GridActor>();
+                    if (grid)
+                    {
+                        grid.PushDown();
+                    }
+                }
+
                 Offset(-obstacleComp.GetCollisionDamage);
             }
         }
