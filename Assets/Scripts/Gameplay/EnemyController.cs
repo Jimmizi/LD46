@@ -107,7 +107,13 @@ public class EnemyController : GridActor
     private float timeUntilNextAction;
     private float actionTimer;
 
+
+
     private AbilitySlot activateSlot;
+    private List<AbilitySlot> shuffleSlots = new List<AbilitySlot>();
+
+
+
 
     [HideInInspector]
     public DecisionMakingData decisionData = new DecisionMakingData();
@@ -216,6 +222,12 @@ public class EnemyController : GridActor
             case ActionState.DoAction:
 
                 abilities.ActivateAbility(activateSlot.slotIndex);
+
+                foreach (var abil in shuffleSlots)
+                {
+                    abilities.ShuffleAbility(abil.slotIndex);
+                }
+
                 currentActionState++;
 
                 break;
@@ -270,6 +282,7 @@ public class EnemyController : GridActor
         decisionData.ImmediateLanesBlockedDistance = new int[NUM_IMMEDIATE_LANES];
 
         decisionData.AvailableAbilities = new List<AbilitySlot>();
+        shuffleSlots.Clear();
 
 
         // Grab terrain blocking data on main lanes

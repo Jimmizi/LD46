@@ -231,13 +231,7 @@ public class AbilitiesComponent : MonoBehaviour
     {
         // Add abilities
         // abilityDeck.Add( new Ability...() );   
-
-        if (!CompareTag("Player"))
-        {
-            abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
-            return;
-        }
-
+        
         abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
