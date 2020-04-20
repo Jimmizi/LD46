@@ -35,6 +35,8 @@ public class GridActor : MonoBehaviour
     }
     private MovementData CurrentMove = new MovementData();
 
+    public Vector2Int CurrentTile => Service.Grid.GetWorldTilePosition(transform.position);
+
     public bool LockTargetPosition;
 
     public bool UseLinearMovementSpeed;
@@ -152,7 +154,7 @@ public class GridActor : MonoBehaviour
 
         if (!UseLinearMovementSpeed)
         {
-            transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, CurrentMove.TargetWorldPosition, MoveSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod);
         }
         else
         {
@@ -162,7 +164,7 @@ public class GridActor : MonoBehaviour
 
             var dir3 = new Vector3(dir.x, dir.y, 0);
 
-            transform.position += dir3 * (MoveSpeed * Time.deltaTime);
+            transform.position += dir3 * (MoveSpeed * Time.deltaTime * GameplayManager.GlobalTimeMod);
         }
     }
 
@@ -192,7 +194,7 @@ public class GridActor : MonoBehaviour
 
         while (angleChangesDone < 8)
         {
-            time += Time.deltaTime;
+            time += Time.deltaTime * GameplayManager.GlobalTimeMod;
 
             var mod = time / angleInterval;
 

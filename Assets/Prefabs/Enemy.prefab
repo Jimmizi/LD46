@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: ea75778a6e456d641935d750412b4e89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,6 +147,29 @@ MonoBehaviour:
   UseLinearMovementSpeed: 0
   SelfDestroyOnTargetReached: 0
   SelfDestroyOnTargetReached_OnlyIfNotOnBoard: 0
+  Tune:
+    InFrontAvoidanceDistance: 5
+  AggressiveStats:
+    TimeBetweenActions:
+      Base: 3
+      Min: -0.5
+      Max: 0.5
+      Lowest: 0
+      Highest: 0
+  PersistentStats:
+    TimeBetweenActions:
+      Base: 4.5
+      Min: -2.5
+      Max: 0.5
+      Lowest: 0
+      Highest: 0
+  PassiveStats:
+    TimeBetweenActions:
+      Base: 4
+      Min: -1
+      Max: 1
+      Lowest: 0
+      Highest: 0
 --- !u!61 &6990142178788318870
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -185,9 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e43415d69aefb248bada4c94ee00eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlesToStopOnDead:
-  - {fileID: 0}
-  - {fileID: 0}
+  ParticlesToStopOnDead: []
   DebugKill: 0
   maxHealth: 35
   currentHealth: 35
@@ -212,7 +233,11 @@ MonoBehaviour:
   resources: {fileID: 11400000, guid: 5faa3e03f3a063b4d9b213b388d4d237, type: 2}
   DirectionTargetPrefab: {fileID: 0}
   PositionTargetPrefab: {fileID: 0}
-  ObjectTargetPrefab: {fileID: 0}
+  ObjectTargetPrefab: {fileID: 1694247210809019126, guid: f2c754e4ea677094fa0b4de2f9ca02f8,
+    type: 3}
+  FuelRefilledFxPrefab: {fileID: 6986247292224126219, guid: 459ae7cafe8b7c649a73544269ab88da,
+    type: 3}
+  ImmediateAbilitiesOnStart: 1
 --- !u!50 &8487711120022096918
 Rigidbody2D:
   serializedVersion: 4

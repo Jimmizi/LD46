@@ -96,10 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d339976d7349c4293f005003f4c29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 1.5
   direction: {x: 0, y: 0}
   user: {fileID: 0}
   FalloffPerSecond: 0.4
+  Damage: 10
 --- !u!58 &6635999930845124626
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -11,6 +11,13 @@ public class AbilitiesComponent : MonoBehaviour
     public TargetObject PositionTargetPrefab;
     public TargetObject ObjectTargetPrefab;
 
+    public GameObject FuelRefilledFxPrefab;
+
+    /// <summary>
+    /// Removes the cooldown from abilities when the actor spawns, giving them immediate access
+    /// </summary>
+    public bool ImmediateAbilitiesOnStart = false;
+
     /// <summary> Activates the ability at the given slot </summary>
     /// <returns> The required targeting of the ability </returns>
     public void ActivateAbility(int slotIndex)
@@ -23,6 +30,14 @@ public class AbilitiesComponent : MonoBehaviour
         }
 
         AbilitySlot slot = abilitySlots[slotIndex];
+
+        switch (slot.ability)
+        {
+            case HealAbility heal:
+                Instantiate(FuelRefilledFxPrefab, slot.owner.transform);
+                break;
+        }
+
         slot.Activate();
 
         switch(slot.targeting)
@@ -38,6 +53,10 @@ public class AbilitiesComponent : MonoBehaviour
 
             case AbilityTargeting.Unit:
                 slot.targetObject = CreateObjectTarget();
+                if (slot.targetObject.TargetPlayer)
+                {
+                    slot.targetObject.OnTargetReady?.Invoke(slot.targetObject);
+                }
                 break;
         }
     }
@@ -156,7 +175,7 @@ public class AbilitiesComponent : MonoBehaviour
         {
             if (!abilityNeedsKeyLift[slot])
             {
-                abilityHeldTimer[slot] += Time.deltaTime;
+                abilityHeldTimer[slot] += Time.deltaTime * GameplayManager.GlobalTimeMod;
                 if (abilityHeldTimer[slot] >= AbilitySlot.HOLD_TO_SHUFFLE_TIME)
                 {
                     ShuffleAbility(slot);
@@ -182,14 +201,15 @@ public class AbilitiesComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        foreach (AbilitySlot slot in abilitySlots)
+        {
+            slot?.Update(Time.deltaTime * GameplayManager.GlobalTimeMod);
+        }
+
+        // Under this is UI control that only the player should process
         if (!CompareTag("Player"))
         {
             return;
-        }
-
-        foreach (AbilitySlot slot in abilitySlots)
-        {
-            slot?.Update(Time.deltaTime);
         }
 
         for (int i = 0; i < NUM_SLOTS; i++)
@@ -206,6 +226,12 @@ public class AbilitiesComponent : MonoBehaviour
             abilitySlots[i] = new AbilitySlot(gameObject, i);
             abilitySlots[i].OnCooldownEnded += slot => DrawAbility(slot);
             abilitySlots[i].Clear(true);
+
+            if (ImmediateAbilitiesOnStart)
+            {
+                // Needs to be more than 0 to trigger OnCooldownEnded
+                abilitySlots[i].cooldownTimer = 0.1f;
+            }
             //DrawAbility(abilitySlots[i]);
         };
     }
@@ -213,15 +239,15 @@ public class AbilitiesComponent : MonoBehaviour
     void SetupDeck()
     {
         // Add abilities
-        // abilityDeck.Add( new Ability...() );                
-
+        // abilityDeck.Add( new Ability...() );   
+        
         abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
         abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1));
 
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35), 3);
-        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab), 4);
+        abilityDeck.Add(new SpreadshotAbility("Spread Shot", sprites.SpreadShot, resources.BulletPrefab, CompareTag("Player") ? AbilityTargeting.Line : AbilityTargeting.Unit), 4);
     }
 
     bool IsValidSlotIndex(int slotIndex)
@@ -260,6 +286,8 @@ public class AbilitiesComponent : MonoBehaviour
     }
 
     private const int NUM_SLOTS = 5;
+
+    public AbilitySlot[] Slots => abilitySlots;
 
     AbilitySlot[] abilitySlots      = new AbilitySlot[NUM_SLOTS];
     float[] abilityHeldTimer        = new float[NUM_SLOTS];

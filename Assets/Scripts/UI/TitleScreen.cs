@@ -8,13 +8,25 @@ public class TitleScreen : MonoBehaviour
     public CanvasGroup CanvasFade;
 
     public EventHandler OnTitleFadedOut;
+
+    public GameObject Title;
+    public CanvasGroup PressToPlayCanvasGroup;
     
     private bool stageLaunchedCoroutine = false;
     private bool launchedGame;
 
+    private Vector2 OriginalTitlePosition;
+
+    private float delayTimer = 2f;
+
+    private const float titleMoveUp = 1500f;
+
+    private bool AllowPlay;
+
     private enum Stage
     {
-        Idle = 0,
+        Intro = 0,
+        Idle,
 
         Fading,
        // FadingTitle, happens with fading background
@@ -26,7 +38,7 @@ public class TitleScreen : MonoBehaviour
 
     public void Play()
     {
-        if (stage == Stage.Idle)
+        if (AllowPlay && stage == Stage.Idle)
         {
             stage++;
         }
@@ -55,11 +67,29 @@ public class TitleScreen : MonoBehaviour
         OnTitleFadedOut?.Invoke(this, new EventArgs());
     }
 
+    void Start()
+    {
+        OriginalTitlePosition = Title.transform.position;
+        Title.transform.position += new Vector3(0, titleMoveUp);
+        PressToPlayCanvasGroup.alpha = 0;
+    }
+
     // Update is called once per frame
     void Update()
     {
         switch (stage)
         {
+            case Stage.Intro:
+
+                delayTimer -= Time.deltaTime;
+
+                if (delayTimer <= 0)
+                {
+                    StartCoroutine(BringInTitle());
+                    stage++;
+                }
+
+                break;
             case Stage.Idle:
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -89,5 +119,27 @@ public class TitleScreen : MonoBehaviour
                 Destroy(this);
                 break;
         }
+    }
+
+    IEnumerator BringInTitle()
+    {
+        while (Title.transform.position.y > OriginalTitlePosition.y)
+        {
+            Title.transform.position -= new Vector3(0, titleMoveUp * 2 * Time.deltaTime,0);
+            yield return null;
+        }
+
+        StartCoroutine(BringInPressToPlay());
+    }
+
+    IEnumerator BringInPressToPlay()
+    {
+        while (PressToPlayCanvasGroup.alpha < 1)
+        {
+            PressToPlayCanvasGroup.alpha += Time.deltaTime * 4;
+            yield return null;
+        }
+
+        AllowPlay = true;
     }
 }

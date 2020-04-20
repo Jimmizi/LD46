@@ -292,6 +292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasFade: {fileID: 807529625616447053}
+  Title: {fileID: 3221885349859083934}
+  PressToPlayCanvasGroup: {fileID: 9206911704915187638}
 --- !u!225 &807529625616447053
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -316,6 +318,7 @@ GameObject:
   - component: {fileID: 6096956311730103916}
   - component: {fileID: 7422219792836418213}
   - component: {fileID: 9206911704915187638}
+  - component: {fileID: 6371267085850156838}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -396,3 +399,52 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6371267085850156838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7276876017543177612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9442fb128d59d4d93b7e620eebff30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 1
+  FontText: {fileID: 7422219792836418213}
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.0050125
+      outSlope: 2.0050125
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49875
+      value: 1
+      inSlope: 0.005000055
+      outSlope: 0.005000055
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.9950124
+      outSlope: -1.9950124
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  MaxSize: 48
+  MinSize: 32

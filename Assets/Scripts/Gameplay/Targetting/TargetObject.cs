@@ -11,8 +11,19 @@ public class TargetObject : MonoBehaviour
     public bool isReady = false;
     public GameObject targetUser;
 
+    public bool TargetPlayer;
+
     public virtual Vector2 GetVector() { return new Vector2(); }
-    public virtual GameObject GetUnit() { return null; }
+
+    public virtual GameObject GetUnit()
+    {
+        if (TargetPlayer)
+        {
+            return Service.Game?.CurrentRace?.PlayerGameObject;
+        }
+
+        return null;
+    }
 
     public virtual TargetObject CreateFor(GameObject targetUser)
     {

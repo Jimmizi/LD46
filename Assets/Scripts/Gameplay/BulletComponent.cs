@@ -52,14 +52,19 @@ public class BulletComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Service.Game?.CurrentRace?.RaceInProgress ?? false)
+        {
+            return;
+        }
+
         Vector3 pos = transform.position;
 
-        pos.x += direction.x * speed * Time.deltaTime;
-        pos.y += direction.y * speed * Time.deltaTime;
+        pos.x += direction.x * speed * Time.deltaTime * GameplayManager.GlobalTimeMod;
+        pos.y += direction.y * speed * Time.deltaTime * GameplayManager.GlobalTimeMod;
 
-        pos.y -= bulletFalloff * Time.deltaTime;
+        pos.y -= bulletFalloff * Time.deltaTime * GameplayManager.GlobalTimeMod;
 
-        bulletFalloff += FalloffPerSecond * Time.deltaTime;
+        bulletFalloff += FalloffPerSecond * Time.deltaTime * GameplayManager.GlobalTimeMod;
 
         transform.position = pos;
 

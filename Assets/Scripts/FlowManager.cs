@@ -8,6 +8,56 @@ using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 using Time = UnityEngine.Time;
 
+[Serializable]
+public struct RandomStatInt
+{
+    public int Base;
+    public int Min;
+    public int Max;
+
+    public int Lowest;
+    public int Highest;
+
+    public int Generate(int mod = 1)
+    {
+        var ret = Base;
+
+        for (int i = 0; i < mod; i++)
+        {
+            ret += Random.Range(Min, Max);
+        }
+
+        return Mathf.Clamp(ret, Lowest, Highest);
+    }
+}
+[Serializable]
+public struct RandomStatFloat
+{
+    public float Base;
+    public float Min;
+    public float Max;
+
+    public float Lowest;
+    public float Highest;
+
+    public float Generate(int mod = 1)
+    {
+        var ret = Base;
+
+        for (int i = 0; i < mod; i++)
+        {
+            ret += Random.Range(Min, Max);
+        }
+
+        if (Lowest == 0 && Highest == 0)
+        {
+            return ret;
+        }
+
+        return Mathf.Clamp(ret, Lowest, Highest);
+    }
+}
+
 public class FlowManager : MonoBehaviour
 {
 #if DEBUG && UNITY_EDITOR
@@ -15,52 +65,6 @@ public class FlowManager : MonoBehaviour
 #endif
 
     public CanvasGroup GameUICanvasGroup;
-
-    [Serializable]
-    public struct RandomStatInt
-    {
-        public int Base;
-        public int Min;
-        public int Max;
-
-        public int Lowest;
-        public int Highest;
-
-        public int Generate(int mod = 1)
-        {
-            var ret = Base;
-
-            for (int i = 0; i < mod; i++)
-            {
-                ret += Random.Range(Min, Max);
-            }
-
-            return Mathf.Clamp(ret, Lowest, Highest);
-        }
-    }
-    [Serializable]
-    public struct RandomStatFloat
-    {
-        public float Base;
-        public float Min;
-        public float Max;
-
-        public float Lowest;
-        public float Highest;
-
-        public float Generate(int mod = 1)
-        {
-            var ret = Base;
-
-            for (int i = 0; i < mod; i++)
-            {
-                ret += Random.Range(Min, Max);
-            }
-            
-            return Mathf.Clamp(ret, Lowest, Highest);
-        }
-    }
-
 
     public int MaxRaceTime;
     public int MaxEnemies;

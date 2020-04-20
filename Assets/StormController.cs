@@ -6,6 +6,9 @@ using UnityEngine.Assertions;
 
 public class StormController : MonoBehaviour
 {
+    private const float VignetteVaule = 0.75f;
+    private const float FullValue = 1.0f;
+
     public bool Transitioning;
 
     public float TransitionSpeedInSeconds = 1;
@@ -35,11 +38,11 @@ public class StormController : MonoBehaviour
 
     public bool IsFullStorm()
     {
-        return !Transitioning && Math.Abs(CurrentStrength - 1) < 0.005f;
+        return !Transitioning && Math.Abs(CurrentStrength - FullValue) < 0.005f;
     }
     public bool IsVignetteStorm()
     {
-        return !Transitioning && Math.Abs(CurrentStrength - 0.2f) < 0.005f;
+        return !Transitioning && Math.Abs(CurrentStrength - VignetteVaule) < 0.005f;
     }
 
     /// <summary>
@@ -53,12 +56,12 @@ public class StormController : MonoBehaviour
 
     public void SetFull(bool instant = false)
     {
-        Set(1f, instant);
+        Set(FullValue, instant);
     }
 
     public void SetVignette(bool instant = false)
     {
-        Set(0.2f, instant);
+        Set(VignetteVaule, instant);
     }
 
     public void Set(float val, bool instant = false)

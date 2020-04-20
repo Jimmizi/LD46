@@ -15,13 +15,13 @@ public class SpreadshotAbility : AbilityBase
     private float bulletSpawnTimer = 0.1f;
     private int numBulletsToSpawn;
 
-    public SpreadshotAbility(string name, Sprite sprite, BulletComponent bulletPrefab)
+    public SpreadshotAbility(string name, Sprite sprite, BulletComponent bulletPrefab, AbilityTargeting target = AbilityTargeting.Line)
     {
         this.name = name;
         this.sprite = sprite;
         this.bulletPrefab = bulletPrefab;
         this.category = AbilityType.Offensive;
-        this.targeting = AbilityTargeting.Line;
+        this.targeting = target;
     }
 
     public SpreadshotAbility(SpreadshotAbility other)
@@ -44,6 +44,20 @@ public class SpreadshotAbility : AbilityBase
     {
         this.spawnTimer = SPAWN_DELAY;
         this.direction = direction;
+        numBulletsToSpawn = NumberOfShots;
+        return true;
+    }
+
+    public override bool Activate(AbilitySlot userSlot, GameObject target)
+    {
+        this.spawnTimer = SPAWN_DELAY;
+        
+        var heading = new Vector2(target.transform.position.x, target.transform.position.y) 
+                      - new Vector2(userSlot.owner.transform.position.x, userSlot.owner.transform.position.y);
+
+        var dist = heading.magnitude;
+        this.direction = heading / dist;
+
         numBulletsToSpawn = NumberOfShots;
         return true;
     }

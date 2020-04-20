@@ -219,7 +219,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.04, y: 2.86, z: -10}
+  m_LocalPosition: {x: 7.04, y: 4, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 78116695}
@@ -625,6 +625,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408554897077438301, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 90.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408554897077438301, guid: de10c2aead8ac75359032ee21c342349,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 5408554897077438302, guid: de10c2aead8ac75359032ee21c342349,
         type: 3}
@@ -1132,6 +1142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Storm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4973907559729390890, guid: 7dec0bed1cd94ab4cad3bb412a11bbd6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dec0bed1cd94ab4cad3bb412a11bbd6, type: 3}
