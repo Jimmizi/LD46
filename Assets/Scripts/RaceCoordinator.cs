@@ -376,6 +376,8 @@ public class RaceCoordinator : MonoBehaviour
 
         stage = RaceState.OutroToCheckpoint_Wait;
 
+        Service.Score.AddScore(ScoreController.ScoreType.ReachedCheckpoint);
+
         //Then start a fade out on the screen
         Service.Game.OnFadeCoroutineComplete += OnFadedOutFromRace;
         Service.Game.StartFader(true);

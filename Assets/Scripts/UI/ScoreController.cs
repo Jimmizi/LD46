@@ -9,7 +9,8 @@ public class ScoreController : MonoBehaviour
 {
     public enum ScoreType
     {
-        PerHealthTick
+        PerHealthTick,
+        ReachedCheckpoint
     }
 
     public bool DelayScoreSetting;
@@ -72,6 +73,9 @@ public class ScoreController : MonoBehaviour
         {
             case ScoreType.PerHealthTick:
                 extrascore = 10;
+                break;
+            case ScoreType.ReachedCheckpoint:
+                extrascore = 250;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(scoretype), scoretype, null);
