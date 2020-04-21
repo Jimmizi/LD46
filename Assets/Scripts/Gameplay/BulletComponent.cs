@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BulletComponent : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string ShotEvent;
+    private FMOD.Studio.EventInstance shotInst;
+
+
     public float speed = 10.0f;
     public Vector2 direction;
     public GameObject user;
@@ -53,6 +58,12 @@ public class BulletComponent : MonoBehaviour
 
         return Vector3.Distance(transform.position,
             Service.Game.CurrentRace.PlayerGameObject.gameObject.transform.position) > 20;
+    }
+
+    void Start()
+    {
+        shotInst = FMODUnity.RuntimeManager.CreateInstance(ShotEvent);
+        shotInst.start();
     }
 
     // Update is called once per frame

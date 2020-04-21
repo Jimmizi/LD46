@@ -42,6 +42,8 @@ public class GridActor : MonoBehaviour
 
     public bool UseLinearMovementSpeed;
 
+    public CarSounds carSounds;
+
     //If this actor reaches their target position, they will destroy themselves
     public bool SelfDestroyOnTargetReached;
 
@@ -114,6 +116,7 @@ public class GridActor : MonoBehaviour
             if (x != 0)
             {
                 Service.Speed.SetSpeedAfterMove(SpeedGaugeController.SpeedType.SlightlyLower);
+                carSounds?.PlaySkid();
             }
             else if (y > 0)
             {
@@ -140,10 +143,12 @@ public class GridActor : MonoBehaviour
     protected void Start()
     {
         AssignToNearestGridPoint();
+        carSounds?.StartEngine();
     }
 
     void OnDestroy()
     {
+        carSounds?.StopEngine();
         OnActorDestroy?.Invoke(this, new EventArgs());
     }
 
@@ -165,6 +170,7 @@ public class GridActor : MonoBehaviour
             var healthComp = GetComponent<HealthComponent>();
             if (healthComp)
             {
+                carSounds?.StopEngine();
                 healthComp.Offset(-100);
             }
         }
@@ -265,6 +271,8 @@ public class GridActor : MonoBehaviour
                 if (!SelfDestroyOnTargetReached_OnlyIfNotOnBoard
                     || !Service.Grid.IsTileOnGrid(targetGridPosition))
                 {
+
+                    carSounds?.StopEngine();
                     Destroy(this.gameObject);
                 }
             }

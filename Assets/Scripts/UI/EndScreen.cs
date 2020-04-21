@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class EndScreen : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string SpacePressedEvent;
+    private FMOD.Studio.EventInstance spacePressInst;
+
     public float FadeInSpeed;
     public float FadeOutSpeed;
+
+    public CanvasGroup MainGroup;
 
     public CanvasGroup PlayButtonGroup;
     public CanvasGroup BackgroundGroup;
@@ -18,25 +24,60 @@ public class EndScreen : MonoBehaviour
     {
         Service.End = this;
     }
-    
+
+    void Start()
+    {
+        MainGroup.alpha = 0;
+        StartCoroutine(FadeScreenIn());
+    }
+
+    IEnumerator FadeScreenIn()
+    {
+        while (MainGroup.alpha < 1)
+        {
+            MainGroup.alpha += 2.5f * Time.deltaTime;
+            yield return null;
+        }
+
+        MainGroup.alpha = 1;
+    }
+
+    IEnumerator FadeScreenOut()
+    {
+        while (MainGroup.alpha > 0)
+        {
+            MainGroup.alpha -= 1f * Time.deltaTime;
+            yield return null;
+        }
+
+        MainGroup.alpha = 0;
+
+        fadedOut = true;
+        //Service.End = null;
+        //Destroy(this);
+    }
+
     public void StartRestart()
     {
         if (!launchedFader)
         {
+            spacePressInst = FMODUnity.RuntimeManager.CreateInstance(SpacePressedEvent);
+            spacePressInst.start();
+
             launchedFader = true;
 
             Service.Storm.SetFull();
-
-            //StartCoroutine(fadeInBackground(BackgroundGroup));
-            StartCoroutine(fadeOutCanvasGroupEnumerator(Service.Flow.GameUICanvasGroup));
-            StartCoroutine(fadeOutCanvasGroupEnumerator(PlayButtonGroup));
-            StartCoroutine(fadeOutCanvasGroupEnumerator(EndTextGroup));
+            StartCoroutine(FadeScreenOut());
+            ////StartCoroutine(fadeInBackground(BackgroundGroup));
+            //StartCoroutine(fadeOutCanvasGroupEnumerator(Service.Flow.GameUICanvasGroup));
+            //StartCoroutine(fadeOutCanvasGroupEnumerator(PlayButtonGroup));
+            //StartCoroutine(fadeOutCanvasGroupEnumerator(EndTextGroup));
         }
     }
 
     void Update()
     {
-        if (!launchedFader)
+        if (MainGroup.alpha == 1 && !launchedFader)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -47,14 +88,10 @@ public class EndScreen : MonoBehaviour
 
     public bool ReadyToFadeBackIn => launchedFader && fadedOut;
 
-    public void FadeBackIn()
+    public void DestroyThis()
     {
-        if (launchedFader && fadedOut && Service.Storm.IsFullStorm())
-        {
-            Service.End = null;
-            Destroy(this);
-            //StartCoroutine(fadeOutCanvasGroupEnumerator(BackgroundGroup, true));
-        }
+        Service.End = null;
+        Destroy(this.gameObject);
     }
 
     private IEnumerator fadeInBackground(CanvasGroup group)

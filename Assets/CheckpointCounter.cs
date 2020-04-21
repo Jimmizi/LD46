@@ -24,7 +24,7 @@ public class CheckpointCounter : MonoBehaviour
     {
         if (value < 10)
         {
-            Slot2.SetTo(0);
+            Slot2.SetToEmpty();
             Slot1.SetTo(value);
         }
         else
