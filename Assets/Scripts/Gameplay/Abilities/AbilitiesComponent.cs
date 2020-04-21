@@ -247,7 +247,9 @@ public class AbilitiesComponent : MonoBehaviour
         abilityDeck.Add(new MoveAbility("Move Left", sprites.MoveLeft, AbilityTargeting.None, -1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Right", sprites.MoveRight, AbilityTargeting.None, 1, 0), 5);
         abilityDeck.Add(new MoveAbility("Move Forward", sprites.MoveForward, AbilityTargeting.None, 0, 1));
-        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1),1);
+        abilityDeck.Add(new MoveAbility("Move Back", sprites.MoveBack, AbilityTargeting.None, 0, -1),2);
+
+        abilityDeck.Add(new FlameBoostAbility("Flame Boost", sprites.FlameBoost, resources.FlamePrefab), 1);
 
         abilityDeck.Add(new HealAbility("Heal", sprites.Heal, 35), 3);
         abilityDeck.Add(new ShieldAbility("Shield", sprites.Shield), 3);

@@ -22,3 +22,4 @@ MonoBehaviour:
   SpreadShot: {fileID: 21300000, guid: cec21c4369e5b2f40907d95b55e1d016, type: 3}
   RapidFire: {fileID: 21300000, guid: f539f20f092e4cf4ba7f627f09b7427c, type: 3}
   NovaShotBlast: {fileID: 21300000, guid: 84b599e018ab5e3439f9258e221c25b8, type: 3}
+  FlameBoost: {fileID: 21300000, guid: a026430fed8a90e41a2d3bca51130368, type: 3}

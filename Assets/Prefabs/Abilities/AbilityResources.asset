@@ -18,3 +18,5 @@ MonoBehaviour:
     type: 3}
   NovaBulletPrefab: {fileID: 4736907589465119375, guid: e8e1f44b064c12441901ba74c834b7d3,
     type: 3}
+  FlamePrefab: {fileID: -6819448993220855529, guid: c6a7b77c96e1cfe4681b04d27e413ecc,
+    type: 3}
