@@ -98,37 +98,72 @@ public class FlowManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Service.Flow = this;
-        //gameStartFadeInGroup.alpha = 1f;
-        GameUICanvasGroup.alpha = 0f;
+//        Service.Flow = this;
+//        //gameStartFadeInGroup.alpha = 1f;
+//        GameUICanvasGroup.alpha = 0f;
 
-        Service.Storm.SetFull(true);
+//        Service.Storm.SetFull(true);
 
-#if DEBUG && UNITY_EDITOR
-        if (SkipTitleScreen)
-        {
-           // GameUICanvasGroup.alpha = 1f;
-            //gameStartFadeInGroup.alpha = 0f;
-            Service.Storm.SetVignette(true);
-            SetupGameStart();
-            return;
-        }
-#endif
-        var title = (GameObject)Instantiate(Service.Prefab.TitleScreen);
-        var titleScreen = title.GetComponent<TitleScreen>();
+//#if DEBUG && UNITY_EDITOR
+//        if (SkipTitleScreen)
+//        {
+//           // GameUICanvasGroup.alpha = 1f;
+//            //gameStartFadeInGroup.alpha = 0f;
+//            Service.Storm.SetVignette(true);
+//            SetupGameStart();
+//            return;
+//        }
+//#endif
+//        var title = (GameObject)Instantiate(Service.Prefab.TitleScreen);
+//        var titleScreen = title.GetComponent<TitleScreen>();
 
-        Assert.IsNotNull(titleScreen);
+//        Assert.IsNotNull(titleScreen);
 
-        // Set up the start of the game and alpha out the title screen fader
-        titleScreen.OnTitleFadedOut += (sender, args) => SetupGameStart();
+//        // Set up the start of the game and alpha out the title screen fader
+//        titleScreen.OnTitleFadedOut += (sender, args) => SetupGameStart();
 
         
-        //StartCoroutine(FadeIntoGameAtStart());
+//        //StartCoroutine(FadeIntoGameAtStart());
     }
+
+    private bool dummyStartDone = false;
 
     // Update is called once per frame
     void Update()
     {
+        if (!dummyStartDone)
+        {
+            dummyStartDone = true;
+
+            Service.Flow = this;
+            //gameStartFadeInGroup.alpha = 1f;
+            GameUICanvasGroup.alpha = 0f;
+
+            Service.Storm.SetFull(true);
+
+#if DEBUG && UNITY_EDITOR
+            if (SkipTitleScreen)
+            {
+                // GameUICanvasGroup.alpha = 1f;
+                //gameStartFadeInGroup.alpha = 0f;
+                Service.Storm.SetVignette(true);
+                SetupGameStart();
+                return;
+            }
+#endif
+            var title = (GameObject)Instantiate(Service.Prefab.TitleScreen);
+            var titleScreen = title.GetComponent<TitleScreen>();
+
+            Assert.IsNotNull(titleScreen);
+
+            // Set up the start of the game and alpha out the title screen fader
+            titleScreen.OnTitleFadedOut += (sender, args) => SetupGameStart();
+
+
+            //StartCoroutine(FadeIntoGameAtStart());
+        }
+
+
         if (endScreenRef && endScreenRef.ReadyToFadeBackIn)
         {
             //Destroy gameplay manager so SetupGameStart can make a new one
