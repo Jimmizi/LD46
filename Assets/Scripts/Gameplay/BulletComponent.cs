@@ -39,6 +39,12 @@ public class BulletComponent : MonoBehaviour
 
             if (hitHealth)
             {
+
+                if (user.tag == "Player")
+                {
+                    Service.Score.AddScore(ScoreController.ScoreType.KilledEnemy);
+                }
+
                 hitHealth.Offset(-Damage);
                 var breakGo = Instantiate(BulletBreakPrefab);
 

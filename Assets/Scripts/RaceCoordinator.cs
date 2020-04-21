@@ -344,9 +344,12 @@ public class RaceCoordinator : MonoBehaviour
 
             foreach (var actor in Service.Grid.Actors)
             {
-                if (actor is EnemyController enemy)
+                if (actor != null && actor is EnemyController enemy)
                 {
-                    Destroy(enemy.gameObject);
+                    if (enemy.gameObject != null)
+                    {
+                        Destroy(enemy.gameObject);
+                    }
                 }
             }
 

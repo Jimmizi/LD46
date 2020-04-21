@@ -10,11 +10,18 @@ public class MusicManager : MonoBehaviour
     [FMODUnity.EventRef]
     public string GameMusicEvent;
 
+    [FMODUnity.EventRef]
+    public string AmbientWindEvent;
+
     private FMOD.Studio.EventInstance menuMusicInstance;
     private FMOD.Studio.EventInstance gameLoopInstance;
+    private FMOD.Studio.EventInstance ambientWind;
 
     private bool playingMenuMusic;
     private bool playingGameMusic;
+    private bool playingAmbientWind;
+
+
 
     public void PlayMenuMusic()
     {
@@ -65,6 +72,13 @@ public class MusicManager : MonoBehaviour
             menuMusicInstance.clearHandle();
         }
 
+        if (ambientWind.isValid())
+        {
+            ambientWind.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            ambientWind.release();
+            ambientWind.clearHandle();
+        }
+
         if (gameLoopInstance.isValid())
         {
             gameLoopInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -82,6 +96,8 @@ public class MusicManager : MonoBehaviour
     void Start()
     {
         Service.Music = this;
+        ambientWind = FMODUnity.RuntimeManager.CreateInstance(AmbientWindEvent);
+        ambientWind.start();
     }
 
     // Update is called once per frame
