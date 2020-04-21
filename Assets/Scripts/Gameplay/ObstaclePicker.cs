@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
+
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,7 +14,7 @@ public class ObstaclePicker : MonoBehaviour
         public Sprite sprite;
 
         [SerializeField]
-        public AnimatorController controller;
+        public RuntimeAnimatorController controller;
 
         [SerializeField]
         public int damageOnCollision;
