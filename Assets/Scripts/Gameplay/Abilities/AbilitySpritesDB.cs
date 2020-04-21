@@ -15,4 +15,5 @@ public class AbilitySpritesDB : ScriptableObject
     public Sprite SpreadShot;
     public Sprite RapidFire;
     public Sprite NovaShotBlast;
+    public Sprite FlameBoost;
 }
