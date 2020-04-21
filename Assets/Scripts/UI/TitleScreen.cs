@@ -11,6 +11,8 @@ public class TitleScreen : MonoBehaviour
 
     public CanvasGroup CanvasFade;
 
+    public CanvasGroup SubTitle;
+
     public EventHandler OnTitleFadedOut;
 
     public GameObject Title;
@@ -79,8 +81,9 @@ public class TitleScreen : MonoBehaviour
         OriginalTitlePosition = Title.transform.position;
         Title.transform.position += new Vector3(0, titleMoveUp);
         PressToPlayCanvasGroup.alpha = 0;
+        SubTitle.alpha = 0;
 
-        
+
 
         StartCoroutine(WaitAtStart());
     }
@@ -149,7 +152,22 @@ public class TitleScreen : MonoBehaviour
             yield return null;
         }
 
+        StartCoroutine(BringInSubTitle());
+
+        yield return new WaitForSeconds(2f);
+
         StartCoroutine(BringInPressToPlay());
+    }
+
+    IEnumerator BringInSubTitle()
+    {
+        while (SubTitle.alpha < 1)
+        {
+            SubTitle.alpha += Time.deltaTime;
+            yield return null;
+        }
+
+        SubTitle.alpha = 1;
     }
 
     IEnumerator BringInPressToPlay()
