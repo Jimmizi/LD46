@@ -3,6 +3,10 @@
 # Wheels of Rage: Enter the Scrapstorm
 Made for Ludum Dare 46 (Theme: Keep it alive)
 
+https://jimmizi.itch.io/wheels-of-rage
+
+https://ldjam.com/users/gunnbju/games
+
 Put your pedal to the metal in sandstorm valley! Compete for score and renoun as you face the elements alongside your bitter rivals. Use your abilities to make it through the checkpoints and last as long as you can!
 
 Controls: 
